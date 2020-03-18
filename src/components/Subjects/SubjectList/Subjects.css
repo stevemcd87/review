@@ -1,0 +1,92 @@
+
+.subjects-component {
+  background-color: lightgreen;
+  min-height: 80vh;
+  padding: 1em;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: 40% 40%;
+}
+
+.subject {
+  background-color: white;
+  max-width: 400px;
+  border-radius: 20px;
+  margin: .5em;
+  padding: 1em;
+}
+
+.subject-edit-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* ========================================= */
+
+
+.subject-form-component,
+.category-form-component {
+  background-color: lightgreen;
+  min-height:  80vh;
+  padding: 1em;
+}
+
+.subject-form-component form,
+.category-form-component form {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  min-height: 50vh;
+  justify-content: space-around;
+  width: 90%;
+  margin: 0 auto;;
+}
+
+.subject-form-component form textarea,
+.category-form-component form textarea,
+.form-textarea
+{
+  width: 75%;
+  min-height: 100px;
+  margin: 0 auto;
+  font-size: 1.5em;
+  text-align: center;
+  border: 0;
+}
+
+.subject-form-component form textarea:first-child,
+.category-form-component form textarea:first-child {
+  height: 50px;
+}
+
+.subject-form-component form button,
+.category-form-component form button {
+  width: 25%;
+  padding: .8em;
+  background-color: lightgreen;
+  margin: 0 auto;
+}
+
+
+
+/* =============================================== */
+
+.subject-detail-component {
+  background-color: lightgreen;
+  min-height:  90vh;
+}
+
+
+.categories{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.category {
+  background-color: white;
+  width: 200px;
+  margin: 1em;
+}

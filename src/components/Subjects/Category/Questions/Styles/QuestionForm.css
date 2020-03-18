@@ -1,0 +1,45 @@
+.question-form {
+  position: relative;
+  margin: auto;
+  width: 80%;
+  min-height: 65vh;
+  background-color: lightgreen;
+  padding: .5em;
+}
+
+.question-form .image-div {
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-form .question-textarea {
+  width: 80%;
+}
+
+.question-form .answer-options-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.question-form .answer-option-div {
+  position: relative;
+  width: 80%;
+}
+
+.question-form .answer-option-div button.select-answer {
+  position: absolute;
+  top:-5px;
+  right:-5px;
+}
+
+.question-form .answer-option {
+  width: 80%
+}
+
+.question-form .answer-option-div.correct-answer {
+  border: 2px green solid;
+}

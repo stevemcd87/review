@@ -1,0 +1,92 @@
+button:disabled {
+  color: inherit;
+}
+
+.questions {
+  display: flex;
+  overflow: hidden;
+}
+
+.question-component .correct {
+  background-color: green;
+}
+
+.question-component .incorrect {
+  background-color: red;
+}
+
+.question-component .correct-option {
+  background-color: yellow;
+}
+
+.question-component {
+  box-sizing: border-box;
+  width: 100vw;
+  /* height: 75vh; */
+  position: relative;
+}
+
+.question-component .desktop {
+  display: none;
+}
+
+.question-content {
+  box-sizing: border-box;
+  position: relative;
+  margin: 5vw;
+  width: 90vw;
+  min-height: 50vh;
+  background-color: lightgreen;
+  padding: .5em;
+}
+
+
+
+.question-content img {
+  margin: 0 auto;
+  width: 50%;
+  height: 40%;
+}
+
+/* .question-request-buttons {
+display: absolute;
+justify-content: space-around;
+padding: 1em;
+} */
+
+
+.question-detail {
+  min-height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-self: center;
+
+}
+
+.answer-options {
+  display: flex;
+  flex-wrap: wrap;
+  width: 85%;
+  justify-content: space-around;
+  margin: 0 auto;
+}
+
+.answer-option {
+  background-color: lightyellow;
+  padding: 1em;
+  width: 30%;
+  border-radius: 20px;
+
+}
+
+
+
+
+
+
+@media screen and (min-width: 800px) {
+  .question-component .desktop {
+    display: block;
+  }
+}
