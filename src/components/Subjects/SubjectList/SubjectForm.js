@@ -18,23 +18,32 @@ function SubjectForm(props) {
       });
     }
   }, []);
+
+  // <h3>Create Subject to Study</h3>
   return (
     <div className="subject-form-component form-component">
-      <h3>Create Subject to Study</h3>
+
       <form id="subject-form">
-        <textarea
-          type="text"
-          onChange={e => setName(e.target.value)}
-          value={name}
-          disabled={nameValue ? true : false}
-          placeholder="Subject's Name or Book Title"
-        />
-        <textarea
-          type="text"
-          onChange={e => setDesc(e.target.value)}
-          defaultValue={desc}
-          placeholder="Brief Description"
-        />
+        <label>
+          <span>Subject's Name</span>
+
+          <textarea
+            type="text"
+            onChange={e => setName(e.target.value)}
+            value={name}
+            disabled={nameValue ? true : false}
+            placeholder="Subject's Name or Book Title"
+          />
+        </label>
+        <label>
+          <span>Subject's Description</span>
+          <textarea
+            type="text"
+            onChange={e => setDesc(e.target.value)}
+            defaultValue={desc}
+            placeholder="Brief Description"
+          />
+        </label>
         <button type="button" onClick={!subject ? submitForm : updateForm}>
           {!subject ? "submitForm" : "updateForm"}
         </button>

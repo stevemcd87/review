@@ -10,6 +10,11 @@
             "StackName": "amplify-studdiebuddie-prod-185053",
             "StackId": "arn:aws:cloudformation:us-east-1:901989215932:stack/amplify-studdiebuddie-prod-185053/edc741d0-696a-11ea-85cd-1277ff2044b7",
             "AmplifyAppId": "dms3ytya278ud"
+        },
+        "categories": {
+            "auth": {
+                "studdiebuddie425": {}
+            }
         }
     }
 }

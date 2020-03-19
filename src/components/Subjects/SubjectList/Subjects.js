@@ -19,18 +19,6 @@ function Subjects(props) {
   }, [subjects]);
   return (
     <div className="subjects-component">
-      <div className="subjects">
-        {subjects.map(s => {
-          return (
-            <SubjectContext.Provider
-              key={s.pathName}
-              value={{ subject: s, getSubjects }}
-            >
-              <Subject />
-            </SubjectContext.Provider>
-          );
-        })}
-      </div>
       {user && (
         <button
           type="button"
@@ -45,6 +33,18 @@ function Subjects(props) {
           <SubjectForm />
         </SubjectContext.Provider>
       )}
+      <div className="subjects">
+        {subjects.map(s => {
+          return (
+            <SubjectContext.Provider
+              key={s.pathName}
+              value={{ subject: s, getSubjects }}
+            >
+              <Subject />
+            </SubjectContext.Provider>
+          );
+        })}
+      </div>
     </div>
   );
 

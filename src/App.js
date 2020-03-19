@@ -15,7 +15,12 @@ function App() {
     console.log("authstate");
     console.log(authState);
     setUser(Auth.user);
-    let hd = authState === "signedIn" ? false : true;
+    let hd =
+      authState === "signedIn" ||
+      authState === "signUp" ||
+      authState === "confirmSignUp"
+        ? false
+        : true;
     setHideDefault(hd);
   }, [authState]);
 
@@ -23,14 +28,17 @@ function App() {
     console.log(user);
   }, [user]);
 
-
   return (
     <div className="App">
-    {(authState === "signIn") &&   <header>
-        <button onClick={() => setHideDefault(!hideDefault)}>
-          {hideDefault ? "Sign In" : "Don't Sign In"}
-        </button>
-      </header>}
+      {(authState === "signIn" || authState === "signUp") && (
+        <header>
+          <button onClick={() => setHideDefault(!hideDefault)}>
+            {hideDefault || authState === "signUp"
+              ? "Sign In"
+              : "Don't Sign In"}
+          </button>
+        </header>
+      )}
       <Authenticator
         onStateChange={as => setAuthState(as)}
         hideDefault={hideDefault}

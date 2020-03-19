@@ -28,19 +28,36 @@ function Subject(props) {
               type="button"
               onClick={() => setDisplayUpdateForm(!displayUpdateForm)}
             >
-              <FontAwesomeIcon icon={faEdit} size="2x" />
+              <FontAwesomeIcon
+                icon={faEdit}
+                size="2x"
+                color="grey"
+                title="Edit Subject"
+              />
             </button>
             <button type="button" onClick={deleteSubject}>
-              <FontAwesomeIcon icon={faTrash} size="2x" />
+              <FontAwesomeIcon
+                icon={faTrash}
+                size="2x"
+                color="grey"
+                title="Delete Subject"
+              />
             </button>
           </div>
         )}
-        <h3>
-          <Link to={`/subjects/${subject.username}/${subject.pathName}`}>{subject.navName}</Link>
-      </h3>
-        <h4>{subject.subjectDesc}</h4>
+        {!displayUpdateForm && (
+          <>
+            <h3>
+              <Link to={`/subjects/${subject.username}/${subject.pathName}`}>
+                {subject.navName}
+              </Link>
+            </h3>
+            <h4>{subject.subjectDesc}</h4>
+          </>
+        )}
+        {displayUpdateForm && <SubjectForm {...{ subject }} />}
       </div>
-      {displayUpdateForm && <SubjectForm {...{ subject }} />}
+
     </div>
   );
 
