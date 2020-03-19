@@ -1,32 +1,31 @@
 @import url("https://fonts.googleapis.com/css?family=Kalam|Short+Stack&display=swap");
-.subjects-component {
+.subjects-component, .subject-detail-component {
   background-color: lightgreen;
   min-height: 80vh;
   padding: 1em;
 }
 
-.subjects {
+.subjects, .categories{
   display: grid;
   grid-gap: 35px;
   position: relative;
 }
 
-.subject {
-  max-width: 400px;
+.subject, .category-content {
+  /* max-width: 400px; */
   width: 90%;
-  margin: 0.5em;
   padding: .5em;
   position: relative;
 }
-form.subject-form label {
+form.subject-form label,
+ form.category-form label,{
   width: 90%;
   margin: 0 auto;
 }
 
-
-
-.subject-component, .subjects-component > .subject-form-component > .subject-form {
-  box-sizing: border-box;
+.subject-component, .subjects-component > .subject-form-component > .subject-form,
+div.category {
+  /* box-sizing: border-box; */
   background-image: url("/images/cb.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -52,18 +51,19 @@ form.subject-form label {
   background-image: inherit;
 }
 
-.subject-component a {
+.subject-component a,
+.category a {
   color: white;
   letter-spacing: 3px;
 }
 
-.subject-edit-buttons button {
+.edit-buttons button {
   padding: .8em;
   background-color: inherit;
   border-bottom: 2px solid grey;
 }
 
-.subject-edit-buttons {
+.edit-buttons {
   display: flex;
   justify-content: space-around;
 }
@@ -134,14 +134,10 @@ form.subject-form label {
   min-height: 90vh;
 }
 
-.categories {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
 
-.category {
+
+/* .category {
   background-color: white;
   width: 200px;
   margin: 1em;
-}
+} */

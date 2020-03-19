@@ -1,11 +1,15 @@
 import React, { useState, useContext } from "react";
 import ApiContext from "../../../contexts/ApiContext";
+import { useParams } from "react-router-dom";
 
 export default function CategoryForm(props) {
-  let { subject, getSubject } = props,
+  let { subject, getSubject, category } = props,
     { API, user } = useContext(ApiContext),
-    [categoryName, setCategoryName] = useState(""),
-    [categoryDesc, setCategoryDesc] = useState("");
+    { subjectName, username } = useParams(),
+    nameValue = category ? category.name : "",
+    descValue = category ? category.desc : "",
+    [categoryName, setCategoryName] = useState(nameValue),
+    [categoryDesc, setCategoryDesc] = useState(descValue);
   return (
     <div className="category-form-component form-component">
     <form className="category-form ">
@@ -20,7 +24,7 @@ export default function CategoryForm(props) {
         defaultValue={categoryDesc}
         placeholder="Category Description"
       />
-      <button type="button" onClick={postCategory}>
+    <button type="button" onClick={()=>(!category) ? postCategory() : updateCategory() }>
         Create Category
       </button>
     </form>
@@ -45,4 +49,24 @@ export default function CategoryForm(props) {
         console.log(error.response);
       });
   }
+
+  function updateCategory(c) {
+    console.log("updateCategory");
+    API.put("StuddieBuddie", `/subjects/${subject.pathName}`, {
+      body: JSON.stringify({
+        username: username,
+        pathName: c.pathName,
+        categoryDesc: categoryDesc.trim()
+      })
+    })
+      .then(response => {
+        console.log("response");
+        console.log(response);
+        getSubject();
+      })
+      .catch(error => {
+        console.error(error.response);
+      });
+  }
+
 }

@@ -1,3 +1,5 @@
+
+
 .category-nav {
   display: flex;
   padding: 0;
@@ -8,7 +10,7 @@
 .category-nav li{
   margin: 1em 2em;
   list-style: none;
-  background-color: white;
+  /* background-color: white; */
   padding: 1em;
   border-radius: 20px;
   width: 125px;

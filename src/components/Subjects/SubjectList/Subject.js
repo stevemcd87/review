@@ -23,7 +23,7 @@ function Subject(props) {
     <div className="subject-component">
       <div className="subject">
         {checkUsername() && (
-          <div className="subject-edit-buttons">
+          <div className="subject-edit-buttons edit-buttons">
             <button
               type="button"
               onClick={() => setDisplayUpdateForm(!displayUpdateForm)}
@@ -48,7 +48,7 @@ function Subject(props) {
         {!displayUpdateForm && (
           <>
             <h3>
-              <Link to={`/subjects/${subject.username}/${subject.pathName}`}>
+              <Link to={`/${subject.username}/${subject.pathName}`}>
                 {subject.navName}
               </Link>
             </h3>

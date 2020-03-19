@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
 import CategoryForm from "./CategoryForm";
-import { Link } from "react-router-dom";
+import CategoryListDetail from "./CategoryListDetail";
+// import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function SubjectDetail() {
   let { subjectName, username } = useParams(),
@@ -22,6 +23,51 @@ function SubjectDetail() {
     console.log(subject);
     setDisplayCategoryForm(false);
   }, [subject]);
+
+  // {categories.map(category => {
+  //   return (
+  //     <div key={category.pathName} className="category">
+  //       <div className="category-content">
+  //         {checkUsername() && (
+  //           <div className="edit-buttons">
+  //             <button
+  //               type="button"
+  //               onClick={() => updateCategory(category)}
+  //             >
+  //               <FontAwesomeIcon
+  //                 icon={faEdit}
+  //                 size="2x"
+  //                 color="grey"
+  //                 title="Edit Subject"
+  //               />
+  //             </button>
+  //             <button
+  //               type="button"
+  //               onClick={() => deleteCategory(category)}
+  //             >
+  //               <FontAwesomeIcon
+  //                 icon={faTrash}
+  //                 size="2x"
+  //                 color="grey"
+  //                 title="Delete Subject"
+  //               />
+  //             </button>
+  //           </div>
+  //         )}
+  //         <h3>
+  //           <Link
+  //             to={`/${subject.username}/${subject.pathName}/${category.urlName}`}
+  //           >
+  //             {category.name}
+  //           </Link>
+  //         </h3>
+  //         <h4>{category.desc}</h4>
+  //       </div>
+  //     </div>
+  //   );
+  // })}
+
+
   return (
     <div className="subject-detail-component">
       <button className="back-button">
@@ -33,25 +79,7 @@ function SubjectDetail() {
         <h3>{subject.subjectDesc}</h3>
       </div>
       <div className="categories">
-        {categories.map(category => {
-          return (
-            <div key={category.pathName} className="category">
-              <h4>
-                <Link
-                  to={`/subjects/${subject.username}/${subject.pathName}/${category.urlName}`}
-                >
-                  {category.name}
-                </Link>
-              </h4>
-              <p>{category.desc}<span></span></p>
-              {checkUsername() && (
-                <button type="button" onClick={() => deleteCategory(category)}>
-                  Delete
-                </button>
-              )}
-            </div>
-          );
-        })}
+        {categories.map((c)=><CategoryListDetail category={c} />)}
       </div>
       {checkUsername() && (
         <button
@@ -88,6 +116,7 @@ function SubjectDetail() {
       });
   }
 
+
   function getSubject() {
     console.log("GET subject");
     API.get("StuddieBuddie", `/subjects/${subjectName}`, {
@@ -105,7 +134,8 @@ function SubjectDetail() {
             name: urlName.replace(/-/g, " "),
             desc: v.categoryDesc,
             pathName: v.pathName,
-            urlName: urlName
+            urlName: urlName,
+            username: v.username
           };
         });
         setCategories(c);

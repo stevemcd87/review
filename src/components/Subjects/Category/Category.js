@@ -26,10 +26,10 @@ export default function Category() {
   }, []);
 
   return (
-    <div>
+    <div className="category-component">
       <div className="loading-notes"></div>
       <button type="button" className="back-button">
-        <Link to={`/subjects/${username}/${subjectName}/`}>Back</Link>
+        <Link to={`/${username}/${subjectName}/`}>Back</Link>
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
       <ul className="category-nav">
