@@ -57,6 +57,7 @@ function Subjects(props) {
         setSubjects(response.data);
       })
       .catch(error => {
+        alert("Unable to get Subjects")
         console.log("er");
         console.log(error);
       });

@@ -45,7 +45,7 @@ function SubjectForm(props) {
           />
         </label>
         <button type="button" onClick={!subject ? submitForm : updateForm}>
-          {!subject ? "submitForm" : "updateForm"}
+          Submit
         </button>
       </form>
     </div>
