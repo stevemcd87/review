@@ -28,7 +28,7 @@ function Subjects(props) {
           {showForm ? "Hide Form" : "Create Subject"}
         </button>
       )}
-      {showForm && (
+      {user && showForm && (
         <SubjectContext.Provider value={{ getSubjects }}>
           <SubjectForm />
         </SubjectContext.Provider>

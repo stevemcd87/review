@@ -2,33 +2,30 @@
 .subjects-component {
   background-color: lightgreen;
   min-height: 80vh;
-  /* max-width: 100%; */
   padding: 1em;
-  /* min-width: 100vw; */
 }
 
 .subjects {
-  /* box-sizing: border-box; */
   display: grid;
   grid-gap: 35px;
-  /* max-width: 100vw; */
-  /* min-width: 100vw; */
   position: relative;
-  /* grid-template-columns: 40% 40%; */
 }
 
 .subject {
-  /* background-color: white; */
   max-width: 400px;
   width: 90%;
-  /* border-radius: 20px; */
   margin: 0.5em;
   padding: .5em;
   position: relative;
 }
+form.subject-form label {
+  width: 90%;
+  margin: 0 auto;
+}
 
 
-.subject-component, #subject-form {
+
+.subject-component, .subjects-component > .subject-form-component > .subject-form {
   box-sizing: border-box;
   background-image: url("/images/cb.jpg");
   background-repeat: no-repeat;
@@ -43,12 +40,20 @@
   align-items: center;
   font-size: 1em;
   letter-spacing: 3px;
-  max-width: 100%;
+  width: 100%;
+}
+
+/* For creating new subject */
+.subjects-component > .subject-form-component > #subject-form {
+}
+
+.subject-component #subject-form {
+  border: 0;
+  background-image: inherit;
 }
 
 .subject-component a {
   color: white;
-  /* font-size: 1.1em; */
   letter-spacing: 3px;
 }
 
@@ -79,11 +84,12 @@
   /* background-color: white; */
   min-height: 50vh;
   justify-content: space-around;
-  /* width: 90%; */
+  width: 100%;
   margin-bottom: 35px;
 }
 
-.subject-form-component form textarea,
+/* .subject-form-component form textarea, */
+#subject-form textarea,
 .category-form-component form textarea,
 .form-textarea {
   background-color: inherit;

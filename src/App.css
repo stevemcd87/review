@@ -2,41 +2,56 @@
   box-sizing: border-box;
 }
 
-
 html {
   text-align: center;
   min-height: 100vh;
   width: 95vw;
   margin: 0 auto;
-  /* overflow-y: scroll;
-    scrollbar-width: 1.8vw; */
-  /* max-width:  */
+  background-color: rgb(102,73,29,.8);
 }
-
 header{
-  height: 5vh;
+  margin: .5em;
 }
 
-.Nav__nav___2Dx2Y{
-  /* max-width: 50%; */
-  background-color: lightgreen;
+header button {
+  min-width: 153px;
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  background-image: none;
+  color: white;
+  background-color: green;
+  border-color: #ccc;
+  text-transform: uppercase;
+  padding: 14px 0;
+  letter-spacing: 1.1px;
+  border: none;
 }
 
-h2,h3,h4 {
-    width: 80%;
-    margin: 0 auto;
-    padding: .5em;
+h2,
+h3,
+h4 {
+  width: 80%;
+  margin: 0 auto;
+  padding: 0.5em;
 }
 
 h2 {
   font-size: 2.5em;
-
 }
 
 h3 {
   font-size: 1.8em;
   font-weight: normal;
-
 }
 
 h4 {
@@ -46,9 +61,8 @@ h4 {
 
 h5 {
   font-size: 1.6em;
-  margin: .5em 0 1em 0;;
+  margin: 0.5em 0 1em 0;
 }
-
 
 label {
   display: flex;
@@ -57,7 +71,8 @@ label {
 
 button {
   border: 0;
-  cursor: pointer
+  cursor: pointer;
+  margin: .5em;
 }
 
 /* textarea {
@@ -66,7 +81,7 @@ button {
 
 .create-button {
   font-size: 1.2em;
-  padding: .5em;
+  padding: 0.5em;
   border-radius: 10px;
 }
 
@@ -74,10 +89,10 @@ button {
   padding: 1em;
   font-size: 1.2em;
   border-radius: 50%;
-  color: #FF9900;
+  color: #ff9900;
 }
 
-.request-buttons  {
+.request-buttons {
   display: flex;
   justify-content: space-between;
 }
@@ -85,14 +100,12 @@ button {
 .request-buttons button {
   display: flex;
   justify-content: space-between;
-  padding: .5em;
-
+  padding: 0.5em;
 }
 
 textarea[disabled] {
-  cursor:not-allowed;
+  cursor: not-allowed;
 }
-
 
 @media screen and (min-width: 500px) {
   img {
@@ -100,7 +113,6 @@ textarea[disabled] {
     height: 200px;
   }
 }
-
 
 /* :root {
   --main-bg-color: lightgreen;

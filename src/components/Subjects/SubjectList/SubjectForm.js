@@ -23,12 +23,13 @@ function SubjectForm(props) {
   return (
     <div className="subject-form-component form-component">
 
-      <form id="subject-form">
+      <form className="subject-form">
         <label>
           <span>Subject's Name</span>
 
           <textarea
             type="text"
+            className="form-textarea"
             onChange={e => setName(e.target.value)}
             value={name}
             disabled={nameValue ? true : false}
@@ -39,6 +40,7 @@ function SubjectForm(props) {
           <span>Subject's Description</span>
           <textarea
             type="text"
+            className="form-textarea"
             onChange={e => setDesc(e.target.value)}
             defaultValue={desc}
             placeholder="Brief Description"

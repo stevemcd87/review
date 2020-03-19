@@ -10,7 +10,33 @@ Amplify.configure(AmpConfig);
 function App() {
   let [user, setUser] = useState(Auth.user),
     [authState, setAuthState] = useState(),
-    [hideDefault, setHideDefault] = useState(true);
+    [hideDefault, setHideDefault] = useState(true),
+    myTheme = {
+      nav:{
+        backgroundColor: "inherit",
+        color:"white"
+      },
+      navBar:{
+        backgroundColor: "inherit",
+        border:0
+      },
+      navRight: {
+        textAlign: "center"
+      },
+      navButton: {
+        backgroundColor: "green"
+      },
+      formSection: {
+        backgroundColor: "lightgreen"
+      },
+      button: {
+        backgroundColor: "green"
+      },
+      a: {
+        color: "green"
+      }
+    };
+
   useEffect(() => {
     console.log("authstate");
     console.log(authState);
@@ -32,8 +58,10 @@ function App() {
     <div className="App">
       {(authState === "signIn" || authState === "signUp") && (
         <header>
-          <button onClick={() => setHideDefault(!hideDefault)}>
-            {hideDefault || authState === "signUp"
+          <button
+            onClick={() => setHideDefault(!hideDefault)}
+          >
+            {hideDefault
               ? "Sign In"
               : "Don't Sign In"}
           </button>
@@ -42,6 +70,7 @@ function App() {
       <Authenticator
         onStateChange={as => setAuthState(as)}
         hideDefault={hideDefault}
+        theme={myTheme}
       >
         <ApiContext.Provider value={{ API, Storage, user, Auth }}>
           <SubjectMain />
