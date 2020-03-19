@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 export default function CategoryForm(props) {
   let { subject, getSubject, category } = props,
-    { API, user } = useContext(ApiContext),
+    { API, Auth, user } = useContext(ApiContext),
     { subjectName, username } = useParams(),
     nameValue = category ? category.name : "",
     descValue = category ? category.desc : "",
@@ -18,6 +18,7 @@ export default function CategoryForm(props) {
         onChange={e => setCategoryName(e.target.value)}
         defaultValue={categoryName}
         placeholder="Category Name"
+        disabled={category && category.name ? true : false}
       />
     <textarea
         onChange={e => setCategoryDesc(e.target.value)}
@@ -25,13 +26,13 @@ export default function CategoryForm(props) {
         placeholder="Category Description"
       />
     <button type="button" onClick={()=>(!category) ? postCategory() : updateCategory() }>
-        Create Category
+        {!category ? "Create" : "Update"}
       </button>
     </form>
   </div>
   );
   function postCategory() {
-    API.post("StuddieBuddie", `/subjects/${subject.pathName}`, {
+    API.post("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
         categoryName: categoryName.trim(),
         categoryDesc: categoryDesc.trim(),
@@ -50,14 +51,19 @@ export default function CategoryForm(props) {
       });
   }
 
-  function updateCategory(c) {
+  async function updateCategory(c) {
     console.log("updateCategory");
-    API.put("StuddieBuddie", `/subjects/${subject.pathName}`, {
+    return API.put("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
         username: username,
-        pathName: c.pathName,
+        pathName: category.pathName,
         categoryDesc: categoryDesc.trim()
-      })
+      }),
+      headers: {
+        Authorization: `Bearer ${(await Auth.currentSession())
+          .getIdToken()
+          .getJwtToken()}`
+      },
     })
       .then(response => {
         console.log("response");

@@ -67,7 +67,6 @@ function SubjectDetail() {
   //   );
   // })}
 
-
   return (
     <div className="subject-detail-component">
       <button className="back-button">
@@ -79,7 +78,15 @@ function SubjectDetail() {
         <h3>{subject.subjectDesc}</h3>
       </div>
       <div className="categories">
-        {categories.map((c)=><CategoryListDetail category={c} />)}
+        {categories.map(c => {
+          return (
+            <CategoryListDetail
+              category={c}
+              getSubject={getSubject}
+              subject={subject}
+            />
+          );
+        })}
       </div>
       {checkUsername() && (
         <button
@@ -96,24 +103,6 @@ function SubjectDetail() {
 
   function checkUsername() {
     return user && user.username === subject.username ? true : false;
-  }
-
-  function deleteCategory(c) {
-    console.log("deleteCategory");
-    API.del("StuddieBuddie", `/subjects/${subject.pathName}`, {
-      body: JSON.stringify({
-        username: username,
-        pathName: c.pathName
-      })
-    })
-      .then(response => {
-        console.log("response");
-        console.log(response);
-        getSubject();
-      })
-      .catch(error => {
-        console.error(error.response);
-      });
   }
 
 
