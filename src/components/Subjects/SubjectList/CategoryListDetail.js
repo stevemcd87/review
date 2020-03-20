@@ -29,9 +29,9 @@ export default function CategoryListDetail(props) {
     setDisplayUpdateForm(false);
   }, [category]);
   return (
-    <div className="category-component">
+    <div className="category-ld-component">
       <div className="category">
-        <div>
+        <div className="category-content">
           {checkUsername() && (
             <div className="category-edit-buttons edit-buttons">
               <button
@@ -78,12 +78,12 @@ export default function CategoryListDetail(props) {
     // return user && user.username === category.username ? true : false;
   }
 
-  async function deleteCategory(c) {
+  async function deleteCategory() {
     console.log("deleteCategory");
     return await API.del("StuddieBuddie", `/subjects/${subject.pathName}`, {
       body: JSON.stringify({
         username: username,
-        pathName: c.pathName
+        pathName: category.pathName
       }),
       headers: {
         Authorization: `Bearer ${(await Auth.currentSession())
@@ -101,22 +101,4 @@ export default function CategoryListDetail(props) {
         console.error(error.response);
       });
   }
-
-  // async function deleteCategory() {
-  //   // TODO: delete all items for category
-  //   console.log("deleteSubject");
-  //   return await API.del("StuddieBuddie", "/subjects/", {
-  //     body: JSON.stringify({
-  //       username: user.username,
-  //       pathName: category.pathName
-  //     })
-  //   })
-  //     .then(response => {
-  //       console.log(response);
-  //       getSubject();
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
 } // End of Component

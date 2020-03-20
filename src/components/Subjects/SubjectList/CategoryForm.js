@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ApiContext from "../../../contexts/ApiContext";
 import { useParams } from "react-router-dom";
 
@@ -12,33 +12,49 @@ export default function CategoryForm(props) {
     [categoryDesc, setCategoryDesc] = useState(descValue);
   return (
     <div className="category-form-component form-component">
-    <form className="category-form ">
-      <textarea
-        type="text"
-        onChange={e => setCategoryName(e.target.value)}
-        defaultValue={categoryName}
-        placeholder="Category Name"
-        disabled={category && category.name ? true : false}
-      />
-    <textarea
-        onChange={e => setCategoryDesc(e.target.value)}
-        defaultValue={categoryDesc}
-        placeholder="Category Description"
-      />
-    <button type="button" onClick={()=>(!category) ? postCategory() : updateCategory() }>
-        {!category ? "Create" : "Update"}
-      </button>
-    </form>
-  </div>
+      <form className="category-form ">
+        <label>
+          <span>Category Name</span>
+          <textarea
+            type="text"
+            onChange={e => setCategoryName(e.target.value)}
+            defaultValue={categoryName}
+            placeholder="Category Name"
+            disabled={category && category.name ? true : false}
+          />
+        </label>
+
+      <label>
+        <span>Category Description</span>
+        <textarea
+          onChange={e => setCategoryDesc(e.target.value)}
+          defaultValue={categoryDesc}
+          placeholder="Category Description"
+        />
+      </label>
+
+        <button
+          type="button"
+          onClick={() => (!category ? postCategory() : updateCategory())}
+        >
+          {!category ? "Create" : "Update"}
+        </button>
+      </form>
+    </div>
   );
-  function postCategory() {
-    API.post("StuddieBuddie", `/subjects/${subjectName}`, {
+  async function postCategory() {
+    return await API.post("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
         categoryName: categoryName.trim(),
         categoryDesc: categoryDesc.trim(),
         username: user.username
         // pathName: subject.pathName
-      })
+      }),
+      headers: {
+        Authorization: `Bearer ${(await Auth.currentSession())
+          .getIdToken()
+          .getJwtToken()}`
+      }
     })
       .then(response => {
         console.log("response postCategory");
@@ -63,7 +79,7 @@ export default function CategoryForm(props) {
         Authorization: `Bearer ${(await Auth.currentSession())
           .getIdToken()
           .getJwtToken()}`
-      },
+      }
     })
       .then(response => {
         console.log("response");
@@ -74,5 +90,4 @@ export default function CategoryForm(props) {
         console.error(error.response);
       });
   }
-
 }

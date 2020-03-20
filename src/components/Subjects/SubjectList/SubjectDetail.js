@@ -24,48 +24,6 @@ function SubjectDetail() {
     setDisplayCategoryForm(false);
   }, [subject]);
 
-  // {categories.map(category => {
-  //   return (
-  //     <div key={category.pathName} className="category">
-  //       <div className="category-content">
-  //         {checkUsername() && (
-  //           <div className="edit-buttons">
-  //             <button
-  //               type="button"
-  //               onClick={() => updateCategory(category)}
-  //             >
-  //               <FontAwesomeIcon
-  //                 icon={faEdit}
-  //                 size="2x"
-  //                 color="grey"
-  //                 title="Edit Subject"
-  //               />
-  //             </button>
-  //             <button
-  //               type="button"
-  //               onClick={() => deleteCategory(category)}
-  //             >
-  //               <FontAwesomeIcon
-  //                 icon={faTrash}
-  //                 size="2x"
-  //                 color="grey"
-  //                 title="Delete Subject"
-  //               />
-  //             </button>
-  //           </div>
-  //         )}
-  //         <h3>
-  //           <Link
-  //             to={`/${subject.username}/${subject.pathName}/${category.urlName}`}
-  //           >
-  //             {category.name}
-  //           </Link>
-  //         </h3>
-  //         <h4>{category.desc}</h4>
-  //       </div>
-  //     </div>
-  //   );
-  // })}
 
   return (
     <div className="subject-detail-component">
@@ -77,6 +35,16 @@ function SubjectDetail() {
         <h2>{subject.navName}</h2>
         <h3>{subject.subjectDesc}</h3>
       </div>
+      {checkUsername() && (
+        <button
+          className="create-button"
+          type="button"
+          onClick={() => setDisplayCategoryForm(!displayCategoryForm)}
+        >
+          {!displayCategoryForm ? "Create Category" : "Hide Form"}
+        </button>
+      )}
+      {displayCategoryForm && <CategoryForm {...{ subject, getSubject }} />}
       <div className="categories">
         {categories.map(c => {
           return (
@@ -88,16 +56,6 @@ function SubjectDetail() {
           );
         })}
       </div>
-      {checkUsername() && (
-        <button
-          className="create-button"
-          type="button"
-          onClick={() => setDisplayCategoryForm(!displayCategoryForm)}
-        >
-          {!displayCategoryForm ? "Create Category" : "Hide Form"}
-        </button>
-      )}
-      {displayCategoryForm && <CategoryForm {...{ subject, getSubject }} />}
     </div>
   );
 
