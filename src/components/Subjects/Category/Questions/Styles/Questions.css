@@ -1,4 +1,4 @@
-button:disabled {
+/* button:disabled {
   color: inherit;
 }
 
@@ -22,7 +22,6 @@ button:disabled {
 .question-component {
   box-sizing: border-box;
   width: 100vw;
-  /* height: 75vh; */
   position: relative;
 }
 
@@ -48,11 +47,7 @@ button:disabled {
   height: 40%;
 }
 
-/* .question-request-buttons {
-display: absolute;
-justify-content: space-around;
-padding: 1em;
-} */
+
 
 
 .question-detail {
@@ -89,4 +84,4 @@ padding: 1em;
   .question-component .desktop {
     display: block;
   }
-}
+} */

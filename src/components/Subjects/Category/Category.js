@@ -4,6 +4,7 @@ import CategoryContext from "../../../contexts/CategoryContext";
 import ApiContext from "../../../contexts/ApiContext";
 import Questions from "./Questions/Questions";
 import "./Category.css";
+import Loading from "../Loading"
 
 import {
   BrowserRouter as Router,
@@ -19,27 +20,31 @@ export default function Category() {
     { username, subjectName, categoryName } = useParams(),
     [categoryNotes, setCategoryNotes] = useState([]),
     [categoryQuestions, setCategoryQuestions] = useState([]),
+    [isLoading, setIsLoading] = useState(true),
     { API, user } = useContext(ApiContext);
   useEffect(() => {
-    getCategoryNotes();
-    getCategoryQuestions();
+    getCategoryNotes().then(()=>setIsLoading(false));
+    // getCategoryQuestions();
   }, []);
+
+  // <ul className="category-nav">
+  //   <li>
+  //     <Link to={`${url}/notes`}>Review Notes</Link>
+  //   </li>
+  //   <li>
+  //     <Link to={`${url}/test`}>Test</Link>
+  //   </li>
+  // </ul>
 
   return (
     <div className="category-component">
-      <div className="loading-notes"></div>
       <button type="button" className="back-button">
         <Link to={`/${username}/${subjectName}/`}>Back</Link>
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
-      <ul className="category-nav">
-        <li>
-          <Link to={`${url}/notes`}>Review Notes</Link>
-        </li>
-        <li>
-          <Link to={`${url}/test`}>Test</Link>
-        </li>
-      </ul>
+
+      {isLoading && <Loading />}
+
       <Switch>
         <Route exact path={path}>
           <CategoryContext.Provider value={{ categoryNotes, getCategoryNotes }}>
@@ -62,13 +67,17 @@ export default function Category() {
     </div>
   );
 
-  function getCategoryNotes() {
+  async function getCategoryNotes() {
     console.log("GET Subjectcategory");
-    API.get("StuddieBuddie", `/subjects/${subjectName}/${categoryName}`, {
-      queryStringParameters: {
-        username: username
+    return await API.get(
+      "StuddieBuddie",
+      `/subjects/${subjectName}/${categoryName}`,
+      {
+        queryStringParameters: {
+          username: username
+        }
       }
-    })
+    )
       .then(response => {
         console.log("GET Category response");
         console.log(response);

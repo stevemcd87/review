@@ -1,20 +1,23 @@
 @import url("https://fonts.googleapis.com/css?family=Kalam|Short+Stack&display=swap");
 .subjects-component,
-.subject-detail-component {
+.subject-detail-component,
+.component {
   background-color: lightgreen;
-  min-height: 80vh;
+  /* min-height: 80vh; */
   padding: 1em;
 }
 
 .subjects,
-.categories {
+.categories,
+.model {
   display: grid;
   grid-gap: 35px;
   position: relative;
 }
 
 .subject,
-.category-content {
+.category-content,
+.content {
   /* max-width: 400px; */
   width: 90%;
   padding: 0.5em;
@@ -29,7 +32,9 @@ form.category-form label {
 .subject-component,
 .subjects-component > .subject-form-component > .subject-form,
 div.category,
-.subject-detail-component > .category-form-component > .category-form {
+.subject-detail-component > .category-form-component > .category-form,
+.inner-component
+ {
   background-image: url("/images/cb.jpg");
   background-repeat: no-repeat;
   background-size: cover;

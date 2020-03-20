@@ -32,15 +32,25 @@ export default function AudioNote(props) {
   // }
   // for Audio Note componentDidMount
   useEffect(() => {
+    let mr, s;
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-      const mr = new MediaRecorder(stream);
+      mr = new MediaRecorder(stream);
+      s = stream;
       setMediaRecorder(mr);
-      return function cleanup() {
+    });
+    return () => {
+      s.getTracks().forEach(function(track) {
+        track.stop();
+      });
+    };
+  }, []);
+  useEffect(() => {
+    if (mediaRecorder)
+      return () => {
         mediaRecorder.removeEventListener("dataavailable", () => {});
         mediaRecorder.removeEventListener("stop", () => {});
       };
-    });
-  }, []);
+  }, [mediaRecorder]);
 
   useEffect(() => {
     if (audioBlob) {
@@ -107,7 +117,7 @@ export default function AudioNote(props) {
         onClick={playNewAudio}
         disabled={!audio}
       >
-        <FontAwesomeIcon icon={faPlay} title="Play Recording"/>
+        <FontAwesomeIcon icon={faPlay} title="Play Recording" />
       </button>
       <button
         type="button"

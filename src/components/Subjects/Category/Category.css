@@ -1,4 +1,6 @@
-
+.category-component {
+  background-color: lightgreen;
+}
 
 .category-nav {
   display: flex;
@@ -24,7 +26,7 @@
 
 /* =============== NOTES COMPONENT STYLING =============== */
 
-.notes-component{
+/* .notes-component{
   max-width: 100vw;
   overflow: hidden;
   background-color: #5eff69;
@@ -52,12 +54,12 @@
 
   padding: 1em;
   margin: 1em;
-}
+} */
 
 
 /* ==================== NOTe COMPONENT STYLING ==================== */
 
-.note-component {
+/* .note-component {
   width: 80%;
   min-width: 250px;
   max-width: 650px;
@@ -130,12 +132,12 @@ form .subnote {
 
 .note .edit-note {
   color: blue;
-}
+} */
 
 
 /* ================ NOTe FORM ================== */
 
-.note-form-component {
+/* .note-form-component {
   max-width: 100vw;
   background-color: lightgreen;
   padding: 1em;
@@ -144,13 +146,15 @@ form .subnote {
 .note-form-component form textarea{
   min-height: 50px;
   overflow:auto;
-}
+} */
 
 
 /* ============= AUDIO NOTe =========== */
 
-.audio-note {
-  padding: 1em;
+.audio-note-div  button{
+  padding-bottom: .5em;
+  background-color: inherit;
+  border-bottom: 2px solid grey;
 }
 
 /* ===================== IMAGE INPUT DIV ==================== */

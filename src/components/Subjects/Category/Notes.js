@@ -23,9 +23,19 @@ function Notes(props) {
   useEffect(() => {
     setDisplayNoteForm(false);
   }, [categoryNotes]);
+
+
+//         <button
+      //   className="create-button"
+      //   type="button"
+      //   onClick={() => setAutoPlay(!autoPlay)}
+      // >
+      //   {autoPlay ? "Stop AutoPlay" : "Auto Play Notes"}
+      // </button>
+
   return (
-    <div className="notes-component">
-      <div className="notes-component-buttons">
+    <div className="notes-component component">
+      <div className="">
         {checkForUsername() && (
           <button
             className="create-button"
@@ -35,17 +45,10 @@ function Notes(props) {
             {!displayNoteForm ? "Create Note" : "Hide Form"}
           </button>
         )}
-        <button
-          className="create-button"
-          type="button"
-          onClick={() => setAutoPlay(!autoPlay)}
-        >
-          {autoPlay ? "Stop AutoPlay" : "Auto Play Notes"}
-        </button>
       </div>
 
       {displayNoteForm && <NoteForm  />}
-      <div className="notes">
+      <div className="model">
         {categoryNotes.map((note, ind) => {
           return (
             <Note

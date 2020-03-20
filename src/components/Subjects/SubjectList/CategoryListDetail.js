@@ -29,9 +29,9 @@ export default function CategoryListDetail(props) {
     setDisplayUpdateForm(false);
   }, [category]);
   return (
-    <div className="category-ld-component">
-      <div className="category">
-        <div className="category-content">
+    <div className="category-ld-component component">
+      <div className="category model">
+        <div className="category-content content">
           {checkUsername() && (
             <div className="category-edit-buttons edit-buttons">
               <button

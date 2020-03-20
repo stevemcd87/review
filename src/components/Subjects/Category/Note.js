@@ -5,7 +5,7 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-
+import Loading from "../Loading"
 function Note(props) {
   let { note, active, nextAutoPlayIndex } = props,
     { API, Storage, user } = useContext(ApiContext),
@@ -13,17 +13,22 @@ function Note(props) {
     noteDiv = useRef(),
     [userIsCreator, setUserIsCreator] = useState(checkForUsername()),
     [imageSrc, setImageSrc] = useState(),
+    // [imageLoading, setImageLoading] = useState(
+    //   note && note.image ? true : false
+    // ),
     [displayForm, setDisplayForm] = useState(false),
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext);
 
   // for Note Image
   useEffect(() => {
     if (note.image) getImage();
+    // .then(() => setImageLoading(false))
   }, []);
 
   useEffect(() => {
     setDisplayForm(false);
     if (note.image) getImage();
+    // .then(() => setImageLoading(false))
   }, [categoryNotes]);
 
   useEffect(() => {
@@ -40,8 +45,8 @@ function Note(props) {
     }
   }, [active]);
 
-  function getImage() {
-    Storage.get(note.image)
+  async function getImage() {
+    return await Storage.get(note.image)
       .then(res => setImageSrc(res))
       .catch(err => console.log(err));
   }
@@ -77,54 +82,68 @@ function Note(props) {
   }
 
   return (
-    <div className="note-component" ref={noteDiv}>
-      {userIsCreator && (
-        <div className="request-buttons">
-          <button
-            className="edit-button "
-            onClick={() => setDisplayForm(!displayForm)}
-          >
-            <FontAwesomeIcon icon={faEdit} size="2x" title="Edit Note" />
-          </button>
-          <button
-            className="delete-button "
-            onClick={() =>
-              window.confirm("Are you sure you'd like to delete this note?")
-                ? deleteNote(note)
-                : false
-            }
-          >
-            <FontAwesomeIcon icon={faTrash} size="2x" title="Delete Note" />
-          </button>
-        </div>
-      )}
-      {displayForm && <NoteForm {...{ note }} />}
-      {!displayForm && (
-        <div className="note">
-          {note.audioNote && (
-            <div className="audio-note-siv">
-              <button onClick={() => playAudio()}>
-                <FontAwesomeIcon
-                  icon={faPlay}
-                  title="Play Audio Note"
-                  size="2x"
-                />
-              </button>
-            </div>
-          )}
-          {note.image && <img src={imageSrc} />}
-          {note.mainNote && <h5>{note.mainNote}</h5>}
-          <div className="subnotes">
-            {note.subnotes &&
-              note.subnotes.map((n, i) => (
-                <p className="subnote" key={n + i}>
-                  <span className="subnote-dash">-</span>
-                  {n}
-                </p>
-              ))}
+    <div className=" inner-component" ref={noteDiv}>
+      <div className="content">
+        {userIsCreator && (
+          <div className="edit-buttons">
+            <button
+              className="edit-button "
+              onClick={() => setDisplayForm(!displayForm)}
+            >
+              <FontAwesomeIcon
+                icon={faEdit}
+                size="2x"
+                title="Edit Note"
+                color="grey"
+              />
+            </button>
+            <button
+              className="delete-button "
+              onClick={() =>
+                window.confirm("Are you sure you'd like to delete this note?")
+                  ? deleteNote(note)
+                  : false
+              }
+            >
+              <FontAwesomeIcon
+                icon={faTrash}
+                size="2x"
+                title="Delete Note"
+                color="grey"
+              />
+            </button>
           </div>
-        </div>
-      )}
+        )}
+        {displayForm && <NoteForm {...{ note }} />}
+        {!displayForm && (
+          <div className="note">
+            {note.audioNote && (
+              <div className="audio-note-div">
+                <button onClick={() => playAudio()}>
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    title="Play Audio Note"
+                    size="2x"
+                    color="grey"
+                  />
+                </button>
+              </div>
+            )}
+
+            {note.image &&<img src={imageSrc} />}
+            {note.mainNote && <h5>{note.mainNote}</h5>}
+            <div className="subnotes">
+              {note.subnotes &&
+                note.subnotes.map((n, i) => (
+                  <p className="subnote" key={n + i}>
+                    <span className="subnote-dash">-</span>
+                    {n}
+                  </p>
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 

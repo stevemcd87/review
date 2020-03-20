@@ -7,16 +7,18 @@ import CategoryListDetail from "./CategoryListDetail";
 // import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Loading from "../Loading";
 
 function SubjectDetail() {
   let { subjectName, username } = useParams(),
     { API, user, Auth } = useContext(ApiContext),
     [subject, setSubject] = useState({}),
+    [isLoading, setIsLoading] = useState(true),
     [categories, setCategories] = useState([]),
     [displayCategoryForm, setDisplayCategoryForm] = useState(false);
   // { subject } = useContext(SubjectContext);
   useEffect(() => {
-    getSubject();
+    getSubject().then(()=>setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -24,12 +26,12 @@ function SubjectDetail() {
     setDisplayCategoryForm(false);
   }, [subject]);
 
-
   return (
     <div className="subject-detail-component">
       <button className="back-button">
         <Link to={`/`}>Back</Link>
       </button>
+      {isLoading && <Loading />}
 
       <div className="subject-detail">
         <h2>{subject.navName}</h2>
@@ -63,10 +65,9 @@ function SubjectDetail() {
     return user && user.username === subject.username ? true : false;
   }
 
-
-  function getSubject() {
+  async function getSubject() {
     console.log("GET subject");
-    API.get("StuddieBuddie", `/subjects/${subjectName}`, {
+    return await API.get("StuddieBuddie", `/subjects/${subjectName}`, {
       queryStringParameters: {
         username: username
       }
