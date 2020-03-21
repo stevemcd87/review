@@ -6,7 +6,7 @@ import ApiContext from "./contexts/ApiContext";
 import Amplify, { Auth, API, Storage } from "aws-amplify";
 import { Authenticator } from "aws-amplify-react";
 Amplify.configure(AmpConfig);
-// Storage.configure({ level: "public" });
+Storage.configure({ level: "public" });
 function App() {
   let [user, setUser] = useState(Auth.user),
     [authState, setAuthState] = useState(),

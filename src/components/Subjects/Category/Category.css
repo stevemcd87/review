@@ -151,11 +151,13 @@ form .subnote {
 
 /* ============= AUDIO NOTe =========== */
 
+.audio-note-component  button,
 .audio-note-div  button{
   padding-bottom: .5em;
   background-color: inherit;
   border-bottom: 2px solid grey;
 }
+
 
 /* ===================== IMAGE INPUT DIV ==================== */
 

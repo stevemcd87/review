@@ -85,8 +85,8 @@ function NoteForm(props) {
           placeholder="Title of Note or Note"
         />
         <div className="sub-note-array" ref={noteArray}>
-          {subnotes.map((sn,ind) => (
-            <Subnote subnote={sn} {...{removeSubnote, ind}} />
+          {subnotes.map((sn, ind) => (
+            <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
           ))}
         </div>
         <button type="button" onClick={addSubnote}>
@@ -141,7 +141,7 @@ function NoteForm(props) {
         if (audioBlob && audioNoteUpdated) {
           Storage.put(response.audioNote, audioBlob)
             .then(res => {
-                if (!imageFile && !imageUpdated) getCategoryNotes();
+              if (!imageFile && !imageUpdated) getCategoryNotes();
             })
             .catch(err => {
               console.log("err");
@@ -231,10 +231,13 @@ function Subnote(props) {
         placeholder="Subnote"
         defaultValue={subnote ? subnote : ""}
       />
-    <button type="button" onClick={()=> removeSubnote(ind)} >
-      <FontAwesomeIcon icon={faTrash} />
-    </button>
-
+      <button
+        type="button"
+        className="subnote-button"
+        onClick={() => removeSubnote(ind)}
+      >
+        <FontAwesomeIcon icon={faTrash} color="grey" />
+      </button>
     </div>
   );
 }

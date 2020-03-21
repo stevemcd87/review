@@ -51,6 +51,7 @@ function SubjectDetail() {
         {categories.map(c => {
           return (
             <CategoryListDetail
+              key={c.pathName}
               category={c}
               getSubject={getSubject}
               subject={subject}

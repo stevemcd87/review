@@ -18,7 +18,7 @@ const AmpConfig = {
   },
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-    identityPoolId: "us-east-1:6e21c95c-0817-4827-a55e-a0ebad9a30c9",
+    identityPoolId: "us-east-1:0e4605ba-610f-47c0-b65b-bb364df3e48e",
 
     // REQUIRED - Amazon Cognito Region
     region: "us-east-1",
@@ -28,10 +28,10 @@ const AmpConfig = {
     // identityPoolRegion: "XX-XXXX-X",
 
     // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolId: "us-east-1_uK1nE4t0l",
+    userPoolId: "us-east-1_vJBGrpPU4",
 
     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-    userPoolWebClientId: "405eco6q72e6p9897kcjqpnk70",
+    userPoolWebClientId: "4lrud373702phmf1j8fj8d46k7",
 
     // // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
     mandatorySignIn: false

@@ -45,8 +45,8 @@ function Note(props) {
     }
   }, [active]);
 
-  async function getImage() {
-    return await Storage.get(note.image)
+  function getImage() {
+     Storage.get(note.image)
       .then(res => setImageSrc(res))
       .catch(err => console.log(err));
   }

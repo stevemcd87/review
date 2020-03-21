@@ -98,7 +98,11 @@ export default function AudioNote(props) {
             : false;
         }}
       >
-        <FontAwesomeIcon icon={faRecordVinyl} title="Start Recording" />
+        <FontAwesomeIcon
+          icon={faRecordVinyl}
+          title="Start Recording"
+          size="2x"
+        />
       </button>
       <button
         type="button"
@@ -108,7 +112,7 @@ export default function AudioNote(props) {
           setRecording(false);
         }}
       >
-        <FontAwesomeIcon icon={faStop} title="Stop Recording" />
+        <FontAwesomeIcon icon={faStop} title="Stop Recording" size="2x" />
       </button>
 
       <button
@@ -117,7 +121,7 @@ export default function AudioNote(props) {
         onClick={playNewAudio}
         disabled={!audio}
       >
-        <FontAwesomeIcon icon={faPlay} title="Play Recording" />
+        <FontAwesomeIcon icon={faPlay} title="Play Recording" size="2x" />
       </button>
       <button
         type="button"
@@ -125,7 +129,7 @@ export default function AudioNote(props) {
         onClick={() => setAudioBlob(null)}
         disabled={!audio}
       >
-        <FontAwesomeIcon icon={faTrash} title="Delete Recording" />
+        <FontAwesomeIcon icon={faTrash} title="Delete Recording" size="2x" />
       </button>
     </div>
   );
