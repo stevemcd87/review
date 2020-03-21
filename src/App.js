@@ -44,7 +44,9 @@ function App() {
     let hd =
       authState === "signedIn" ||
       authState === "signUp" ||
-      authState === "confirmSignUp"
+      authState === "confirmSignUp" ||
+      authState === "signedUp" ||
+      authState === "signIn" 
         ? false
         : true;
     setHideDefault(hd);
