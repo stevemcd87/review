@@ -9,7 +9,7 @@ import "./Subjects.css";
 export default function CategoryListDetail(props) {
   let { category, subject, getSubject } = props,
     { API, user, Auth } = useContext(ApiContext),
-    { getSubjects } = useContext(SubjectContext),
+    // { getSubjects } = useContext(SubjectContext),
     { subjectName, username } = useParams(),
     [displayUpdateForm, setDisplayUpdateForm] = useState(false);
   useEffect(() => {
@@ -45,7 +45,14 @@ export default function CategoryListDetail(props) {
                   title="Edit Subject"
                 />
               </button>
-              <button type="button" onClick={deleteCategory}>
+              <button
+                type="button"
+                onClick={() =>
+                  window.confirm("Are you sure you'd like to delete?")
+                    ? deleteCategory()
+                    : false
+                }
+              >
                 <FontAwesomeIcon
                   icon={faTrash}
                   size="2x"
@@ -74,8 +81,7 @@ export default function CategoryListDetail(props) {
   );
 
   function checkUsername() {
-    return true;
-    // return user && user.username === category.username ? true : false;
+    return user && user.username === category.username ? true : false;
   }
 
   async function deleteCategory() {

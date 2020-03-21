@@ -9,7 +9,8 @@ function SubjectForm(props) {
     nameValue = subject ? subject.navName : "",
     descValue = subject ? subject.subjectDesc : "",
     [name, setName] = useState(nameValue),
-    [desc, setDesc] = useState(descValue);
+    [desc, setDesc] = useState(descValue),
+    [submitting, setSubmitting] = useState(false);
   useEffect(() => {
     if (user) {
       Auth.currentSession().then(v => {
@@ -22,7 +23,6 @@ function SubjectForm(props) {
   // <h3>Create Subject to Study</h3>
   return (
     <div className="subject-form-component form-component">
-
       <form className="subject-form">
         <label>
           <span>Subject's Name</span>
@@ -46,13 +46,29 @@ function SubjectForm(props) {
             placeholder="Brief Description"
           />
         </label>
-        <button type="button" onClick={!subject ? submitForm : updateForm}>
-          Submit
+        <button
+          type="button"
+          disabled={submitting}
+          onClick={!subject ? submitForm : updateForm}
+        >
+          {!submitting ? "submit" : "submitting"}
         </button>
       </form>
     </div>
   );
+  function startWithLetter(str) {
+    return str
+      .trim()
+      .toLowerCase()
+      .match(/^[a-z]/)
+      ? true
+      : false;
+  }
   async function submitForm() {
+    if (!startWithLetter(name) || !startWithLetter(desc))
+      return alert("Name and Description must begin with a letter");
+    setSubmitting(true);
+
     return await API.post("StuddieBuddie", "/subjects", {
       body: JSON.stringify({
         subjectName: name.trim(),
@@ -68,7 +84,8 @@ function SubjectForm(props) {
     })
       .then(response => {
         console.log(response);
-        getSubjects();
+
+        getSubjects().then(() => setSubmitting(false));
       })
       .catch(error => {
         console.log(error);
@@ -77,6 +94,9 @@ function SubjectForm(props) {
   }
 
   function updateForm() {
+    if (!startWithLetter(name) || !startWithLetter(desc))
+      return alert("Name and Description must begin with a letter");
+    setSubmitting(true);
     API.put("StuddieBuddie", "/subjects", {
       body: JSON.stringify({
         username: user.username,
@@ -86,7 +106,7 @@ function SubjectForm(props) {
     })
       .then(response => {
         console.log(response);
-        getSubjects();
+        getSubjects().then(() => setSubmitting(false));
       })
       .catch(error => {
         console.log(error.response);

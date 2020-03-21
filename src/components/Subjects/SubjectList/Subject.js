@@ -35,7 +35,14 @@ function Subject(props) {
                 title="Edit Subject"
               />
             </button>
-            <button type="button" onClick={deleteSubject}>
+            <button
+              type="button"
+              onClick={() =>
+                window.confirm("Are you sure you'd like to delete?")
+                  ? deleteSubject()
+                  : false
+              }
+            >
               <FontAwesomeIcon
                 icon={faTrash}
                 size="2x"
@@ -57,7 +64,6 @@ function Subject(props) {
         )}
         {displayUpdateForm && <SubjectForm {...{ subject }} />}
       </div>
-
     </div>
   );
 

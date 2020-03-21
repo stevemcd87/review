@@ -9,7 +9,8 @@ export default function CategoryForm(props) {
     nameValue = category ? category.name : "",
     descValue = category ? category.desc : "",
     [categoryName, setCategoryName] = useState(nameValue),
-    [categoryDesc, setCategoryDesc] = useState(descValue);
+    [categoryDesc, setCategoryDesc] = useState(descValue),
+    [submitting, setSubmitting] = useState(false);
   return (
     <div className="category-form-component form-component">
       <form className="category-form ">
@@ -34,15 +35,27 @@ export default function CategoryForm(props) {
       </label>
 
         <button
+          disabled={submitting}
           type="button"
           onClick={() => (!category ? postCategory() : updateCategory())}
         >
-          {!category ? "Create" : "Update"}
+          {!submitting ? "submit" : "submitting"}
         </button>
       </form>
     </div>
   );
+  function startWithLetter(str) {
+    return str
+      .trim()
+      .toLowerCase()
+      .match(/^[a-z]/)
+      ? true
+      : false;
+  }
   async function postCategory() {
+    if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
+      return alert("Name and Description must begin with a letter");
+    setSubmitting(true);
     return await API.post("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
         categoryName: categoryName.trim(),
@@ -59,7 +72,7 @@ export default function CategoryForm(props) {
       .then(response => {
         console.log("response postCategory");
         console.log(response);
-        getSubject();
+        getSubject().then(()=>setSubmitting(false));
       })
       .catch(error => {
         console.log("err postCategory");
@@ -68,6 +81,9 @@ export default function CategoryForm(props) {
   }
 
   async function updateCategory(c) {
+    if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
+      return alert("Name and Description must begin with a letter");
+    setSubmitting(true);
     console.log("updateCategory");
     return API.put("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
@@ -84,7 +100,8 @@ export default function CategoryForm(props) {
       .then(response => {
         console.log("response");
         console.log(response);
-        getSubject();
+
+        getSubject().then(()=>setSubmitting(false));
       })
       .catch(error => {
         console.error(error.response);

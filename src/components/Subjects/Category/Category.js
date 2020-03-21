@@ -7,7 +7,7 @@ import "./Category.css";
 import Loading from "../Loading"
 
 import {
-  BrowserRouter as Router,
+  // BrowserRouter as Router,
   Switch,
   Route,
   Link,
@@ -16,12 +16,12 @@ import {
 } from "react-router-dom";
 
 export default function Category() {
-  let { path, url } = useRouteMatch(),
+  let { path } = useRouteMatch(),
     { username, subjectName, categoryName } = useParams(),
     [categoryNotes, setCategoryNotes] = useState([]),
     [categoryQuestions, setCategoryQuestions] = useState([]),
     [isLoading, setIsLoading] = useState(true),
-    { API, user } = useContext(ApiContext);
+    { API } = useContext(ApiContext);
   useEffect(() => {
     getCategoryNotes().then(()=>setIsLoading(false));
     // getCategoryQuestions();

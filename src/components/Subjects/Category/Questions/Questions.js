@@ -11,7 +11,7 @@ export default function Questions(props) {
   let [answeredCorrectly, setAnsweredCorrectly] = useState(0),
     [questionIndex, setQuestionIndex] = useState(0),
     [displayForm, setDisplayForm] = useState(false),
-    { categoryQuestions, getCategoryQuestions } = useContext(CategoryContext);
+    { categoryQuestions } = useContext(CategoryContext);
 
   useEffect(() => {
     console.log(categoryQuestions);

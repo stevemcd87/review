@@ -99,9 +99,9 @@ function NoteForm(props) {
     </div>
   );
 
-  function checkForUsername() {
-    return user && user.username === username ? true : false;
-  }
+  // function checkForUsername() {
+  //   return user && user.username === username ? true : false;
+  // }
 
   function prepNote() {
     console.log("prepNote");

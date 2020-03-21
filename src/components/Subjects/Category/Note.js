@@ -52,6 +52,8 @@ function Note(props) {
   }
 
   function playAudio() {
+    console.log(user);
+    // if (!user) return alert("Must sign in to listen to audio notes")
     if (note && note.audioNote) {
       Storage.get(`${note.audioNote}`)
         .then(res => {

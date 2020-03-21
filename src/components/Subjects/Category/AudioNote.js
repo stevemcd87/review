@@ -11,10 +11,10 @@ export default function AudioNote(props) {
   let { audioBlob, setAudioBlob, setAudioNoteUpdated, note } = props,
     [mediaRecorder, setMediaRecorder] = useState(),
     // [audioBlob, setAudioBlob] = useState(),
-    [audioNote, setAudioNote] = useState(),
+    // [audioNote, setAudioNote] = useState(),
     [audio, setAudio] = useState(),
     [recording, setRecording] = useState(false),
-    { Storage } = useContext(ApiContext);
+    { Storage, user } = useContext(ApiContext);
 
   // useEffect(() => {
   //   console.log(imageSrc);
@@ -39,9 +39,11 @@ export default function AudioNote(props) {
       setMediaRecorder(mr);
     });
     return () => {
-      s.getTracks().forEach(function(track) {
-        track.stop();
-      });
+      if (s) {
+        s.getTracks().forEach(function(track) {
+          track.stop();
+        });
+      }
     };
   }, []);
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function AudioNote(props) {
   }, [audioBlob]);
 
   useEffect(() => {
-    if (recording) {
+    if (recording && mediaRecorder) {
       mediaRecorder.start();
       let audioChunks = [];
       mediaRecorder.addEventListener("dataavailable", event => {
@@ -135,7 +137,8 @@ export default function AudioNote(props) {
   );
 
   function playAudio(s3Key) {
-    // audio.play();
+    console.log(user);
+    // if (!user) alert("Must sign in to listen to audio notes")
     console.log(s3Key);
     Storage.get(s3Key.replace("public/", ""))
       .then(res => {
@@ -150,8 +153,11 @@ export default function AudioNote(props) {
   }
 
   function startRecord() {
-    setRecording(true);
-    setAudioNoteUpdated(true);
+    if (!mediaRecorder) return alert("No Acces to microphone");
+    if (mediaRecorder) {
+      setRecording(true);
+      setAudioNoteUpdated(true);
+    }
   }
 
   function playNewAudio() {
