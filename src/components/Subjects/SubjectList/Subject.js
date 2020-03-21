@@ -5,16 +5,22 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
 import SubjectForm from "./SubjectForm";
+import useCreator from "../customHooks/useCreator";
 import "./Subjects.css";
 function Subject(props) {
   let { API, user, Auth } = useContext(ApiContext),
     { subject, getSubjects } = useContext(SubjectContext),
-    [displayUpdateForm, setDisplayUpdateForm] = useState(false);
+    [displayUpdateForm, setDisplayUpdateForm] = useState(false),
+    isCreator = useCreator(user, subject.username);
   // [displayDesc, setDisplayDesc] = useState(false);
 
   useEffect(() => {
     setDisplayUpdateForm(false);
   }, [subject]);
+
+  // useEffect(() => {
+  //   checkUsername()
+  // }, [user]);
   // <button type="button" onClick={() => setDisplayDesc(!displayDesc)}>
   //   {!displayDesc && <FontAwesomeIcon icon={faArrowDown} />}
   //   {displayDesc && <FontAwesomeIcon icon={faArrowUp} />}
@@ -22,7 +28,7 @@ function Subject(props) {
   return (
     <div className="subject-component">
       <div className="subject">
-        {checkUsername() && (
+        {isCreator && (
           <div className="subject-edit-buttons edit-buttons">
             <button
               type="button"
@@ -62,14 +68,14 @@ function Subject(props) {
             <h4>{subject.subjectDesc}</h4>
           </>
         )}
-        {displayUpdateForm && <SubjectForm {...{ subject }} />}
+        {isCreator && displayUpdateForm && <SubjectForm {...{ subject }} />}
       </div>
     </div>
   );
 
-  function checkUsername() {
-    return user && user.username === subject.username ? true : false;
-  }
+  // function checkUsername() {
+  //   return user && user.username === subject.username ? true : false;
+  // }
 
   async function deleteSubject() {
     // TODO: delete all items for subject

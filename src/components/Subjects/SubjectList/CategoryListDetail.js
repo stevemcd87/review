@@ -6,11 +6,13 @@ import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
 import CategoryForm from "./CategoryForm";
 import "./Subjects.css";
+import useCreator from "../customHooks/useCreator";
 export default function CategoryListDetail(props) {
   let { category, subject, getSubject } = props,
     { API, user, Auth } = useContext(ApiContext),
     // { getSubjects } = useContext(SubjectContext),
     { subjectName, username } = useParams(),
+    isCreator = useCreator(user, username),
     [displayUpdateForm, setDisplayUpdateForm] = useState(false);
   useEffect(() => {
     // console.log(subject);
@@ -32,7 +34,7 @@ export default function CategoryListDetail(props) {
     <div className="category-ld-component component">
       <div className="category model">
         <div className="category-content content">
-          {checkUsername() && (
+          {isCreator && (
             <div className="category-edit-buttons edit-buttons">
               <button
                 type="button"
@@ -74,15 +76,17 @@ export default function CategoryListDetail(props) {
               <h4>{category.desc}</h4>
             </>
           )}
-          {displayUpdateForm && <CategoryForm {...{ category, getSubject }} />}
+          {isCreator && displayUpdateForm && (
+            <CategoryForm {...{ category, getSubject }} />
+          )}
         </div>
       </div>
     </div>
   );
 
-  function checkUsername() {
-    return user && user.username === category.username ? true : false;
-  }
+  // function checkUsername() {
+  //   return user && user.username === category.username ? true : false;
+  // }
 
   async function deleteCategory() {
     console.log("deleteCategory");

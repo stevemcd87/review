@@ -33,8 +33,8 @@ form.category-form label {
 .subjects-component > .subject-form-component > .subject-form,
 div.category,
 .subject-detail-component > .category-form-component > .category-form,
-.inner-component
- {
+.inner-component,
+.component > .form-component {
   background-image: url("/images/cb.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -48,7 +48,7 @@ div.category,
   align-items: center;
   font-size: 1em;
   letter-spacing: 3px;
-  width: 100%;
+  width: 100%;margin-bottom: 1em;
 }
 
 /* For creating new subject */
@@ -133,16 +133,13 @@ div.category,
 
 .subnote-button {
   background-color: inherit;
-  padding-bottom: .5em;
+  padding-bottom: 0.5em;
   border-bottom: grey 1px solid;
   position: absolute;
-  top:-5px;;
+  top: -5px;
   right: -20px;
   cursor: pointer;
-
 }
-
-
 
 /* .subject-form-component form textarea:first-child,
 .category-form-component form textarea:first-child {

@@ -5,19 +5,21 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-import Loading from "../Loading"
+import Loading from "../Loading";
+import useCreator from "../customHooks/useCreator";
 function Note(props) {
   let { note, active, nextAutoPlayIndex } = props,
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
     noteDiv = useRef(),
-    [userIsCreator, setUserIsCreator] = useState(checkForUsername()),
+    // [userIsCreator, setUserIsCreator] = useState(checkForUsername()),
     [imageSrc, setImageSrc] = useState(),
     // [imageLoading, setImageLoading] = useState(
     //   note && note.image ? true : false
     // ),
     [displayForm, setDisplayForm] = useState(false),
-    { categoryNotes, getCategoryNotes } = useContext(CategoryContext);
+    { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
+    isCreator = useCreator(user, username);
 
   // for Note Image
   useEffect(() => {
@@ -31,9 +33,9 @@ function Note(props) {
     // .then(() => setImageLoading(false))
   }, [categoryNotes]);
 
-  useEffect(() => {
-    setUserIsCreator(checkForUsername());
-  }, [user]);
+  // useEffect(() => {
+  //   setUserIsCreator(checkForUsername());
+  // }, [user]);
 
   // for active prop
   useEffect(() => {
@@ -46,7 +48,7 @@ function Note(props) {
   }, [active]);
 
   function getImage() {
-     Storage.get(note.image)
+    Storage.get(note.image)
       .then(res => setImageSrc(res))
       .catch(err => console.log(err));
   }
@@ -86,7 +88,7 @@ function Note(props) {
   return (
     <div className=" inner-component" ref={noteDiv}>
       <div className="content">
-        {userIsCreator && (
+        {isCreator && (
           <div className="edit-buttons">
             <button
               className="edit-button "
@@ -116,7 +118,7 @@ function Note(props) {
             </button>
           </div>
         )}
-        {displayForm && <NoteForm {...{ note }} />}
+        {isCreator && displayForm && <NoteForm {...{ note }} />}
         {!displayForm && (
           <div className="note">
             {note.audioNote && (
@@ -132,7 +134,7 @@ function Note(props) {
               </div>
             )}
 
-            {note.image &&<img src={imageSrc} />}
+            {note.image && <img src={imageSrc} />}
             {note.mainNote && <h5>{note.mainNote}</h5>}
             <div className="subnotes">
               {note.subnotes &&
@@ -149,9 +151,9 @@ function Note(props) {
     </div>
   );
 
-  function checkForUsername() {
-    return user && user.username === username ? true : false;
-  }
+  // function checkForUsername() {
+  //   return user && user.username === username ? true : false;
+  // }
 
   function deleteNote(n) {
     console.log("deleteNote");

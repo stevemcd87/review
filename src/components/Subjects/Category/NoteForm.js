@@ -16,6 +16,7 @@ function NoteForm(props) {
     [audioBlob, setAudioBlob] = useState(),
     [audioNoteUpdated, setAudioNoteUpdated] = useState(false),
     [subnotes, setSubnotes] = useState([]),
+    [submitting, setSubmitting] = useState(false),
     noteArray = useRef(null),
     { getCategoryNotes } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
@@ -65,7 +66,7 @@ function NoteForm(props) {
   }
 
   return (
-    <div className="note-form-component">
+    <div className="note-form-component form-component">
       <form className="note">
         <AudioNote
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
@@ -92,8 +93,8 @@ function NoteForm(props) {
         <button type="button" onClick={addSubnote}>
           Add Subnote
         </button>
-        <button type="button" onClick={prepNote}>
-          {!note ? "Post Note" : "Update Note"}
+        <button type="button" onClick={prepNote} disabled={submitting} >
+          {!submitting ? "Submit" : "Submitting"}
         </button>
       </form>
     </div>
@@ -104,6 +105,7 @@ function NoteForm(props) {
   // }
 
   function prepNote() {
+    setSubmitting(true);
     console.log("prepNote");
     let noteValues = {
       username: user.username,
@@ -141,7 +143,7 @@ function NoteForm(props) {
         if (audioBlob && audioNoteUpdated) {
           Storage.put(response.audioNote, audioBlob)
             .then(res => {
-              if (!imageFile && !imageUpdated) getCategoryNotes();
+              if (!imageFile && !imageUpdated) getCategoryNotes().then(()=>setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -151,7 +153,7 @@ function NoteForm(props) {
         if (imageFile && imageUpdated) {
           Storage.put(response.image, imageFile)
             .then(res => {
-              getCategoryNotes();
+              getCategoryNotes().then(()=>setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -159,7 +161,7 @@ function NoteForm(props) {
             });
         }
         if (!imageFile && !audioBlob) {
-          getCategoryNotes();
+          getCategoryNotes().then(()=>setSubmitting(false));
         }
       })
       .catch(error => {
@@ -178,7 +180,7 @@ function NoteForm(props) {
           Storage.put(response.audioNote, audioBlob)
             .then(res => {
               // setTimeout(function() {
-              if (!imageFile) getCategoryNotes();
+              if (!imageFile) getCategoryNotes().then(()=>setSubmitting(false));
               // }, 1500);
             })
             .catch(err => {
@@ -190,7 +192,7 @@ function NoteForm(props) {
         if (imageFile) {
           Storage.put(response.image, imageFile)
             .then(res => {
-              getCategoryNotes();
+              getCategoryNotes().then(()=>setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -199,7 +201,7 @@ function NoteForm(props) {
         }
 
         if (!imageFile && !audioBlob) {
-          getCategoryNotes();
+          getCategoryNotes().then(()=>setSubmitting(false));
           setDisplayForm(false);
         }
       })

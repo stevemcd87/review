@@ -89,17 +89,7 @@ export default function AudioNote(props) {
           </button>
         </div>
       )}
-      <button
-        type="button"
-        disabled={recording}
-        onClick={() => {
-          return window.confirm(
-            "Recording will override your previous Audio Note, Are you sure you'd like to record?"
-          )
-            ? startRecord()
-            : false;
-        }}
-      >
+      <button type="button" disabled={recording} onClick={startRecord}>
         <FontAwesomeIcon
           icon={faRecordVinyl}
           title="Start Recording"
@@ -153,8 +143,14 @@ export default function AudioNote(props) {
   }
 
   function startRecord() {
-    if (!mediaRecorder) return alert("No Acces to microphone");
-    if (mediaRecorder) {
+    if (!mediaRecorder) return alert("No Access to microphone");
+    let confirmed = true;
+    if (note && note.audioNote) {
+      confirmed = window.confirm(
+        "Recording will override your previous Audio Note, would you like to continue?"
+      );
+    }
+    if (confirmed && mediaRecorder) {
       setRecording(true);
       setAudioNoteUpdated(true);
     }

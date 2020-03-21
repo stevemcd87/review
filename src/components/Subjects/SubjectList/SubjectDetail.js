@@ -8,6 +8,7 @@ import CategoryListDetail from "./CategoryListDetail";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
+import useCreator from "../customHooks/useCreator";
 
 function SubjectDetail() {
   let { subjectName, username } = useParams(),
@@ -15,16 +16,21 @@ function SubjectDetail() {
     [subject, setSubject] = useState({}),
     [isLoading, setIsLoading] = useState(true),
     [categories, setCategories] = useState([]),
+    isCreator = useCreator(user, username),
     [displayCategoryForm, setDisplayCategoryForm] = useState(false);
   // { subject } = useContext(SubjectContext);
   useEffect(() => {
-    getSubject().then(()=>setIsLoading(false));
+    getSubject().then(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
     console.log(subject);
     setDisplayCategoryForm(false);
   }, [subject]);
+
+  // useEffect(() => {
+  //   checkUsername();
+  // }, [user]);
 
   return (
     <div className="subject-detail-component">
@@ -37,16 +43,18 @@ function SubjectDetail() {
         <h2>{subject.navName}</h2>
         <h3>{subject.subjectDesc}</h3>
       </div>
-      {checkUsername() && (
-        <button
-          className="create-button"
-          type="button"
-          onClick={() => setDisplayCategoryForm(!displayCategoryForm)}
-        >
-          {!displayCategoryForm ? "Create Category" : "Hide Form"}
-        </button>
+      {isCreator && (
+        <>
+          <button
+            className="create-button"
+            type="button"
+            onClick={() => setDisplayCategoryForm(!displayCategoryForm)}
+          >
+            {!displayCategoryForm ? "Create Category" : "Hide Form"}
+          </button>
+          {displayCategoryForm && <CategoryForm {...{ subject, getSubject }} />}
+        </>
       )}
-      {displayCategoryForm && <CategoryForm {...{ subject, getSubject }} />}
       <div className="categories">
         {categories.map(c => {
           return (
@@ -62,9 +70,9 @@ function SubjectDetail() {
     </div>
   );
 
-  function checkUsername() {
-    return user && user.username === subject.username ? true : false;
-  }
+  // function checkUsername() {
+  //   setIsCreator(user && user.username === subject.username ? true : false);
+  // }
 
   async function getSubject() {
     console.log("GET subject");

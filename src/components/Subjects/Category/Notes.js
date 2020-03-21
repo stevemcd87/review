@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import useCreator from "../customHooks/useCreator";
 
 function Notes(props) {
   let { username } = useParams(),
@@ -13,7 +14,8 @@ function Notes(props) {
     [autoPlayIndex, setAutoPlayIndex] = useState(),
     [displayNoteForm, setDisplayNoteForm] = useState(false),
     { categoryNotes } = useContext(CategoryContext),
-    { user } = useContext(ApiContext);
+    { user } = useContext(ApiContext),
+    isCreator = useCreator(user, username);
 
   useEffect(() => {
     setAutoPlayIndex(autoPlay ? 0 : null);
@@ -24,30 +26,27 @@ function Notes(props) {
     setDisplayNoteForm(false);
   }, [categoryNotes]);
 
-
-//         <button
-      //   className="create-button"
-      //   type="button"
-      //   onClick={() => setAutoPlay(!autoPlay)}
-      // >
-      //   {autoPlay ? "Stop AutoPlay" : "Auto Play Notes"}
-      // </button>
+  //         <button
+  //   className="create-button"
+  //   type="button"
+  //   onClick={() => setAutoPlay(!autoPlay)}
+  // >
+  //   {autoPlay ? "Stop AutoPlay" : "Auto Play Notes"}
+  // </button>
 
   return (
     <div className="notes-component component">
-      <div className="">
-        {checkForUsername() && (
-          <button
-            className="create-button"
-            type="button"
-            onClick={() => setDisplayNoteForm(!displayNoteForm)}
-          >
-            {!displayNoteForm ? "Create Note" : "Hide Form"}
-          </button>
+        {isCreator && (
+            <button
+              className="create-button"
+              type="button"
+              onClick={() => setDisplayNoteForm(!displayNoteForm)}
+            >
+              {!displayNoteForm ? "Create Note" : "Hide Form"}
+            </button>
         )}
-      </div>
+      {isCreator && displayNoteForm && <NoteForm />}
 
-      {displayNoteForm && <NoteForm  />}
       <div className="model">
         {categoryNotes.map((note, ind) => {
           return (
@@ -63,9 +62,9 @@ function Notes(props) {
     </div>
   );
 
-  function checkForUsername() {
-    return user && user.username === username ? true : false;
-  }
+  // function checkForUsername() {
+  //   return user && user.username === username ? true : false;
+  // }
 
   function nextAutoPlayIndex() {
     console.log("nextautoPlay");
