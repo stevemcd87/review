@@ -3,6 +3,7 @@
 An app to review notes on topics users create.
 
 Amazon Web Services used:
+  - [Amplify](https://aws.amazon.com/amplify/)
   - [Cognito](https://aws.amazon.com/cognito/) for user Authentication
   - [API Gateway](https://aws.amazon.com/api-gateway/) (REST)
   - [DynamoDB](https://aws.amazon.com/dynamodb/) (NoSql database)
