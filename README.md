@@ -1,4 +1,18 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Deployed [here](https://fordalo.com)
+
+An app to review notes on topics users create.
+
+Amazon Web Services used:
+  - [Cognito](https://aws.amazon.com/cognito/) for user Authentication
+  - [API Gateway](https://aws.amazon.com/api-gateway/) (REST)
+  - [DynamoDB](https://aws.amazon.com/dynamodb/) (NoSql database)
+  - [Lambda](https://aws.amazon.com/lambda/)
+  - [S3](https://aws.amazon.com/s3/) buckets to store images, audio notes, etc...
+
+Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
+
 
 ## Available Scripts
 
