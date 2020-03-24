@@ -6,7 +6,6 @@ import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
 import SubjectForm from "./SubjectForm";
 import useCreator from "../customHooks/useCreator";
-import "./Subjects.css";
 function Subject(props) {
   let { API, user, Auth } = useContext(ApiContext),
     { subject, getSubjects } = useContext(SubjectContext),

@@ -3,22 +3,18 @@ import SubjectForm from "./SubjectForm";
 import Subject from "./Subject";
 import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
-import Loading from "../Loading"
+import Loading from "../Loading";
 function Subjects(props) {
   let { API, user } = useContext(ApiContext),
     [subjects, setSubjects] = useState([]),
     [isLoading, setIsLoading] = useState(true),
     [showForm, setShowForm] = useState(false);
 
-  console.log(props);
-
   useEffect(() => {
     getSubjects().then(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
-    console.log("isLoading");
-    console.log(isLoading);
   }, [isLoading]);
 
   useEffect(() => {
@@ -26,7 +22,6 @@ function Subjects(props) {
   }, [subjects]);
   return (
     <div className="subjects-component">
-
       {user && (
         <button
           type="button"
@@ -59,23 +54,14 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
-    console.log("GET subjects");
     return await API.get("StuddieBuddie", "/subjects", { response: true })
       .then(response => {
-        console.log("res");
-        console.log(response);
         setSubjects(response.data);
       })
       .catch(error => {
         alert("Unable to get Subjects");
-        console.log("er");
-        console.log(error);
       });
   }
-} // end of component
-
-// function useLoadingStatus(prom){
-//   [isLoading, setIsLoading] = useState(true),
-// }
+}
 
 export default Subjects;

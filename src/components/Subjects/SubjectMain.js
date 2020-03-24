@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
-import Subjects from "./SubjectList/Subjects";
-import SubjectDetail from "./SubjectList/SubjectDetail";
+import React from "react";
+import Subjects from "./Subjects/Subjects";
+import SubjectDetail from "./SubjectDetail/SubjectDetail";
 import Category from "./Category/Category";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import "./SubjectMain.css";
 function SubjectMain() {
-  useEffect(() => {
-    console.log("subjectMain");
-  }, []);
   return (
     <Router>
       <div>

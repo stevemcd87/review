@@ -38,23 +38,17 @@ function App() {
     };
 
   useEffect(() => {
-    console.log("authstate");
-    console.log(authState);
     setUser(Auth.user);
     let hd =
       authState === "signedIn" ||
       authState === "signUp" ||
       authState === "confirmSignUp" ||
       authState === "signedUp" ||
-      authState === "signIn" 
+      authState === "signIn"
         ? false
         : true;
     setHideDefault(hd);
   }, [authState]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <div className="App">

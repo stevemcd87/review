@@ -5,7 +5,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import ApiContext from "../../../contexts/ApiContext";
 import SubjectContext from "../../../contexts/SubjectContext";
 import CategoryForm from "./CategoryForm";
-import "./Subjects.css";
+// import "./Subjects.css";
 import useCreator from "../customHooks/useCreator";
 export default function CategoryListDetail(props) {
   let { category, subject, getSubject } = props,
@@ -26,10 +26,9 @@ export default function CategoryListDetail(props) {
   // urlName: urlName
 
   useEffect(() => {
-    console.log("category");
-    console.log(category);
     setDisplayUpdateForm(false);
   }, [category]);
+
   return (
     <div className="category-ld-component component">
       <div className="category model">
