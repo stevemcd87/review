@@ -1,4 +1,6 @@
-# Deployed [here](https://fordalo.com)
+Contuous from this [repo](https://github.com/stevemcd87/studiebuddiev1)
+
+App Deployed [here](https://fordalo.com)
 
 An app to review notes on topics users create.
 
