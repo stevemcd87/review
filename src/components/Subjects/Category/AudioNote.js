@@ -89,6 +89,7 @@ export default function AudioNote(props) {
           </button>
         </div>
       )}
+      <p className="audio-label" >Audio Note</p>
       <button type="button" disabled={recording} onClick={startRecord}>
         <FontAwesomeIcon
           icon={faRecordVinyl}

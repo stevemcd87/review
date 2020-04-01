@@ -112,34 +112,7 @@ div.category,
   padding-top: 1em;
 }
 
-.subnote {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-.subnote-input {
-  background-color: inherit;
-  width: 95% !important;
-  min-height: 100px;
-  /* margin: 0 auto !important; */
-  margin-left: 10px;
-  font-size: 13px;
-  font-family: "Kalam", cursive;
-  /* text-align: center; */
-  border: 0;
-  color: white;
-  padding-top: 1em;
-}
 
-.subnote-button {
-  background-color: inherit;
-  padding-bottom: 0.5em;
-  border-bottom: grey 1px solid;
-  position: absolute;
-  top: -5px;
-  right: -20px;
-  cursor: pointer;
-}
 
 /* .subject-form-component form textarea:first-child,
 .category-form-component form textarea:first-child {

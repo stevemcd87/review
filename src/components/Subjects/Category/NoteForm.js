@@ -67,11 +67,12 @@ function NoteForm(props) {
 
   return (
     <div className="note-form-component form-component">
-      <form className="note">
+      <form className="note content">
         <AudioNote
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
         />
         <div className="image-input">
+          <p className=" image-label form-label">Image</p>
           <input
             type="file"
             onChange={e => setImageFile(e.target.files["0"])}

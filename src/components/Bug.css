@@ -1,0 +1,9 @@
+#bug-component {
+  height: 70vh;
+  background-color: green;
+  width: 70vw;
+  position: fixed;
+  z-index: 100;
+  left: 15vw;
+  top: 15vh;
+}

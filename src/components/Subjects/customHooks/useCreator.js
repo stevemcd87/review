@@ -5,7 +5,7 @@ export default function useCreator(user, creator){
 
   useEffect(()=>{
     setIsCreator(checkUser())
-    // return setIsCreator(false)
+    return ()=> setIsCreator(null)
   },[user])
 
   return isCreator

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import AmpConfig from "./Amplify/AmpConfig";
+import Bug from "./components/Bug";
 import SubjectMain from "./components/Subjects/SubjectMain";
 import ApiContext from "./contexts/ApiContext";
 import Amplify, { Auth, API, Storage } from "aws-amplify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBug } from "@fortawesome/free-solid-svg-icons";
 import { Authenticator } from "aws-amplify-react";
 Amplify.configure(AmpConfig);
 Storage.configure({ level: "public" });
@@ -11,6 +14,7 @@ function App() {
   let [user, setUser] = useState(Auth.user),
     [authState, setAuthState] = useState(),
     [hideDefault, setHideDefault] = useState(true),
+    [displayBugComponent, setDisplayBugComponent ] = useState(false),
     myTheme = {
       nav:{
         backgroundColor: "inherit",
@@ -50,8 +54,17 @@ function App() {
     setHideDefault(hd);
   }, [authState]);
 
+  useEffect(()=>{
+    getRepoIssues()
+  },[])
+
   return (
     <div className="App">
+      <button id="bug-icon" type="button" onClick={()=>setDisplayBugComponent(!displayBugComponent)}>
+        <FontAwesomeIcon icon={faBug} color="red" size="2x" />
+      </button>
+      {displayBugComponent && <Bug />}
+
       {(authState === "signIn" || authState === "signUp") && (
         <header>
           <button
@@ -74,6 +87,19 @@ function App() {
       </Authenticator>
     </div>
   );
+}
+
+async function getRepoIssues(){
+  fetch("https://api.github.com/repos/stevemcd87/review/issues")
+  .then((response) => {
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 }
 // export default withAuthenticator(App, {
 //   // Render a sign out button once logged in

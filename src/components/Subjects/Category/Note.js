@@ -23,9 +23,13 @@ function Note(props) {
 
   // for Note Image
   useEffect(() => {
+    console.log(note);
     if (note.image) getImage();
     // .then(() => setImageLoading(false))
   }, []);
+  useEffect(()=>{
+    console.log(imageSrc);
+  },[imageSrc])
 
   useEffect(() => {
     setDisplayForm(false);

@@ -17,7 +17,7 @@ export default function CategoryListDetail(props) {
   useEffect(() => {
     // console.log(subject);
     setDisplayUpdateForm(false);
-  }, [subject]);
+  }, [subject, category]);
   // [displayDesc, setDisplayDesc] = useState(false);
 
   // name: urlName.replace(/-/g, " "),
@@ -25,9 +25,9 @@ export default function CategoryListDetail(props) {
   // pathName: v.pathName,
   // urlName: urlName
 
-  useEffect(() => {
-    setDisplayUpdateForm(false);
-  }, [category]);
+  // useEffect(() => {
+  //   setDisplayUpdateForm(false);
+  // }, []);
 
   return (
     <div className="category-ld-component component">

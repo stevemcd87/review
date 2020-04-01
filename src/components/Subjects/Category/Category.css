@@ -151,6 +151,10 @@ form .subnote {
 
 /* ============= AUDIO NOTe =========== */
 
+.audio-label,  .form-label {
+  margin: .5em 0 .2em 0;
+}
+
 .audio-note-component  button,
 .audio-note-div  button{
   padding-bottom: .5em;
@@ -161,19 +165,61 @@ form .subnote {
 
 /* ===================== IMAGE INPUT DIV ==================== */
 
+img {
+  width: 100%;
+}
+
 .image-input {
   display: flex;
   flex-direction: column;
   align-items:  center;
 }
 
-.image-input img {
-  width: 150px;
-  height: 150px;
-}
-
 .image-input > input[type="file"] {
   width: 180px;
   text-align: center !important;
   margin: auto;
+}
+
+.subnote {
+  display: flex;
+  align-items: center;
+  position: relative;
+  text-align: left;
+}
+
+.subnote-dash {
+  margin-right: 1em;
+}
+.subnote-input {
+  background-color: inherit;
+  width: 95% !important;
+  min-height: 100px;
+  /* margin: 0 auto !important; */
+  margin-left: 10px;
+  font-size: 13px;
+  font-family: "Kalam", cursive;
+  /* text-align: center; */
+  border: 0;
+  color: white;
+  padding-top: 1em;
+}
+
+.subnote-button {
+  background-color: inherit;
+  padding-bottom: 0.5em;
+  border-bottom: grey 1px solid;
+  position: absolute;
+  top: -5px;
+  right: -20px;
+  cursor: pointer;
+}
+
+
+@media screen and (min-width: 500px) {
+  img {
+    width: 85%;
+    max-width: 400px;
+    /* max-height: 500px; */
+  }
 }

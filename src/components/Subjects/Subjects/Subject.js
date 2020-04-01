@@ -59,6 +59,7 @@ function Subject(props) {
         )}
         {!displayUpdateForm && (
           <>
+            <h4>{subject.username}</h4>
             <h3>
               <Link to={`/${subject.username}/${subject.pathName}`}>
                 {subject.navName}
