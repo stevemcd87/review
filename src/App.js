@@ -15,6 +15,7 @@ function App() {
     [authState, setAuthState] = useState(),
     [hideDefault, setHideDefault] = useState(true),
     [displayBugComponent, setDisplayBugComponent ] = useState(false),
+    [bugs, setBugs]= useState(),
     myTheme = {
       nav:{
         backgroundColor: "inherit",
@@ -87,20 +88,38 @@ function App() {
       </Authenticator>
     </div>
   );
+  async function getRepoIssues(){
+    const repoURL = "https://api.github.com/users/stevemcd87/repos",
+      issuesURL = "https://api.github.com/repos/stevemcd87/review/issues",
+      labelsURL = "https://api.github.com/repos/stevemcd87/review/labels";
+    fetch(issuesURL)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      splitByLabels(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
+  function splitByLabels(data){
+    let finishedData = {};
+    data.forEach((issue)=>{
+      issue.labels.forEach((label) => {
+        if (!finishedData[label.name]) finishedData[label.name] = [];
+        finishedData[label.name].push([issue.title])
+      });
+
+      // v.labels.filter()
+    })
+    console.log(finishedData);
+  setBugs(finishedData);
+  }
 }
 
-async function getRepoIssues(){
-  fetch("https://api.github.com/repos/stevemcd87/review/issues")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-}
+
 // export default withAuthenticator(App, {
 //   // Render a sign out button once logged in
 //   includeGreetings: true
