@@ -37,7 +37,7 @@ export default function Category() {
   // </ul>
 
   return (
-    <div className="category-component">
+    <div className="component">
       <button type="button" className="back-button">
         <Link to={`/${username}/${subjectName}/`}>Back</Link>
       </button>

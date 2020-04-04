@@ -47,7 +47,7 @@ function Notes(props) {
         )}
       {isCreator && displayNoteForm && <NoteForm />}
 
-      <div className="model">
+      <div className="container">
         {categoryNotes.map((note, ind) => {
           return (
             <Note

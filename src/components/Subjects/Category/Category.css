@@ -1,178 +1,28 @@
-.category-component {
-  background-color: lightgreen;
-}
-
-.category-nav {
-  display: flex;
-  padding: 0;
-  justify-content: center;
-  background-color: lightgreen;
-}
-
-.category-nav li{
-  margin: 1em 2em;
-  list-style: none;
-  /* background-color: white; */
-  padding: 1em;
-  border-radius: 20px;
-  width: 125px;
-  font-size: 1.1em;
-
-}
-
-.category-nav li:first-child{
-  box-shadow: 0 0 10px 3px grey;
-}
-
-/* =============== NOTES COMPONENT STYLING =============== */
-
-/* .notes-component{
-  max-width: 100vw;
-  overflow: hidden;
-  background-color: #5eff69;
-  padding: 1em;
-}
-
-.notes-component-buttons {
-  display: flex;
-  justify-content: space-around;
-}
-
-.notes-component-buttons > button {
-  width: 160px;
-}
-
-.notes-component-buttons {
-  display: flex;
-  justify-content: space-around;
-}
-
-.notes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-
-  padding: 1em;
-  margin: 1em;
-} */
-
-
-/* ==================== NOTe COMPONENT STYLING ==================== */
-
-/* .note-component {
-  width: 80%;
-  min-width: 250px;
-  max-width: 650px;
-  position: relative;
-  margin: 1em;
-  padding: 2em;
-  background-color: lightgreen;
-  border-radius: 30px;
-}
-
-.note-component button, .note-form-component button {
-  padding: 1em;
-  border-radius: 20px;
-  background-color: #5eff69;
-  margin: .5em;
-}
-
-.note {
-  background-color: #a9ff5e;
-  margin: 0 auto;;
-  padding: 1em;
-  width: 90%;
-  min-width: 200px;
-  position: relative;
-}
-
-.note.active {
-  border: 3px solid red;
-}
-
-.note > span {
-  cursor: pointer;
-}
-
-.note  textarea {
-  background-color: inherit;
-}
-.subnote{
-  width: 90%;
-  text-align: left;
-  position: relative;
-}
-
-form .subnote {
-  display: flex;
-  align-items: center;
-}
-
-.subnote  textarea {
-  width: 90%;
-}
-
-
-.subnote-dash {
-  margin-right: 1em;
-  height: 100%;
-  font-weight: bold;
-}
-
-
-
-.note .delete-note {
-  position: absolute;
-  top: -15px;
-  right: -10px;
-  background-color: yellow;
-  border-radius: 50%;
-  padding: 0.5em;
-}
-
-.note .edit-note {
-  color: blue;
-} */
-
-
-/* ================ NOTe FORM ================== */
-
-/* .note-form-component {
-  max-width: 100vw;
-  background-color: lightgreen;
-  padding: 1em;
-}
-
-.note-form-component form textarea{
-  min-height: 50px;
-  overflow:auto;
-} */
-
-
 /* ============= AUDIO NOTe =========== */
 
-.audio-label,  .form-label {
-  margin: .5em 0 .2em 0;
+.audio-label,
+.form-label {
+  margin: 0.5em 0 0.2em 0;
 }
 
-.audio-note-component  button,
-.audio-note-div  button{
-  padding-bottom: .5em;
+.audio-note-component button,
+.audio-note-div button {
+  padding-bottom: 0.5em;
   background-color: inherit;
   border-bottom: 2px solid grey;
 }
-
 
 /* ===================== IMAGE INPUT DIV ==================== */
 
 img {
   width: 100%;
+  max-width: 300px;
 }
 
 .image-input {
   display: flex;
   flex-direction: column;
-  align-items:  center;
+  align-items: center;
 }
 
 .image-input > input[type="file"] {
@@ -181,45 +31,44 @@ img {
   margin: auto;
 }
 
+
+/* ========== SUBNOTE ========== */
 .subnote {
   display: flex;
   align-items: center;
   position: relative;
   text-align: left;
+  padding: 8px;
 }
 
 .subnote-dash {
-  margin-right: 1em;
-}
-.subnote-input {
-  background-color: inherit;
-  width: 95% !important;
-  min-height: 100px;
-  /* margin: 0 auto !important; */
-  margin-left: 10px;
-  font-size: 13px;
-  font-family: "Kalam", cursive;
-  /* text-align: center; */
-  border: 0;
-  color: white;
-  padding-top: 1em;
+  margin-right: 16px;
 }
 
-.subnote-button {
+.note-form-component textarea.subnote-input {
+  font-size: 13px;
+  text-align: left;
+  margin-right: 25px;
+}
+
+.note-form-component button.add-subnote {
+  margin-left: 10px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.remove-subnote {
   background-color: inherit;
-  padding-bottom: 0.5em;
   border-bottom: grey 1px solid;
   position: absolute;
-  top: -5px;
-  right: -20px;
+  top: 0;
+  right: 0;
   cursor: pointer;
+  width: 25px;
 }
-
 
 @media screen and (min-width: 500px) {
   img {
     width: 85%;
-    max-width: 400px;
-    /* max-height: 500px; */
   }
 }

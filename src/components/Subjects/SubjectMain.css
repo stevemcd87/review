@@ -21,7 +21,6 @@
   font-family: "Kalam", cursive;
   display: flex;
   justify-content: center;
-  align-items: center;
   font-size: 1em;
   letter-spacing: 3px;
   margin-bottom: 16px;
@@ -57,7 +56,8 @@
   width: 100%;
 }
 
-.form-component button {
+.form-component form > button {
+  display: block;
   width: 75px;
   height: 40px;
   margin: 0 auto;
@@ -69,11 +69,12 @@
   width: 100% ;
   min-height: 100px;
   margin: 0 auto ;
-  font-size: 1.3em;
+  font-size: 19px;
   text-align: center;
   border: 0;
   color: white;
   padding-top: 1em;
+  font-family: "Kalam", cursive;
 }
 
 @media only screen and (min-width: 900px) {

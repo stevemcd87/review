@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 function NoteForm(props) {
   let { subjectName, categoryName, username, setDisplayForm } = useParams(),
     { note } = props,
@@ -67,7 +67,7 @@ function NoteForm(props) {
 
   return (
     <div className="note-form-component form-component">
-      <form className="note content">
+      <form className="note-form-content">
         <AudioNote
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
         />
@@ -91,19 +91,15 @@ function NoteForm(props) {
             <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
           ))}
         </div>
-        <button type="button" onClick={addSubnote}>
-          Add Subnote
+        <button type="button" onClick={addSubnote} className="add-subnote">
+          <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
         </button>
-        <button type="button" onClick={prepNote} disabled={submitting} >
+        <button type="button" onClick={prepNote} disabled={submitting}>
           {!submitting ? "Submit" : "Submitting"}
         </button>
       </form>
     </div>
   );
-
-  // function checkForUsername() {
-  //   return user && user.username === username ? true : false;
-  // }
 
   function prepNote() {
     setSubmitting(true);
@@ -144,7 +140,8 @@ function NoteForm(props) {
         if (audioBlob && audioNoteUpdated) {
           Storage.put(response.audioNote, audioBlob)
             .then(res => {
-              if (!imageFile && !imageUpdated) getCategoryNotes().then(()=>setSubmitting(false));
+              if (!imageFile && !imageUpdated)
+                getCategoryNotes().then(() => setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -154,7 +151,7 @@ function NoteForm(props) {
         if (imageFile && imageUpdated) {
           Storage.put(response.image, imageFile)
             .then(res => {
-              getCategoryNotes().then(()=>setSubmitting(false));
+              getCategoryNotes().then(() => setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -162,7 +159,7 @@ function NoteForm(props) {
             });
         }
         if (!imageFile && !audioBlob) {
-          getCategoryNotes().then(()=>setSubmitting(false));
+          getCategoryNotes().then(() => setSubmitting(false));
         }
       })
       .catch(error => {
@@ -181,7 +178,8 @@ function NoteForm(props) {
           Storage.put(response.audioNote, audioBlob)
             .then(res => {
               // setTimeout(function() {
-              if (!imageFile) getCategoryNotes().then(()=>setSubmitting(false));
+              if (!imageFile)
+                getCategoryNotes().then(() => setSubmitting(false));
               // }, 1500);
             })
             .catch(err => {
@@ -193,7 +191,7 @@ function NoteForm(props) {
         if (imageFile) {
           Storage.put(response.image, imageFile)
             .then(res => {
-              getCategoryNotes().then(()=>setSubmitting(false));
+              getCategoryNotes().then(() => setSubmitting(false));
             })
             .catch(err => {
               console.log("err");
@@ -202,7 +200,7 @@ function NoteForm(props) {
         }
 
         if (!imageFile && !audioBlob) {
-          getCategoryNotes().then(()=>setSubmitting(false));
+          getCategoryNotes().then(() => setSubmitting(false));
           setDisplayForm(false);
         }
       })
@@ -236,10 +234,10 @@ function Subnote(props) {
       />
       <button
         type="button"
-        className="subnote-button"
+        className="remove-subnote"
         onClick={() => removeSubnote(ind)}
       >
-        <FontAwesomeIcon icon={faTrash} color="grey" />
+        <FontAwesomeIcon icon={faTrash} color="grey" title="Remove Subnote" />
       </button>
     </div>
   );
