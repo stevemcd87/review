@@ -25,8 +25,8 @@ function Subject(props) {
   //   {displayDesc && <FontAwesomeIcon icon={faArrowUp} />}
   // </button>
   return (
-    <div className="subject-component">
-      <div className="subject">
+    <div className="subject-component item">
+      <div className="subject item-content">
         {isCreator && (
           <div className="subject-edit-buttons edit-buttons">
             <button

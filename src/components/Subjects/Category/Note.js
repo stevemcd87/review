@@ -90,8 +90,8 @@ function Note(props) {
   }
 
   return (
-    <div className=" inner-component" ref={noteDiv}>
-      <div className="content">
+    <div className=" item" ref={noteDiv}>
+      <div className="item-content">
         {isCreator && (
           <div className="edit-buttons">
             <button

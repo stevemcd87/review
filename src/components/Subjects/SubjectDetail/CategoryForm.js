@@ -12,8 +12,8 @@ export default function CategoryForm(props) {
     [categoryDesc, setCategoryDesc] = useState(descValue),
     [submitting, setSubmitting] = useState(false);
   return (
-    <div className="category-form-component form-component">
-      <form className="category-form ">
+    <div className="form-component">
+      <form >
         <label>
           <span>Category Name</span>
           <textarea

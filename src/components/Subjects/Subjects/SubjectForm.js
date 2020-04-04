@@ -22,8 +22,8 @@ function SubjectForm(props) {
 
   // <h3>Create Subject to Study</h3>
   return (
-    <div className="subject-form-component form-component">
-      <form className="subject-form">
+    <div className="form-component">
+      <form >
         <label>
           <span>Subject's Name</span>
 

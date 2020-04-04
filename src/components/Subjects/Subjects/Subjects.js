@@ -21,7 +21,7 @@ function Subjects(props) {
     setShowForm(false);
   }, [subjects]);
   return (
-    <div className="subjects-component">
+    <div className="component">
       {user && (
         <button
           type="button"
@@ -38,7 +38,7 @@ function Subjects(props) {
           <SubjectForm />
         </SubjectContext.Provider>
       )}
-      <div className="subjects model">
+      <div className="subjects model container">
         {subjects.map(s => {
           return (
             <SubjectContext.Provider

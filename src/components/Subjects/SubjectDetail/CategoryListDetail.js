@@ -30,9 +30,8 @@ export default function CategoryListDetail(props) {
   // }, []);
 
   return (
-    <div className="category-ld-component component">
-      <div className="category model">
-        <div className="category-content content">
+    <div className="component item">
+      <div className="category model item-content">
           {isCreator && (
             <div className="category-edit-buttons edit-buttons">
               <button
@@ -78,7 +77,6 @@ export default function CategoryListDetail(props) {
           {isCreator && displayUpdateForm && (
             <CategoryForm {...{ category, getSubject }} />
           )}
-        </div>
       </div>
     </div>
   );

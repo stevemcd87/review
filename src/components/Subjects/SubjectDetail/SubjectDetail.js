@@ -33,7 +33,7 @@ function SubjectDetail() {
   // }, [user]);
 
   return (
-    <div className="subject-detail-component">
+    <div className="component">
       <button className="back-button">
         <Link to={`/`}>Back</Link>
       </button>
@@ -55,7 +55,7 @@ function SubjectDetail() {
           {displayCategoryForm && <CategoryForm {...{ subject, getSubject }} />}
         </>
       )}
-      <div className="categories">
+      <div className="categories container">
         {categories.map(c => {
           return (
             <CategoryListDetail

@@ -1,75 +1,41 @@
 @import url("https://fonts.googleapis.com/css?family=Kalam|Short+Stack&display=swap");
-.subjects-component,
-.subject-detail-component,
 .component {
   background-color: lightgreen;
-  /* min-height: 80vh; */
-  padding: 1em;
+  padding: 16px;
 }
 
-.subjects,
-.categories,
-.model {
-  display: grid;
-  grid-gap: 35px;
-  position: relative;
+
+.container {
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-.subject,
-.category-content,
-.content {
-  /* max-width: 400px; */
-  width: 90%;
-  padding: 0.5em;
-  position: relative;
-}
-form.subject-form label,
-form.category-form label {
-  width: 90%;
-  margin: 0 auto;
-}
-
-.subject-component,
-.subjects-component > .subject-form-component > .subject-form,
-div.category,
-.subject-detail-component > .category-form-component > .category-form,
-.inner-component,
+.item,
 .component > .form-component {
   background-image: url("/images/cb.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   border: 5px #66491d solid;
   color: white;
-  height: 100%;
   font-family: "Kalam", cursive;
-  /* font-family: 'Short Stack', cursive; */
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1em;
   letter-spacing: 3px;
-  width: 100%;margin-bottom: 1em;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
-/* For creating new subject */
-.subjects-component > .subject-form-component > #subject-form {
+.item-content {
+  width: 90%;
+  position: relative;
 }
 
-.subject-component #subject-form {
-  border: 0;
-  background-image: inherit;
-}
-
-.subject-component a,
-.category a {
+.item-content a {
   color: white;
   letter-spacing: 3px;
-}
-
-.edit-buttons button {
-  padding: 0.8em;
-  background-color: inherit;
-  border-bottom: 2px solid grey;
 }
 
 .edit-buttons {
@@ -77,34 +43,32 @@ div.category,
   justify-content: space-around;
 }
 
-/* ========================================= */
+.edit-buttons button {
+  padding: 12px;
+  background-color: inherit;
+  border-bottom: 2px solid grey;
+}
 
-/* .subject-form-component,
-.category-form-component {
-  background-color: lightgreen;
-  min-height: 80vh;
-  padding: 1em;
-} */
-
-.subject-form-component form,
-.category-form-component form {
+.form-component form {
   display: flex;
   flex-direction: column;
-  /* background-color: white; */
   min-height: 50vh;
   justify-content: space-around;
   width: 100%;
-  margin-bottom: 35px;
 }
 
-/* .subject-form-component form textarea, */
-#subject-form textarea,
-.category-form-component form textarea,
-.form-textarea {
+.form-component button {
+  width: 75px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.form-component textarea {
   background-color: inherit;
-  width: 100% !important;
+  width: 100% ;
   min-height: 100px;
-  margin: 0 auto !important;
+  margin: 0 auto ;
   font-size: 1.3em;
   text-align: center;
   border: 0;
@@ -112,39 +76,10 @@ div.category,
   padding-top: 1em;
 }
 
+@media only screen and (min-width: 900px) {
 
+  .item {
+   flex: 0 0 400px;
+    }
 
-/* .subject-form-component form textarea:first-child,
-.category-form-component form textarea:first-child {
-  height: 50px;
-  width: 100%;
-} */
-
-.subject-form-component form button,
-.category-form-component form button {
-  /* width: 25%; */
-  padding: 0.8em;
-  background-color: lightgreen;
-  margin: 0 auto;
-  border-radius: 10px;
 }
-
-.subject-form-component form label span,
-.category-form-component form label span {
-  /* width: 25%; */
-  padding: 0.4em;
-  border-bottom: 1px solid white;
-}
-
-/* =============================================== */
-
-.subject-detail-component {
-  background-color: lightgreen;
-  min-height: 90vh;
-}
-
-/* .category {
-  background-color: white;
-  width: 200px;
-  margin: 1em;
-} */
