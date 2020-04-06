@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
 import useCreator from "../customHooks/useCreator";
+import Notes from "../Notes/Notes"
 
 function SubjectDetail() {
   let { subjectName, username } = useParams(),
@@ -28,21 +29,17 @@ function SubjectDetail() {
     setDisplayCategoryForm(false);
   }, [subject]);
 
-  // useEffect(() => {
-  //   checkUsername();
-  // }, [user]);
-
   return (
     <div className="component">
       <button className="back-button">
         <Link to={`/`}>Back</Link>
       </button>
       {isLoading && <Loading />}
-
       <div className="subject-detail">
         <h2>{subject.navName}</h2>
         <h3>{subject.subjectDesc}</h3>
       </div>
+      <Notes />
       {isCreator && (
         <>
           <button
@@ -70,20 +67,10 @@ function SubjectDetail() {
     </div>
   );
 
-  // function checkUsername() {
-  //   setIsCreator(user && user.username === subject.username ? true : false);
-  // }
-
   async function getSubject() {
     console.log("GET subject");
-    return await API.get("StuddieBuddie", `/subjects/${subjectName}`, {
-      queryStringParameters: {
-        username: username
-      }
-    })
+    return await API.get("StuddieBuddie", `users/${username}/subjects/${subjectName}`)
       .then(response => {
-        console.log("res getSubject");
-        console.log(response);
         setSubject(response[0]);
         let c = response.slice(1).map(v => {
           let urlName = v.pathName.split("#")[1].split("_")[1];
