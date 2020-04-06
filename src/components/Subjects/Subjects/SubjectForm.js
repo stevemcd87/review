@@ -68,12 +68,11 @@ function SubjectForm(props) {
     if (!startWithLetter(name) || !startWithLetter(desc))
       return alert("Name and Description must begin with a letter");
     setSubmitting(true);
-
-    return await API.post("StuddieBuddie", "/subjects", {
+    if (!user || !user.username) return  alert("Must Sign In")
+    return await API.post("StuddieBuddie", `/users/${user.username}/subjects`, {
       body: JSON.stringify({
         subjectName: name.trim(),
-        subjectDesc: desc.trim(),
-        username: user.username
+        subjectDesc: desc.trim()
       }),
       headers: {
         Authorization: `Bearer ${(await Auth.currentSession())
@@ -83,11 +82,11 @@ function SubjectForm(props) {
       response: true
     })
       .then(response => {
-        console.log(response);
-
         getSubjects().then(() => setSubmitting(false));
       })
       .catch(error => {
+        setSubmitting(false);
+        alert(error);
         console.log(error);
         console.log(error.response);
       });
