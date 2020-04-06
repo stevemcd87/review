@@ -53,15 +53,15 @@ export default function SubjectForm(props) {
       : false;
   }
   async function submitForm() {
-    // Temporarily assumes user is creating subject
+    // initially assumes user is creating subject
     let apiMethod = "post",
       // path for backend api
       resourcePath = `/users/${user.username}/subjects`;
     // subject being passed via props signifies update
     if (subject) {
-      // Updates api method for edits
+      // Updates api method to update
       apiMethod = "put";
-      // Appends pathName for edits
+      // Appends pathName for updates
       resourcePath += `/${subject.pathName}`;
     }
     // Validates form inputs

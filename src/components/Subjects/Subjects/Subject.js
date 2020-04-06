@@ -11,19 +11,11 @@ function Subject(props) {
     { subject, getSubjects } = useContext(SubjectContext),
     [displayUpdateForm, setDisplayUpdateForm] = useState(false),
     isCreator = useCreator(user, subject.username);
-  // [displayDesc, setDisplayDesc] = useState(false);
 
   useEffect(() => {
     setDisplayUpdateForm(false);
   }, [subject]);
 
-  // useEffect(() => {
-  //   checkUsername()
-  // }, [user]);
-  // <button type="button" onClick={() => setDisplayDesc(!displayDesc)}>
-  //   {!displayDesc && <FontAwesomeIcon icon={faArrowDown} />}
-  //   {displayDesc && <FontAwesomeIcon icon={faArrowUp} />}
-  // </button>
   return (
     <div className="subject-component item">
       <div className="subject item-content">
@@ -73,30 +65,28 @@ function Subject(props) {
     </div>
   );
 
-  // function checkUsername() {
-  //   return user && user.username === subject.username ? true : false;
-  // }
-
   async function deleteSubject() {
-    // TODO: delete all items for subject
-    console.log("deleteSubject");
-    return await API.del("StuddieBuddie", "/subjects", {
-      body: JSON.stringify({
-        username: user.username,
-        pathName: subject.pathName
-      }),
-      headers: {
-        Authorization: `Bearer ${(await Auth.currentSession())
-          .getIdToken()
-          .getJwtToken()}`
-      },
-      response: true
-    })
+    // Confirms user is signed in
+    if (!user || !user.username) return alert("Must Sign In");
+    // Confirms user deleting is the creator of data
+    if (!isCreator) return alert("Not Authorized to delete this data");
+    return await API.del(
+      "StuddieBuddie",
+      `/users/${user.username}/subjects/${subject.pathName}`,
+      {
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession())
+            .getIdToken()
+            .getJwtToken()}`
+        },
+        response: true
+      }
+    )
       .then(response => {
-        console.log(response);
         getSubjects();
       })
       .catch(error => {
+        alert(error);
         console.log(error);
       });
   }
