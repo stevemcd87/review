@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
 import useCreator from "../customHooks/useCreator";
-import Notes from "../Notes/Notes"
+import Notes from "../Notes/Notes";
 
 function SubjectDetail() {
   let { subjectName, username } = useParams(),
@@ -21,7 +21,11 @@ function SubjectDetail() {
     [displayCategoryForm, setDisplayCategoryForm] = useState(false);
   // { subject } = useContext(SubjectContext);
   useEffect(() => {
-    getSubject().then(() => setIsLoading(false));
+    let isSubsribed = true;
+    getSubject().then(() => {
+      if (isSubsribed) setIsLoading(false);
+    });
+    return () => (isSubsribed = false);
   }, []);
 
   useEffect(() => {
@@ -39,7 +43,6 @@ function SubjectDetail() {
         <h2>{subject.navName}</h2>
         <h3>{subject.subjectDesc}</h3>
       </div>
-      <Notes />
       {isCreator && (
         <>
           <button
@@ -69,7 +72,10 @@ function SubjectDetail() {
 
   async function getSubject() {
     console.log("GET subject");
-    return await API.get("StuddieBuddie", `users/${username}/subjects/${subjectName}`)
+    return await API.get(
+      "StuddieBuddie",
+      `/users/${username}/subjects/${subjectName}`
+    )
       .then(response => {
         setSubject(response[0]);
         let c = response.slice(1).map(v => {
