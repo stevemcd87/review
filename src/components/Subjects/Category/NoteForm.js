@@ -10,6 +10,7 @@ function NoteForm(props) {
   let { subjectName, categoryName, username, setDisplayForm } = useParams(),
     { note } = props,
     imageInput = useRef(null),
+    mainNoteDiv = useRef(null),
     [imageSrc, setImageSrc] = useState(),
     [imageFile, setImageFile] = useState(),
     [imageUpdated, setImageUpdated] = useState(false),
@@ -26,6 +27,18 @@ function NoteForm(props) {
     console.log("image file");
     console.log(imageFile);
   }, [imageFile]);
+
+  useEffect(()=>{
+    // mainNoteDiv.current.target.style.height = 'inherit';
+    console.log(mainNoteDiv);
+
+    let textarea = mainNoteDiv.current.getElementsByClassName("markdown-textarea")[0],
+      scrollHeight = textarea.scrollHeight;
+      console.log(textarea);
+    if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
+  },[mainNote])
+
+
 
   useEffect(() => {
     console.log("imageUpdated");
@@ -69,11 +82,6 @@ function NoteForm(props) {
   return (
     <div className="note-form-component form-component">
       <form className="note-form-content">
-        <Markdown
-          textarea={true}
-          customWidth={[50, 50]}
-          callback={(e)=>console.log(e)}
-        />
         <AudioNote
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
         />
@@ -86,20 +94,15 @@ function NoteForm(props) {
           />
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <textarea
-          className="note-mainNote form-textarea"
-          defaultValue={mainNote}
-          onChange={e => setMainNote(e.target.value)}
-          placeholder="Title of Note or Note"
-        />
-        <div className="sub-note-array" ref={noteArray}>
-          {subnotes.map((sn, ind) => (
-            <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
-          ))}
+        <div className="main-note" ref={mainNoteDiv}>
+          <Markdown
+            textarea={true}
+            callback={setMainNote}
+            source={mainNote}
+            customWidth={[90, 90]}
+          />
         </div>
-        <button type="button" onClick={addSubnote} className="add-subnote">
-          <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
-        </button>
+
         <button type="button" onClick={prepNote} disabled={submitting}>
           {!submitting ? "Submit" : "Submitting"}
         </button>
@@ -107,13 +110,31 @@ function NoteForm(props) {
     </div>
   );
 
+  //
+
+  //====== OLD VERSION ========
+  // <textarea
+  //   className="note-mainNote form-textarea"
+  //   defaultValue={mainNote}
+  //   onChange={e => setMainNote(e.target.value)}
+  //   placeholder="Title of Note or Note"
+  // />
+  // <div className="sub-note-array" ref={noteArray}>
+  //   {subnotes.map((sn, ind) => (
+  //     <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
+  //   ))}
+  // </div>
+  // <button type="button" onClick={addSubnote} className="add-subnote">
+  //   <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
+  // </button>
+
   function prepNote() {
     setSubmitting(true);
     console.log("prepNote");
     let noteValues = {
       username: user.username,
       mainNote: mainNote ? mainNote.trim() : false,
-      subnotes: [],
+      // subnotes: [],
       audioNote: audioBlob ? true : false,
       image: imageFile ? true : false
     };
@@ -125,11 +146,11 @@ function NoteForm(props) {
     // for subNotes
     console.log("noteValues");
     console.log(noteValues);
-    [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
-      noteElement => {
-        noteValues.subnotes.push(noteElement.value);
-      }
-    );
+    // [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
+    //   noteElement => {
+    //     noteValues.subnotes.push(noteElement.value);
+    //   }
+    // );
     console.log(note);
     !note ? postNote(noteValues) : updateNote(noteValues);
   }

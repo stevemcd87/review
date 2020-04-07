@@ -23,6 +23,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 16px;
 }
 
 .image-input > input[type="file"] {
@@ -30,7 +31,6 @@ img {
   text-align: center !important;
   margin: auto;
 }
-
 
 /* ========== SUBNOTE ========== */
 .subnote {
@@ -67,12 +67,103 @@ img {
   width: 25px;
 }
 
-.markdown-show{
-  color: black;
+.markdown-show {
+  color: white;
+  width: 400px;
+  margin-top: 10px;
+    background-color: inherit;
 }
 
-.markdown-show a{
-  color: blue !important;
+.markdown-div {
+  padding: 8px;
+  min-height: 50px;
+
+}
+
+
+
+.markdown-div blockquote {
+  padding: 8px 10px 14px;
+  word-break: normal;
+  color: white;
+  background-color: rgba(114,170,114,0.2);
+  margin-bottom: 0;
+  border-left: 5px solid rgba(184,255,184,0.1)
+}
+
+.markdown-div ul {
+  margin: 10px 25px;
+}
+
+.markdown-div a {
+  color: white !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.markdown-h {
+  word-break: normal;
+}
+
+.markdown-div h1,
+.markdown-div h2,
+.markdown-div h3 {
+  margin: 0 auto;
+  text-align: center;
+  border-bottom: 2px solid white;
+  width: 80%;
+  padding-bottom: 8px;
+
+}
+
+.markdown-div h1 {
+  font-size: 25px;
+
+}
+
+.markdown-div h2 {
+  font-size: 21px;
+}
+
+h4.markdown-h {
+  font-weight: 500;
+  font-size: 21px;
+  margin: 0;
+  text-align: left;
+  padding: 25px 0 8px 0;
+}
+
+h4.markdown-h::before {
+  content: "- ";
+}
+
+
+.markdown-div h6 {
+  text-align: right;
+  margin: 0 40px 25px 0;
+
+}
+
+.markdown-div h6 a {
+  background-color: rgba(114,170,114,0.2);
+  padding: 0 10px 10px 10px;
+
+}
+
+.markdown-div h6 a::before {
+  content: "- ";
+}
+
+.markdown-textarea-div {
+  display: block;
+  margin: 0 auto;
+  border-bottom: 2px black solid;
+  border-right: 0;
+  padding: 0;
+}
+
+.markdown-pre {
+  margin: 0 auto;
 }
 
 @media screen and (min-width: 500px) {

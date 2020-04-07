@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
 import useCreator from "../customHooks/useCreator";
+import Markdown from "react-textarea-markdown";
 function Note(props) {
   let { note, active, nextAutoPlayIndex } = props,
     { API, Storage, user } = useContext(ApiContext),
@@ -139,7 +140,7 @@ function Note(props) {
             )}
 
             {note.image && <img src={imageSrc} />}
-            {note.mainNote && <h5>{note.mainNote}</h5>}
+            <Markdown textarea={false} source={note.mainNote} customWidth={[98,98]}/>
             <div className="subnotes">
               {note.subnotes &&
                 note.subnotes.map((n, i) => (
@@ -154,6 +155,8 @@ function Note(props) {
       </div>
     </div>
   );
+
+            // {note.mainNote && <h5>{note.mainNote}</h5>}
 
   // function checkForUsername() {
   //   return user && user.username === username ? true : false;
