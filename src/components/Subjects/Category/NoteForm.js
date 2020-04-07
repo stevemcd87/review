@@ -5,6 +5,7 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Markdown from "react-textarea-markdown";
 function NoteForm(props) {
   let { subjectName, categoryName, username, setDisplayForm } = useParams(),
     { note } = props,
@@ -68,6 +69,11 @@ function NoteForm(props) {
   return (
     <div className="note-form-component form-component">
       <form className="note-form-content">
+        <Markdown
+          textarea={true}
+          customWidth={[50, 50]}
+          callback={(e)=>console.log(e)}
+        />
         <AudioNote
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
         />
