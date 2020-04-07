@@ -8,32 +8,43 @@ function Subjects(props) {
   let { API, user } = useContext(ApiContext),
     [subjects, setSubjects] = useState([]),
     [isLoading, setIsLoading] = useState(true),
-    [showForm, setShowForm] = useState(false);
+    [displayForm, setDisplayForm] = useState(false),
+    [displayFormText, setDisplayFormText] = useState("Create Subject");
 
   useEffect(() => {
-    getSubjects().then(() => setIsLoading(false));
+    let isSubsribed = true;
+    getSubjects().then(res => {
+      if (isSubsribed) {
+        setSubjects(res);
+        setIsLoading(false);
+      }
+    });
+    return () => (isSubsribed = false);
   }, []);
 
   useEffect(() => {
-  }, [isLoading]);
+    setDisplayFormText(displayForm ? "Hide Subject Form" : "Create Subject");
+  }, [displayForm]);
 
   useEffect(() => {
-    setShowForm(false);
+    setDisplayForm(false);
   }, [subjects]);
   return (
     <div className="component">
       {user && (
         <button
           type="button"
-          className="create-button"
-          onClick={() => setShowForm(!showForm)}
+          className="display-button create-button"
+          onClick={() => setDisplayForm(!displayForm)}
+          aria-label={displayFormText}
+          aria-pressed={displayForm}
         >
-          {showForm ? "Hide Form" : "Create Subject"}
+          {displayFormText}
         </button>
       )}
 
       {isLoading && <Loading />}
-      {user && showForm && (
+      {user && displayForm && (
         <SubjectContext.Provider value={{ getSubjects }}>
           <SubjectForm />
         </SubjectContext.Provider>
@@ -54,10 +65,7 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
-    return await API.get("StuddieBuddie", "/subjects", { response: true })
-      .then(response => {
-        setSubjects(response.data);
-      })
+    return await API.get("StuddieBuddie", "/subjects")
       .catch(error => {
         alert("Unable to get Subjects");
       });
