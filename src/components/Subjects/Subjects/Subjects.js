@@ -14,10 +14,10 @@ function Subjects(props) {
   useEffect(() => {
     let isSubsribed = true;
     getSubjects().then(res => {
-      if (isSubsribed) {
-        setSubjects(res);
+      // if (isSubsribed) {
+      //   setSubjects(res);
         setIsLoading(false);
-      }
+      // }
     });
     return () => (isSubsribed = false);
   }, []);
@@ -66,6 +66,9 @@ function Subjects(props) {
 
   async function getSubjects() {
     return await API.get("StuddieBuddie", "/subjects")
+      .then(res =>{
+        setSubjects(res)
+      })
       .catch(error => {
         alert("Unable to get Subjects");
       });
