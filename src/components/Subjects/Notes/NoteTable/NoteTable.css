@@ -1,0 +1,17 @@
+.note-table-component {
+  overflow-y: hidden;
+  overflow-y: auto;
+}
+
+.nt-th, .nt-td {
+  border: 1px solid black;
+  /* border-collapse: collapse; */
+}
+
+.nt-th {
+  width:60px;
+}
+
+.nt-input {
+  width:50px;
+}

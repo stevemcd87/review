@@ -1,62 +1,78 @@
 import React, { useState, useEffect } from "react";
+import "./NoteTable.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function NoteTable() {
-  let [tableColumns, setTableColumns] = useState([{}]),
+  let [tableColumns, setTableColumns] = useState([]),
     [tableRows, setTableRows] = useState([]);
-useEffect(()=>{
-  console.log('tableColumns');
-  console.log(tableColumns);
-},[tableColumns])
+  useEffect(() => {
+    updateTable("add", "column");
+  }, []);
+  useEffect(() => {
+    console.log("tableColumns");
+    console.log(tableColumns);
+  }, [tableColumns]);
   return (
-    <table className="nt-table">
-    <caption>Table</caption>
-      <thead className="nt-thead">
-        <tr className="nt-thead-tr">
-          <thead className="table-head">
-            <tr className="table-head-row">
-
-              {tableColumns.map(column => {
-                return (
-                  <TH
+    <div className="note-table-component">
+      <table className="nt-table">
+        <caption>Table</caption>
+        <thead className="nt-thead">
+          <tr className="nt-thead-tr">
+            {tableColumns.map(column => {
+              return (
+                <th key={column.id} className="nt-th">
+                  <TableData
                     id={column.id}
                     inputValue={column.inputValue}
-                    updateColumn={column.updateColumn}
+                    updateTableData={updateTableData}
                   />
-                );
-              })}
-              <th>
-                <button onClick={addTableColumn}>Add Column</button>
-              </th>
-            </tr>
-          </thead>
-        </tr>
-      </thead>
-    </table>
+                </th>
+              );
+            })}
+            <th className="nt-th">
+              <button
+                type="button"
+                onClick={() => updateTable("add", "column")}
+              >
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr></tr>
+        </tbody>
+      </table>
+    </div>
   );
 
-  function addTableColumn() {
-    let columns = tableColumns.slice(),
-      id = columns.length === 0 ? 0 : columns[columns.length - 1].id + 1;
-    columns.push({
-      inputValue: "",
-      id: id,
-      setTableColumns: setTableColumns
-    });
-    setTableColumns(columns);
+  function updateTable(method, colOrRow, elementIndex = null) {
+    // checks if
+    let isColumn = colOrRow === "column" ? true : false,
+      array = isColumn ? tableColumns : tableRows,
+      setArray = isColumn ? setTableColumns : setTableRows,
+      list = array.slice(),
+      methodFunc = method === "add" ? add : remove,
+      methodFuncParams = method === "add" ? [list] : [list, elementIndex],
+      id = list.length === 0 ? 0 : +list[list.length - 1].id + 1;
+    setArray(methodFunc(...methodFuncParams));
+    function add(arr) {
+      arr.push({
+        inputValue: "",
+        id: id,
+        setTableColumns: setTableColumns
+      });
+      return arr;
+    }
+    function remove(arr, indexToRemove) {
+      arr.splice(indexToRemove, 1);
+      return arr;
+    }
   }
 
-  function addTableRow() {
-    let rows = tableRows.slice(),
-      id = rows.length === 0 ? 0 : rows[rows.length - 1].id + 1;
-    rows.push({
-      inputValue: "",
-      id: id,
-      setTableColumns: setTableColumns
-    });
-    setTableRows(rows);
-  }
-
-  function updateColumn(id, inputValue) {
+  function updateTableData(id, inputValue) {
     let tcs = tableColumns.slice(),
       tcIndex = tcs.findIndex(tc => tc.id === id);
     tcs[tcIndex].inputValue = inputValue;
@@ -64,34 +80,17 @@ useEffect(()=>{
   }
 }
 
-// function TableHead({tableColumns}) {
-//   return (
-//     <thead className="table-head">
-//       <tr className="table-head-row">
-//         {tableColumns.map((column)=>{
-//           <TH {...{ inputValue, id, setTableColumns }} />
-//         })}
-//       </tr>
-//     </thead>
-//   );
-// }
-
-function TH({ inputValue, id, updateColumn }) {
-  // let [newInputValue, setNewInputValue] = useState("");
+function TableData({ inputValue, id, updateTableData }) {
   return (
-    <th className="nt-th">
+    <>
       <input
         type="text"
         defaultValue={inputValue}
-        className="nt-th-input"
-        onChange={e => updateColumn(id, e.target.value)}
+        className="nt-input"
+        onChange={e => updateTableData(id, e.target.value)}
+        spellCheck={true}
         aria-label={inputValue + " input"}
       />
-    </th>
+    </>
   );
-
-  // function setColumn(){
-  //   let column=
-  //
-  // }
 }
