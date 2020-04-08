@@ -79,14 +79,6 @@ div.markdown-show {
   min-height: 50px;
 }
 
-.markdown-show div.markdown-div blockquote {
-  padding: 8px 10px 14px;
-  word-break: normal;
-  color: white;
-  background-color: rgba(114, 170, 114, 0.2);
-  margin-bottom: 0;
-  border-left: 5px solid rgba(184, 255, 184, 0.1);
-}
 
 .markdown-div ul {
   margin: 10px 25px;
@@ -138,7 +130,7 @@ h4.markdown-h::before {
 
 .markdown-div h6 {
   text-align: right;
-  margin: 0 40px 25px 0;
+  margin: 0 0px 25px 0;
 }
 
 .markdown-div h6 a {
@@ -149,6 +141,16 @@ h4.markdown-h::before {
 .markdown-div h6 a::before {
   content: "- ";
 }
+
+.markdown-show div.markdown-div blockquote {
+  padding: 8px 10px 14px;
+  word-break: normal;
+  color: white;
+  background-color: rgba(114, 170, 114, 0.2);
+  margin: 8px 0 0 8px;
+  border-left: 5px solid rgba(184, 255, 184, 0.1);
+}
+
 
 .markdown-textarea-div {
   display: block;
