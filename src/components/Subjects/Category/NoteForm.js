@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import AudioNote from "./AudioNote";
+import NoteTable from "../Notes/NoteTable/NoteTable";
 import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
@@ -94,6 +95,7 @@ function NoteForm(props) {
           />
           {imageSrc && <img src={imageSrc} />}
         </div>
+        <NoteTable />
         <div className="main-note" ref={mainNoteDiv}>
           <Markdown
             textarea={true}

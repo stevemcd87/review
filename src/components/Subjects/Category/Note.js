@@ -13,34 +13,21 @@ function Note(props) {
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
     noteDiv = useRef(),
-    // [userIsCreator, setUserIsCreator] = useState(checkForUsername()),
     [imageSrc, setImageSrc] = useState(),
-    // [imageLoading, setImageLoading] = useState(
-    //   note && note.image ? true : false
-    // ),
     [displayForm, setDisplayForm] = useState(false),
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
 
   // for Note Image
   useEffect(() => {
-    console.log(note);
     if (note.image) getImage();
-    // .then(() => setImageLoading(false))
   }, []);
-  useEffect(()=>{
-    console.log(imageSrc);
-  },[imageSrc])
 
   useEffect(() => {
     setDisplayForm(false);
     if (note.image) getImage();
     // .then(() => setImageLoading(false))
   }, [categoryNotes]);
-
-  // useEffect(() => {
-  //   setUserIsCreator(checkForUsername());
-  // }, [user]);
 
   // for active prop
   useEffect(() => {
@@ -140,7 +127,11 @@ function Note(props) {
             )}
 
             {note.image && <img src={imageSrc} />}
-            <Markdown textarea={false} source={note.mainNote} customWidth={[98,98]}/>
+            <Markdown
+              textarea={false}
+              source={note.mainNote}
+              customWidth={[98, 98]}
+            />
             <div className="subnotes">
               {note.subnotes &&
                 note.subnotes.map((n, i) => (
@@ -156,7 +147,7 @@ function Note(props) {
     </div>
   );
 
-            // {note.mainNote && <h5>{note.mainNote}</h5>}
+  // {note.mainNote && <h5>{note.mainNote}</h5>}
 
   // function checkForUsername() {
   //   return user && user.username === username ? true : false;

@@ -110,7 +110,6 @@ function App() {
 
       // v.labels.filter()
     });
-    console.log(finishedData);
     setBugs(finishedData);
   }
 }

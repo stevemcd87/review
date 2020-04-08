@@ -19,20 +19,11 @@ function Notes(props) {
 
   useEffect(() => {
     setAutoPlayIndex(autoPlay ? 0 : null);
-    console.log(autoPlay);
   }, [autoPlay]);
 
   useEffect(() => {
     setDisplayNoteForm(false);
   }, [categoryNotes]);
-
-  //         <button
-  //   className="create-button"
-  //   type="button"
-  //   onClick={() => setAutoPlay(!autoPlay)}
-  // >
-  //   {autoPlay ? "Stop AutoPlay" : "Auto Play Notes"}
-  // </button>
 
   return (
     <div className="notes-component component">
@@ -62,17 +53,11 @@ function Notes(props) {
     </div>
   );
 
-  // function checkForUsername() {
-  //   return user && user.username === username ? true : false;
-  // }
-
   function nextAutoPlayIndex() {
-    console.log("nextautoPlay");
     if (autoPlayIndex < categoryNotes.length - 1) {
       setAutoPlayIndex(autoPlayIndex + 1);
     } else {
       setAutoPlayIndex(null);
-      console.log("finished");
     }
   }
 }

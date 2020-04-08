@@ -68,7 +68,6 @@ export default function Category() {
   );
 
   async function getCategoryNotes() {
-    console.log("GET Subjectcategory");
     return await API.get(
       "StuddieBuddie",
       `/subjects/${subjectName}/${categoryName}`,
@@ -78,14 +77,8 @@ export default function Category() {
         }
       }
     )
-      .then(response => {
-        console.log("GET Category response");
-        console.log(response);
-        setCategoryNotes(response);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      .then(setCategoryNotes)
+      .catch(alert);
   }
 
   function getCategoryQuestions() {
