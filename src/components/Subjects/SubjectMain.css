@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Kalam|Short+Stack&display=swap");
 .component {
   background-color: lightgreen;
-  padding: 16px;
+  padding: 8px;
 }
 
 .container {
@@ -20,12 +20,12 @@
   font-family: "Kalam", cursive;
   display: flex;
   justify-content: center;
-  font-size: 1em;
+  font-size: 16px;
   letter-spacing: 3px;
   margin-bottom: 16px;
   width: 100%;
   min-width: 300px;
-  max-width: 500px;
+  max-width: 480px;
 }
 
 .form-component {
@@ -33,8 +33,9 @@
 }
 
 .item-content {
-  width: 90%;
+  width: 95%;
   position: relative;
+  min-width: 295px;
 }
 
 .item-content a {
@@ -88,8 +89,8 @@
     /* word-break: break-all; */
 }
 
-@media only screen and (min-width: 1050px) {
+/* @media only screen and (min-width: 1000px) {
   .item {
    flex: 0 0 500px;
     }
-}
+} */
