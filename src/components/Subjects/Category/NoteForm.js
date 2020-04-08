@@ -25,26 +25,16 @@ function NoteForm(props) {
     { API, Storage, user } = useContext(ApiContext);
 
   useEffect(() => {
-    console.log("image file");
-    console.log(imageFile);
   }, [imageFile]);
 
   useEffect(()=>{
-    // mainNoteDiv.current.target.style.height = 'inherit';
-    console.log(mainNoteDiv);
-
     let textarea = mainNoteDiv.current.getElementsByClassName("markdown-textarea")[0],
       scrollHeight = textarea.scrollHeight;
-      console.log(textarea);
     if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
   },[mainNote])
 
 
 
-  useEffect(() => {
-    console.log("imageUpdated");
-    console.log(imageUpdated);
-  }, [imageUpdated]);
 
   // for SubNotes if updating note
   useEffect(() => {
@@ -54,8 +44,6 @@ function NoteForm(props) {
   }, []);
 
   useEffect(() => {
-    console.log(imageFile);
-    // imageBlob = new Blob(imageFile),
     if (imageFile) {
       let imageUrl = URL.createObjectURL(imageFile);
       setImageUpdated(true);
@@ -64,18 +52,14 @@ function NoteForm(props) {
   }, [imageFile]);
 
   useEffect(() => {
-    console.log(imageSrc);
     if (note && note.image) getImage();
   }, []);
 
   function getImage() {
     Storage.get(note.image.replace("public/", ""))
-      .then(res => {
-        console.log("image res");
-        console.log(res);
-        setImageSrc(res);
-      })
+      .then(setImageSrc)
       .catch(err => {
+        alert(err);
         console.log(err);
       });
   }
@@ -132,7 +116,6 @@ function NoteForm(props) {
 
   function prepNote() {
     setSubmitting(true);
-    console.log("prepNote");
     let noteValues = {
       username: user.username,
       mainNote: mainNote ? mainNote.trim() : false,
@@ -146,14 +129,14 @@ function NoteForm(props) {
 
     if (note && note.image && !imageUpdated) noteValues.image = note.image;
     // for subNotes
-    console.log("noteValues");
-    console.log(noteValues);
+    // console.log("noteValues");
+    // console.log(noteValues);
     // [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
     //   noteElement => {
     //     noteValues.subnotes.push(noteElement.value);
     //   }
     // );
-    console.log(note);
+    // console.log(note);
     !note ? postNote(noteValues) : updateNote(noteValues);
   }
 
