@@ -6,20 +6,18 @@ import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function NoteTable() {
   let [columnHeaders, setColumnHeaders] = useState([]),
-    [tableRows, setTableRows] = useState([]);
+    [dataRows, setDataRows] = useState([]);
   useEffect(() => {
-    updateTable("add", "column");
+    addColumn()
   }, []);
   useEffect(() => {
     console.log("columnHeaders");
     console.log(columnHeaders);
-    lastTR();
   }, [columnHeaders]);
   useEffect(() => {
-    console.log("tableRows");
-    console.log(tableRows);
-    lastTR();
-  }, [tableRows]);
+    console.log("dataRows");
+    console.log(dataRows);
+  }, [dataRows]);
   return (
     <div className="note-table-component">
       <table className="nt-table">
@@ -39,21 +37,18 @@ export default function NoteTable() {
               );
             })}
             <th className="nt-th">
-              <button
-                type="button"
-                onClick={() => updateTable("add", "column")}
-              >
+              <button type="button" onClick={addColumn}>
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </th>
           </tr>
         </thead>
         <tbody>
-          {tableRows.map((tr, ind) => {
+          {dataRows.map((tr, ind) => {
             return (
               <tr key={`dr-${ind}`}>
                 <td>
-                  <button>hey</button>
+                  <button type="button" onClick={e=>removeRow(ind)}>X</button>
                 </td>
                 {tr.map((t, i) => {
                   return (
@@ -94,14 +89,51 @@ export default function NoteTable() {
     </div>
   );
 
-  function lastTR() {
-    let tr = Array(columnHeaders.length).fill("");
+  function addColumn() {
+    let clone = columnHeaders.slice(),
+    id = clone.length === 0 ? 0 + "" : +clone[clone.length - 1].id + 1 + "";
+    clone.push({
+      inputValue: "",
+      id: id
+    });
+    console.log(clone);
+    setColumnHeaders(clone);
+    function updateDataRows(){}
+  }
+
+  function removeColumn(indexToRemove) {
+    let clone = columnHeaders.slice();
+    clone.splice(indexToRemove,1);
+    setColumnHeaders(clone);
+  }
+
+  function addRow() {
+    let clone = dataRows.slice(),
+      row = [
+      ...Array(columnHeaders.length)
+        .fill("")
+        .map((v, i) => {
+          return {
+            inputValue: "",
+            id: i
+          };
+        })
+    ];
+    clone.push(row);
+    setDataRows(clone)
+
+  }
+
+  function removeRow(indexToRemove) {
+    let clone = dataRows.slice();
+    clone.splice(indexToRemove,1);
+    setDataRows(clone);
   }
 
   function updateTable(method, colOrRow, elementIndex = null) {
     let isColumn = colOrRow === "column" ? true : false,
-      array = isColumn ? columnHeaders : tableRows,
-      setArray = isColumn ? setColumnHeaders : setTableRows,
+      array = isColumn ? columnHeaders : dataRows,
+      setArray = isColumn ? setColumnHeaders : setDataRows,
       list = array.slice(),
       methodFunc = method === "add" ? add : remove,
       methodFuncParams = method === "add" ? [list] : [list, elementIndex],
@@ -117,11 +149,7 @@ export default function NoteTable() {
       return arr;
     }
     function addColumn() {
-      return {
-        inputValue: "",
-        id: id,
-        setArray: setArray
-      };
+      return;
     }
     function addRow() {
       return [
