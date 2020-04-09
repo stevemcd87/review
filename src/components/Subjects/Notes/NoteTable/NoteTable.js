@@ -70,12 +70,12 @@ export default function NoteTable({setTable}) {
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </td>
-            {columnHeaders.map((v, i) => {
+            {columnHeaders.map((v, i, a) => {
               return (
                 <td key={i}>
                   <button
                     type="button"
-                    disabled={i === 0}
+                    disabled={a.length === 1 && i === 0}
                     onClick={() => removeColumn(i)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
@@ -98,13 +98,38 @@ export default function NoteTable({setTable}) {
     });
     console.log(clone);
     setColumnHeaders(clone);
-    function updateDataRows(){}
+    updateDataRows();
+
+  }
+
+  function updateDataRows(indexToRemove=null){
+    let dataRowsClone = dataRows.slice(),
+      updateDataRows = indexToRemove ? removeDataColumn() : addDataColumn();
+    setDataRows(updateDataRows);
+
+    function removeDataColumn(){
+      return dataRowsClone.map((dr)=>{
+        dr.splice(indexToRemove,1);
+        return dr
+      })
+    }
+    function addDataColumn(){
+      return dataRowsClone.map((v,i)=>{
+        v.push({
+          inputValue: "",
+          id:  i + "-" + columnHeaders.length
+        })
+        return v
+      })
+    }
   }
 
   function removeColumn(indexToRemove) {
-    let clone = columnHeaders.slice();
-    clone.splice(indexToRemove,1);
-    setColumnHeaders(clone);
+    let columnHeadersClone = columnHeaders.slice(),
+      dataRowsClone = dataRows.slice();
+    columnHeadersClone.splice(indexToRemove,1);
+    setColumnHeaders(columnHeadersClone);
+    updateDataRows(indexToRemove);
   }
 
   function updateColumn(id, inputValue){
@@ -148,19 +173,6 @@ export default function NoteTable({setTable}) {
 }
 
 function TableData({ inputValue, id, updateTableData }) {
-  let previewSpan = useRef();
-    // [preview, setPreview] = useState(inputValue);
-  // useEffect(()=>{
-  //   console.log(previewSpan);
-  //
-  //   if (m && m[0]) {
-  //     previewSpan.current.innerHTML = inputValue
-  //   } else {
-  //     previewSpan.current.innerHTML = ""
-  //   }
-  //
-  //
-  // },[inputValue])
   return (
     <>
       <input
@@ -179,9 +191,11 @@ function TableData({ inputValue, id, updateTableData }) {
 function Preview ({val}){
   let [prev, setPrev] = useState(),
     [sup, setSup] = useState();
+
   useEffect(()=>{
     setSup(val.match(/(?<=<sup>).*(?=<\/sup>)/));
   },[val])
+
   useEffect(()=>{
     if(sup){
       setPrev(val.replace(/<sup>.*<\/sup>/, ""))
@@ -189,6 +203,7 @@ function Preview ({val}){
       setPrev(null)
     }
   },[sup])
+
   return (
     <span>{prev}<sup>{sup}</sup></span>
   )
