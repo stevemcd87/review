@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./NoteTable.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function NoteTable() {
   let [columnHeaders, setColumnHeaders] = useState([]),
@@ -11,15 +11,22 @@ export default function NoteTable() {
     updateTable("add", "column");
   }, []);
   useEffect(() => {
+    console.log("columnHeaders");
     console.log(columnHeaders);
     lastTR();
   }, [columnHeaders]);
+  useEffect(() => {
+    console.log("tableRows");
+    console.log(tableRows);
+    lastTR();
+  }, [tableRows]);
   return (
     <div className="note-table-component">
       <table className="nt-table">
         <caption>Table</caption>
         <thead className="nt-thead">
           <tr className="nt-thead-tr">
+            <th className="nt-th">{""}</th>
             {columnHeaders.map(ch => {
               return (
                 <th key={ch.id} className="nt-th">
@@ -42,14 +49,42 @@ export default function NoteTable() {
           </tr>
         </thead>
         <tbody>
+          {tableRows.map((tr, ind) => {
+            return (
+              <tr key={`dr-${ind}`}>
+                <td>
+                  <button>hey</button>
+                </td>
+                {tr.map((t, i) => {
+                  return (
+                    <td key={"dr-" + ind + "-" + i}>
+                      <TableData
+                        id={t.id}
+                        inputValue={t.inputValue}
+                        updateTableData={updateTableData}
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
           <tr className="nt-tr-last">
+            <td>
+              <button type="button" onClick={() => updateTable("add", "row")}>
+                <FontAwesomeIcon icon={faPlus} />
+              </button>
+            </td>
             {columnHeaders.map((v, i) => {
               return (
                 <td key={i}>
                   <button
                     type="button"
+                    disabled={i === 0}
                     onClick={() => updateTable("remove", "column", i)}
-                  >X</button>
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
                 </td>
               );
             })}
@@ -61,7 +96,6 @@ export default function NoteTable() {
 
   function lastTR() {
     let tr = Array(columnHeaders.length).fill("");
-    console.log(tr);
   }
 
   function updateTable(method, colOrRow, elementIndex = null) {
@@ -74,16 +108,33 @@ export default function NoteTable() {
       id = list.length === 0 ? 0 + "" : +list[list.length - 1].id + 1 + "";
     setArray(methodFunc(...methodFuncParams));
     function add(arr) {
-      arr.push({
-        inputValue: "",
-        id: id,
-        setColumnHeaders: setColumnHeaders
-      });
+      arr.push(isColumn ? addColumn() : addRow());
+      console.log(arr);
       return arr;
     }
     function remove(arr, indexToRemove) {
       arr.splice(indexToRemove, 1);
       return arr;
+    }
+    function addColumn() {
+      return {
+        inputValue: "",
+        id: id,
+        setArray: setArray
+      };
+    }
+    function addRow() {
+      return [
+        ...Array(columnHeaders.length)
+          .fill("")
+          .map((v, i) => {
+            return {
+              inputValue: "",
+              id: i,
+              setArray: setArray
+            };
+          })
+      ];
     }
   }
 
