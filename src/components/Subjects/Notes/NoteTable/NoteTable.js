@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./NoteTable.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function NoteTable() {
+export default function NoteTable({setTable}) {
   let [columnHeaders, setColumnHeaders] = useState([]),
     [dataRows, setDataRows] = useState([]);
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function NoteTable() {
             return (
               <tr key={`dr-${ind}`}>
                 <td>
-                  <button type="button" onClick={e=>removeRow(ind)}>X</button>
+                  <button type="button" onClick={e=>removeDataRow(ind)}>X</button>
                 </td>
                 {tr.map((t, i) => {
                   return (
@@ -56,7 +56,7 @@ export default function NoteTable() {
                       <TableData
                         id={t.id}
                         inputValue={t.inputValue}
-                        updateTableData={updateRow}
+                        updateTableData={updateDataRowInput}
                       />
                     </td>
                   );
@@ -66,7 +66,7 @@ export default function NoteTable() {
           })}
           <tr className="nt-tr-last">
             <td>
-              <button type="button" onClick={addRow}>
+              <button type="button" onClick={addDataRow}>
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </td>
@@ -115,7 +115,7 @@ export default function NoteTable() {
   }
 
 
-  function addRow() {
+  function addDataRow() {
     let clone = dataRows.slice(),
       row = [
       ...Array(columnHeaders.length)
@@ -131,13 +131,13 @@ export default function NoteTable() {
     setDataRows(clone)
   }
 
-  function removeRow(indexToRemove) {
+  function removeDataRow(indexToRemove) {
     let clone = dataRows.slice();
     clone.splice(indexToRemove,1);
     setDataRows(clone);
   }
 
-  function updateRow(id, inputValue){
+  function updateDataRowInput(id, inputValue){
     let clone = dataRows.slice(),
       indexes = id.split('-'),
       row = +indexes[0],
@@ -145,10 +145,22 @@ export default function NoteTable() {
     clone[row][column].inputValue = inputValue;
     setDataRows(clone);
   }
-
 }
 
 function TableData({ inputValue, id, updateTableData }) {
+  let previewSpan = useRef();
+    // [preview, setPreview] = useState(inputValue);
+  // useEffect(()=>{
+  //   console.log(previewSpan);
+  //
+  //   if (m && m[0]) {
+  //     previewSpan.current.innerHTML = inputValue
+  //   } else {
+  //     previewSpan.current.innerHTML = ""
+  //   }
+  //
+  //
+  // },[inputValue])
   return (
     <>
       <input
@@ -157,8 +169,27 @@ function TableData({ inputValue, id, updateTableData }) {
         className="nt-input"
         onChange={e => updateTableData(id, e.target.value)}
         spellCheck={true}
-        aria-label={inputValue + " input"}
+        aria-label={id}
       />
-    </>
+    <Preview val={inputValue}/>
+  </>
   );
+}
+
+function Preview ({val}){
+  let [prev, setPrev] = useState(),
+    [sup, setSup] = useState();
+  useEffect(()=>{
+    setSup(val.match(/(?<=<sup>).*(?=<\/sup>)/));
+  },[val])
+  useEffect(()=>{
+    if(sup){
+      setPrev(val.replace(/<sup>.*<\/sup>/, ""))
+    } else {
+      setPrev(null)
+    }
+  },[sup])
+  return (
+    <span>{prev}<sup>{sup}</sup></span>
+  )
 }
