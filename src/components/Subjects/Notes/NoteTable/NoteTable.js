@@ -31,7 +31,7 @@ export default function NoteTable() {
                   <TableData
                     id={ch.id}
                     inputValue={ch.inputValue}
-                    updateTableData={updateTableData}
+                    updateTableData={updateColumn}
                   />
                 </th>
               );
@@ -52,11 +52,11 @@ export default function NoteTable() {
                 </td>
                 {tr.map((t, i) => {
                   return (
-                    <td key={"dr-" + ind + "-" + i}>
+                    <td key={t.id}>
                       <TableData
                         id={t.id}
                         inputValue={t.inputValue}
-                        updateTableData={updateTableData}
+                        updateTableData={updateRow}
                       />
                     </td>
                   );
@@ -66,7 +66,7 @@ export default function NoteTable() {
           })}
           <tr className="nt-tr-last">
             <td>
-              <button type="button" onClick={() => updateTable("add", "row")}>
+              <button type="button" onClick={addRow}>
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </td>
@@ -76,7 +76,7 @@ export default function NoteTable() {
                   <button
                     type="button"
                     disabled={i === 0}
-                    onClick={() => updateTable("remove", "column", i)}
+                    onClick={() => removeColumn(i)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
@@ -107,6 +107,14 @@ export default function NoteTable() {
     setColumnHeaders(clone);
   }
 
+  function updateColumn(id, inputValue){
+    let clone = columnHeaders.slice(),
+      index = clone.findIndex(ch=>ch.id === id);
+    clone[index].inputValue = inputValue;
+    setColumnHeaders(clone);
+  }
+
+
   function addRow() {
     let clone = dataRows.slice(),
       row = [
@@ -115,13 +123,12 @@ export default function NoteTable() {
         .map((v, i) => {
           return {
             inputValue: "",
-            id: i
+            id: clone.length  + "-" + i
           };
         })
     ];
     clone.push(row);
     setDataRows(clone)
-
   }
 
   function removeRow(indexToRemove) {
@@ -130,48 +137,15 @@ export default function NoteTable() {
     setDataRows(clone);
   }
 
-  function updateTable(method, colOrRow, elementIndex = null) {
-    let isColumn = colOrRow === "column" ? true : false,
-      array = isColumn ? columnHeaders : dataRows,
-      setArray = isColumn ? setColumnHeaders : setDataRows,
-      list = array.slice(),
-      methodFunc = method === "add" ? add : remove,
-      methodFuncParams = method === "add" ? [list] : [list, elementIndex],
-      id = list.length === 0 ? 0 + "" : +list[list.length - 1].id + 1 + "";
-    setArray(methodFunc(...methodFuncParams));
-    function add(arr) {
-      arr.push(isColumn ? addColumn() : addRow());
-      console.log(arr);
-      return arr;
-    }
-    function remove(arr, indexToRemove) {
-      arr.splice(indexToRemove, 1);
-      return arr;
-    }
-    function addColumn() {
-      return;
-    }
-    function addRow() {
-      return [
-        ...Array(columnHeaders.length)
-          .fill("")
-          .map((v, i) => {
-            return {
-              inputValue: "",
-              id: i,
-              setArray: setArray
-            };
-          })
-      ];
-    }
+  function updateRow(id, inputValue){
+    let clone = dataRows.slice(),
+      indexes = id.split('-'),
+      row = +indexes[0],
+      column = +indexes[1]
+    clone[row][column].inputValue = inputValue;
+    setDataRows(clone);
   }
 
-  function updateTableData(id, inputValue) {
-    let tcs = columnHeaders.slice(),
-      tcIndex = tcs.findIndex(tc => tc.id === id);
-    tcs[tcIndex].inputValue = inputValue;
-    setColumnHeaders(tcs);
-  }
 }
 
 function TableData({ inputValue, id, updateTableData }) {
