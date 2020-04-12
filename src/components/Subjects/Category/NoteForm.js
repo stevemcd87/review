@@ -80,7 +80,7 @@ function NoteForm(props) {
           />
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <NoteTable setTableData={setNoteTable} tableData={noteTable} />
+        <NoteTable setTableData={setNoteTable}  />
         <div className="main-note" ref={mainNoteDiv}>
           <Markdown
             textarea={true}
