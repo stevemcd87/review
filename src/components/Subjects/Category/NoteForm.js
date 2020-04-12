@@ -25,17 +25,15 @@ function NoteForm(props) {
     { getCategoryNotes } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
 
-  useEffect(() => {
-  }, [imageFile]);
+  useEffect(() => {}, [imageFile]);
 
-  useEffect(()=>{
-    let textarea = mainNoteDiv.current.getElementsByClassName("markdown-textarea")[0],
+  useEffect(() => {
+    let textarea = mainNoteDiv.current.getElementsByClassName(
+        "markdown-textarea"
+      )[0],
       scrollHeight = textarea.scrollHeight;
     if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
-  },[mainNote])
-
-
-
+  }, [mainNote]);
 
   // for SubNotes if updating note
   useEffect(() => {
@@ -80,7 +78,10 @@ function NoteForm(props) {
           />
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <NoteTable setTableData={setNoteTable}  />
+        <NoteTable
+          setTableData={setNoteTable}
+          tableData={note && note.noteTable ? note.noteTable : null}
+        />
         <div className="main-note" ref={mainNoteDiv}>
           <Markdown
             textarea={true}

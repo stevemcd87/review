@@ -1,10 +1,15 @@
 .note-table-component {
   overflow-y: hidden;
   overflow-y: auto;
+  margin: 0 auto;
+}
+
+.nt-table{
+  margin: 0 auto;
 }
 
 .nt-th, .nt-td {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   /* width: 75px; */
   /* border-collapse: collapse; */
 }

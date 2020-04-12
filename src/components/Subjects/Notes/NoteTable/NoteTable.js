@@ -9,15 +9,23 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
     [dataRows, setDataRows] = useState([]),
     updatable = setTableData ? true : false;
   useEffect(() => {
+
     if (tableData) {
       setColumnHeaders(tableData.columnHeaders);
       setDataRows(tableData.dataRows);
     }
   }, []);
   useEffect(() => {
-    if (setTableData)
+    console.log(columnHeaders);
+    if (setTableData){
+      console.log(columnHeaders);
       setTableData({ columnHeaders: columnHeaders, dataRows: dataRows });
+    }
   }, [columnHeaders, dataRows]);
+
+  useEffect(() => {
+    console.log(tableData);
+  }, [tableData]);
 
   return (
     <div className="note-table-component">

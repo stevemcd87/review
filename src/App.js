@@ -49,7 +49,8 @@ function App() {
       authState === "signUp" ||
       authState === "confirmSignUp" ||
       authState === "signedUp" ||
-      authState === "signIn"
+      authState === "signIn" ||
+      authState === "forgotPassword"
         ? false
         : true;
     setHideDefault(hd);
@@ -58,6 +59,9 @@ function App() {
   useEffect(() => {
     getRepoIssues();
   }, []);
+  useEffect(()=>{
+    console.log(authState);
+  },[authState])
 
   // <button id="bug-icon" type="button" onClick={()=>setDisplayBugComponent(!displayBugComponent)}>
   //   <FontAwesomeIcon icon={faBug} color="red" size="2x" />
