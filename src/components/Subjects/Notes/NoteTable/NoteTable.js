@@ -4,30 +4,33 @@ import "./NoteTable.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function NoteTable({ setTable }) {
+export default function NoteTable({ setTableData, tableData }) {
   let [columnHeaders, setColumnHeaders] = useState([]),
-    [dataRows, setDataRows] = useState([]);
+    [dataRows, setDataRows] = useState([]),
+    updatable = setTableData ? true : false;
   useEffect(() => {
-    addColumn();
+    if (tableData) {
+      setColumnHeaders(tableData.columnHeaders);
+      setDataRows(tableData.dataRows);
+    }
+    //
   }, []);
   useEffect(() => {
-    console.log("columnHeaders");
-    console.log(columnHeaders);
-    // checkTableIds("ch", columnHeaders);
-  }, [columnHeaders]);
+    if (setTableData)
+      setTableData({ columnHeaders: columnHeaders, dataRows: dataRows });
+  }, [columnHeaders, dataRows]);
 
   useEffect(() => {
-    // checkTableIds("dr", dataRows);
-    console.log("dataRows");
-    console.log(dataRows);
-  }, [dataRows]);
+    console.log("tableData");
+    console.log(tableData);
+  }, [tableData]);
   return (
     <div className="note-table-component">
       <table className="nt-table">
         <caption>Table</caption>
         <thead className="nt-thead">
           <tr className="nt-thead-tr">
-            <th className="nt-th">{""}</th>
+            {updatable && <th className="nt-th">{""}</th>}
             {columnHeaders.map(ch => {
               return (
                 <th key={ch.id} className="nt-th">
@@ -35,26 +38,31 @@ export default function NoteTable({ setTable }) {
                     id={ch.id}
                     inputValue={ch.inputValue}
                     updateTableData={updateColumn}
+                    updatable={updatable}
                   />
                 </th>
               );
             })}
-            <th className="nt-th">
-              <button type="button" onClick={addColumn}>
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-            </th>
+            {updatable && (
+              <th className="nt-th">
+                <button type="button" onClick={addColumn}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
           {dataRows.map((tr, ind) => {
             return (
               <tr key={`dr-${ind}`}>
-                <td>
-                  <button type="button" onClick={e => removeDataRow(ind)}>
-                    X
-                  </button>
-                </td>
+                {updatable && (
+                  <td>
+                    <button type="button" onClick={e => removeDataRow(ind)}>
+                      X
+                    </button>
+                  </td>
+                )}
                 {tr.map((t, i) => {
                   return (
                     <td key={t.id}>
@@ -62,6 +70,7 @@ export default function NoteTable({ setTable }) {
                         id={t.id}
                         inputValue={t.inputValue}
                         updateTableData={updateDataRowInput}
+                        updatable={updatable}
                       />
                     </td>
                   );
@@ -70,81 +79,32 @@ export default function NoteTable({ setTable }) {
             );
           })}
           <tr className="nt-tr-last">
-            <td>
-              <button type="button" onClick={addDataRow}>
-                <FontAwesomeIcon icon={faPlus} />
-              </button>
-            </td>
-            {columnHeaders.map((v, i, a) => {
-              return (
-                <td key={i}>
-                  <button
-                    type="button"
-                    disabled={a.length === 1 && i === 0}
-                    onClick={() => removeColumn(v.id)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              );
-            })}
+            {updatable && (
+              <td>
+                <button type="button" onClick={addDataRow}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </td>
+            )}
+            {updatable &&
+              columnHeaders.map((v, i, a) => {
+                return (
+                  <td key={i}>
+                    <button
+                      type="button"
+                      disabled={a.length === 1 && i === 0}
+                      onClick={() => removeColumn(v.id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </td>
+                );
+              })}
           </tr>
         </tbody>
       </table>
     </div>
   );
-
-  function checkTableIds(str, arr) {
-    switch (str) {
-      case "ch":
-      console.log("isCHValidbefore");
-      console.log(isCHValid());
-        if (!isCHValid()) updateCH();
-        console.log("isCHValidafter");
-        console.log(isCHValid());
-        break;
-      case "dr":
-        console.log("isDRValidbefore");
-        console.log(isDRValid());
-        if (!isDRValid()) updateDRIds();
-        console.log("isDRValid after");
-        console.log(isDRValid());
-        break;
-      default:
-        alert("wrong parameter");
-    }
-
-    function isCHValid() {
-      return arr.every((c, i) => +c.id === i);
-    }
-    function isDRValid() {
-      return arr.every((r, ri) => r.every((d, di) => d.id === `${ri}-${di}`));
-    }
-
-    function updateDRIds() {
-      console.log("updated DR");
-      let updated = arr.slice().map((r, ri) => {
-        return r.map((d, di) => {
-          d.id = `${ri}-${di}`;
-          return d;
-        });
-      });
-
-      console.log(updated);
-      setDataRows(updated);
-    }
-
-    function updateCH() {
-      console.log("updated CH");
-      let updated = arr.slice().map((v, i) => {
-        v.id = i;
-        return v;
-      });
-
-      console.log(updated);
-      setColumnHeaders(updated);
-    }
-  }
 
   function addColumn() {
     let clone = columnHeaders.slice(),
@@ -162,10 +122,7 @@ export default function NoteTable({ setTable }) {
     console.log("chIdToRemove");
     console.log(chIdToRemove);
     let dataRowsClone = dataRows.slice(),
-      updated =
-        chIdToRemove
-          ? removeDataColumn()
-          : addDataColumn();
+      updated = chIdToRemove ? removeDataColumn() : addDataColumn();
     console.log("ch");
     console.log(ch);
     console.log(updated);
@@ -176,8 +133,8 @@ export default function NoteTable({ setTable }) {
       console.log(dataRowsClone);
       return dataRowsClone.map(dr => {
         console.log(dr);
-        let u =dr.filter((d)=>!d.id.endsWith(chIdToRemove));
-        return u
+        let u = dr.filter(d => !d.id.endsWith(chIdToRemove));
+        return u;
       });
     }
     function addDataColumn() {
@@ -185,7 +142,7 @@ export default function NoteTable({ setTable }) {
       return dataRowsClone.filter((v, i) => {
         v.push({
           inputValue: "",
-          id: Date.now() + "-" + i + "-" + ch[ch.length-1].id
+          id: Date.now() + "-" + i + "-" + ch[ch.length - 1].id
         });
         return v;
       });
@@ -194,12 +151,12 @@ export default function NoteTable({ setTable }) {
 
   function removeColumn(idToRemove) {
     console.log("remove column");
-    let updatedCH = columnHeaders.filter(v=>v.id !== idToRemove),
+    let updatedCH = columnHeaders.filter(v => v.id !== idToRemove),
       dataRowsClone = dataRows.slice();
-      // idRemoved = updatedCH.splice(indexToRemove, 1)[0].id;
-      console.log("idToRemove");
-      console.log(idToRemove);
-      // console.log(updatedCH.splice(indexToRemove, 1));
+    // idRemoved = updatedCH.splice(indexToRemove, 1)[0].id;
+    console.log("idToRemove");
+    console.log(idToRemove);
+    // console.log(updatedCH.splice(indexToRemove, 1));
     // if (indexToRemove !== columnHeaders.length - 1) {
     //   let updated = updateIds(updatedCH, dataRowsClone);
     //   updatedCH = updated.newCH;
@@ -224,7 +181,7 @@ export default function NoteTable({ setTable }) {
           .map((v, i) => {
             return {
               inputValue: "",
-              id: Date.now() + "-"+ i + "-" + columnHeaders[i].id
+              id: Date.now() + "-" + i + "-" + columnHeaders[i].id
             };
           })
       ];
@@ -242,29 +199,32 @@ export default function NoteTable({ setTable }) {
     console.log("updateDataRowInput");
     let clone = dataRows.slice(),
       input;
-      clone.find((val)=>{
-        input = val.find(v=> v.id=== id)
-        return input
+    clone.find(val => {
+      input = val.find(v => v.id === id);
+      return input;
     });
-      // indexes = id.split("-"),
-      // row = +indexes[0],
-      // column = +indexes[1];
+    // indexes = id.split("-"),
+    // row = +indexes[0],
+    // column = +indexes[1];
     input.inputValue = inputValue;
     setDataRows(clone);
   }
 }
 
-function TableData({ inputValue, id, updateTableData }) {
+function TableData({ inputValue, id, updateTableData, updatable }) {
   return (
     <>
-      <input
-        type="text"
-        defaultValue={inputValue}
-        className="nt-input"
-        onChange={e => updateTableData(id, e.target.value)}
-        spellCheck={true}
-        aria-label={id}
-      />
+      {updatable && (
+        <input
+          type="text"
+          defaultValue={inputValue}
+          className="nt-input"
+          onChange={e => updateTableData(id, e.target.value)}
+          spellCheck={true}
+          aria-label={id}
+          disabled={!updatable}
+        />
+      )}
       <Preview val={inputValue} />
     </>
   );
@@ -276,13 +236,14 @@ function Preview({ val }) {
 
   useEffect(() => {
     setSup(val.match(/(?<=<sup>).*(?=<\/sup>)/));
+    setPrev(val);
   }, [val]);
 
   useEffect(() => {
     if (sup) {
       setPrev(val.replace(/<sup>.*<\/sup>/, ""));
     } else {
-      setPrev(null);
+      setPrev(val);
     }
   }, [sup]);
 

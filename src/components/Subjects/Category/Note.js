@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import NoteForm from "./NoteForm";
+import NoteTable from "../Notes/NoteTable/NoteTable";
 import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
@@ -24,6 +25,7 @@ function Note(props) {
   }, []);
 
   useEffect(() => {
+    console.log(note);
     setDisplayForm(false);
     if (note.image) getImage();
     // .then(() => setImageLoading(false))
@@ -125,6 +127,7 @@ function Note(props) {
                 </button>
               </div>
             )}
+            {note.noteTable && <NoteTable tableData={note.noteTable}/>}
 
             {note.image && <img src={imageSrc} />}
             <Markdown

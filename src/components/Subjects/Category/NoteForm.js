@@ -15,6 +15,7 @@ function NoteForm(props) {
     [imageSrc, setImageSrc] = useState(),
     [imageFile, setImageFile] = useState(),
     [imageUpdated, setImageUpdated] = useState(false),
+    [noteTable, setNoteTable] = useState(note ? note.noteTable : {}),
     [mainNote, setMainNote] = useState(note ? note.mainNote : ""),
     [audioBlob, setAudioBlob] = useState(),
     [audioNoteUpdated, setAudioNoteUpdated] = useState(false),
@@ -79,7 +80,7 @@ function NoteForm(props) {
           />
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <NoteTable />
+        <NoteTable setTableData={setNoteTable} tableData={noteTable} />
         <div className="main-note" ref={mainNoteDiv}>
           <Markdown
             textarea={true}
@@ -119,7 +120,7 @@ function NoteForm(props) {
     let noteValues = {
       username: user.username,
       mainNote: mainNote ? mainNote.trim() : false,
-      // subnotes: [],
+      noteTable: noteTable,
       audioNote: audioBlob ? true : false,
       image: imageFile ? true : false
     };
