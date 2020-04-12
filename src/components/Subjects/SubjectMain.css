@@ -75,7 +75,7 @@
 .form-component textarea {
   background-color: inherit;
   width: 100% ;
-  min-height: 100px;
+  min-height: 50px;
   height: 100%;
   margin: 0 auto ;
 

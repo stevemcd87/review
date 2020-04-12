@@ -5,13 +5,14 @@
 
 .nt-th, .nt-td {
   border: 1px solid black;
+  /* width: 75px; */
   /* border-collapse: collapse; */
 }
 
-.nt-th {
-  width:60px;
-}
 
-.nt-input {
-  width:50px;
+.note-table-component textarea.nt-textarea,
+.preview {
+  min-width:75px ;
+  max-width: 125px;
+  margin: 0;
 }

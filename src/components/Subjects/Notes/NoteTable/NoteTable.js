@@ -4,7 +4,7 @@ import "./NoteTable.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function NoteTable({ setTableData, tableData }) {
+export default function NoteTable({ setTableData, tableData, tableCaption }) {
   let [columnHeaders, setColumnHeaders] = useState([]),
     [dataRows, setDataRows] = useState([]),
     updatable = setTableData ? true : false;
@@ -13,21 +13,16 @@ export default function NoteTable({ setTableData, tableData }) {
       setColumnHeaders(tableData.columnHeaders);
       setDataRows(tableData.dataRows);
     }
-    //
   }, []);
   useEffect(() => {
     if (setTableData)
       setTableData({ columnHeaders: columnHeaders, dataRows: dataRows });
   }, [columnHeaders, dataRows]);
 
-  useEffect(() => {
-    console.log("tableData");
-    console.log(tableData);
-  }, [tableData]);
   return (
     <div className="note-table-component">
       <table className="nt-table">
-        <caption>Table</caption>
+        {tableCaption && <caption>{tableCaption}</caption>}
         <thead className="nt-thead">
           <tr className="nt-thead-tr">
             {updatable && <th className="nt-th">{""}</th>}
@@ -57,7 +52,7 @@ export default function NoteTable({ setTableData, tableData }) {
             return (
               <tr key={`dr-${ind}`}>
                 {updatable && (
-                  <td>
+                  <td className="nt-td">
                     <button type="button" onClick={e => removeDataRow(ind)}>
                       X
                     </button>
@@ -65,7 +60,7 @@ export default function NoteTable({ setTableData, tableData }) {
                 )}
                 {tr.map((t, i) => {
                   return (
-                    <td key={t.id}>
+                    <td key={t.id} className="nt-td">
                       <TableData
                         id={t.id}
                         inputValue={t.inputValue}
@@ -80,7 +75,7 @@ export default function NoteTable({ setTableData, tableData }) {
           })}
           <tr className="nt-tr-last">
             {updatable && (
-              <td>
+              <td className="nt-td">
                 <button type="button" onClick={addDataRow}>
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
@@ -89,7 +84,7 @@ export default function NoteTable({ setTableData, tableData }) {
             {updatable &&
               columnHeaders.map((v, i, a) => {
                 return (
-                  <td key={i}>
+                  <td key={v.id} className="nt-td">
                     <button
                       type="button"
                       disabled={a.length === 1 && i === 0}
@@ -105,6 +100,8 @@ export default function NoteTable({ setTableData, tableData }) {
       </table>
     </div>
   );
+
+
 
   function addColumn() {
     let clone = columnHeaders.slice(),
@@ -215,14 +212,12 @@ function TableData({ inputValue, id, updateTableData, updatable }) {
   return (
     <>
       {updatable && (
-        <input
-          type="text"
+        <textarea
           defaultValue={inputValue}
-          className="nt-input"
+          className="nt-textarea"
           onChange={e => updateTableData(id, e.target.value)}
           spellCheck={true}
           aria-label={id}
-          disabled={!updatable}
         />
       )}
       <Preview val={inputValue} />
@@ -231,26 +226,26 @@ function TableData({ inputValue, id, updateTableData, updatable }) {
 }
 
 function Preview({ val }) {
-  let [prev, setPrev] = useState(),
+  let [preview, setPreview] = useState(),
     [sup, setSup] = useState();
 
   useEffect(() => {
     setSup(val.match(/(?<=<sup>).*(?=<\/sup>)/));
-    setPrev(val);
+    setPreview(val);
   }, [val]);
 
   useEffect(() => {
     if (sup) {
-      setPrev(val.replace(/<sup>.*<\/sup>/, ""));
+      setPreview(val.replace(/<sup>.*<\/sup>/, ""));
     } else {
-      setPrev(val);
+      setPreview(val);
     }
   }, [sup]);
 
   return (
-    <span>
-      {prev}
+    <p className="preview">
+      {preview}
       <sup>{sup}</sup>
-    </span>
+  </p>
   );
 }
