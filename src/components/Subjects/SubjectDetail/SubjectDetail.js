@@ -21,9 +21,9 @@ function SubjectDetail() {
     [displayCategoryForm, setDisplayCategoryForm] = useState(false);
   // { subject } = useContext(SubjectContext);
   useEffect(() => {
-    let isSubsribed = true;
+    // let isSubsribed = true;
     getSubject().then(res => {
-      if (isSubsribed) {
+      // if (isSubsribed) {
         // setSubject(res[0]);
         // let c = res.slice(1).map(v => {
         //   let urlName = v.pathName.split("#")[1].split("_")[1];
@@ -37,9 +37,9 @@ function SubjectDetail() {
         // });
         // setCategories(c);
         setIsLoading(false);
-      }
+      // }
     });
-    return () => (isSubsribed = false);
+    // return () => (isSubsribed = false);
   }, []);
 
   useEffect(() => {

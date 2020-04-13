@@ -87,9 +87,8 @@ export default function CategoryListDetail(props) {
 
   async function deleteCategory() {
     console.log("deleteCategory");
-    return await API.del("StuddieBuddie", `/subjects/${subject.pathName}`, {
+    return await API.del("StuddieBuddie", `/users/${username}/subjects/${subjectName}/categories/${category.name}`, {
       body: JSON.stringify({
-        username: username,
         pathName: category.pathName
       }),
       headers: {

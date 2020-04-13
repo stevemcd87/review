@@ -64,6 +64,7 @@ export default function SubjectForm(props) {
       // Appends pathName for updates
       resourcePath += `/${subject.pathName}`;
     }
+    console.log(resourcePath);
     // Validates form inputs
     if (!startWithLetter(name) || !startWithLetter(desc))
       return alert("Name and Description must begin with a letter");

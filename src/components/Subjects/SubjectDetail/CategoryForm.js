@@ -13,7 +13,7 @@ export default function CategoryForm(props) {
     [submitting, setSubmitting] = useState(false);
   return (
     <div className="form-component">
-      <form >
+      <form>
         <label>
           <span>Category Name</span>
           <textarea
@@ -24,21 +24,15 @@ export default function CategoryForm(props) {
             disabled={category && category.name ? true : false}
           />
         </label>
-
-      <label>
-        <span>Category Description</span>
-        <textarea
-          onChange={e => setCategoryDesc(e.target.value)}
-          defaultValue={categoryDesc}
-          placeholder="Category Description"
-        />
-      </label>
-
-        <button
-          disabled={submitting}
-          type="button"
-          onClick={() => (!category ? postCategory() : updateCategory())}
-        >
+        <label>
+          <span>Category Description</span>
+          <textarea
+            onChange={e => setCategoryDesc(e.target.value)}
+            defaultValue={categoryDesc}
+            placeholder="Category Description"
+          />
+        </label>
+        <button disabled={submitting} type="button" onClick={submitForm}>
           {!submitting ? "submit" : "submitting"}
         </button>
       </form>
@@ -52,6 +46,55 @@ export default function CategoryForm(props) {
       ? true
       : false;
   }
+
+  async function submitForm() {
+    // initially assumes user is creating subject
+    let apiMethod = "post",
+      // path for backend api
+      resourcePath = `/users/${user.username}/subjects/${subjectName}/categories`;
+    // subject being passed via props signifies update
+    if (category) {
+      // Updates api method to update
+      apiMethod = "put";
+      // Appends pathName for updates
+      // NOTE: Must supply pathName, not name, when updating category
+      console.log("category");
+      console.log(category);
+      resourcePath += `/${categoryName}`;//
+    }
+    console.log('resourcePath');
+    console.log(resourcePath);
+    // Validates form inputs
+    if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
+      return alert("Name and Description must begin with a letter");
+    // Confirms user is signed in
+    if (!user || !user.username) return alert("Must Sign In");
+    // Disables submit button
+    setSubmitting(true);
+    return await API[apiMethod]("StuddieBuddie", resourcePath, {
+      body: JSON.stringify({
+        categoryName: categoryName.trim(),
+        categoryDesc: categoryDesc.trim(),
+        pathName: category ? category.pathName : ""
+      }),
+      headers: {
+        Authorization: `Bearer ${(await Auth.currentSession())
+          .getIdToken()
+          .getJwtToken()}`
+      },
+      response: true
+    })
+      .then(response => {
+        console.log(response);
+        getSubject();
+      })
+      .catch(error => {
+        setSubmitting(false);
+        alert(error.response);
+        console.log("error");
+        console.log(error.response);
+      });
+  }
   async function postCategory() {
     if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
       return alert("Name and Description must begin with a letter");
@@ -61,7 +104,6 @@ export default function CategoryForm(props) {
         categoryName: categoryName.trim(),
         categoryDesc: categoryDesc.trim(),
         username: user.username
-        // pathName: subject.pathName
       }),
       headers: {
         Authorization: `Bearer ${(await Auth.currentSession())
@@ -70,9 +112,7 @@ export default function CategoryForm(props) {
       }
     })
       .then(response => {
-        console.log("response postCategory");
-        console.log(response);
-        getSubject().then(()=>setSubmitting(false));
+        getSubject().then(() => setSubmitting(false));
       })
       .catch(error => {
         console.log("err postCategory");
@@ -84,7 +124,6 @@ export default function CategoryForm(props) {
     if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
       return alert("Name and Description must begin with a letter");
     setSubmitting(true);
-    console.log("updateCategory");
     return API.put("StuddieBuddie", `/subjects/${subjectName}`, {
       body: JSON.stringify({
         username: username,
@@ -101,7 +140,7 @@ export default function CategoryForm(props) {
         console.log("response");
         console.log(response);
 
-        getSubject().then(()=>setSubmitting(false));
+        getSubject().then(() => setSubmitting(false));
       })
       .catch(error => {
         console.error(error.response);
