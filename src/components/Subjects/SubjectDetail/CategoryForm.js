@@ -60,9 +60,9 @@ export default function CategoryForm(props) {
       // NOTE: Must supply pathName, not name, when updating category
       console.log("category");
       console.log(category);
-      resourcePath += `/${categoryName}`;//
+      resourcePath += `/${categoryName}`; //
     }
-    console.log('resourcePath');
+    console.log("resourcePath");
     console.log(resourcePath);
     // Validates form inputs
     if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
@@ -93,57 +93,6 @@ export default function CategoryForm(props) {
         alert(error.response);
         console.log("error");
         console.log(error.response);
-      });
-  }
-  async function postCategory() {
-    if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
-      return alert("Name and Description must begin with a letter");
-    setSubmitting(true);
-    return await API.post("StuddieBuddie", `/subjects/${subjectName}`, {
-      body: JSON.stringify({
-        categoryName: categoryName.trim(),
-        categoryDesc: categoryDesc.trim(),
-        username: user.username
-      }),
-      headers: {
-        Authorization: `Bearer ${(await Auth.currentSession())
-          .getIdToken()
-          .getJwtToken()}`
-      }
-    })
-      .then(response => {
-        getSubject().then(() => setSubmitting(false));
-      })
-      .catch(error => {
-        console.log("err postCategory");
-        console.log(error.response);
-      });
-  }
-
-  async function updateCategory(c) {
-    if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
-      return alert("Name and Description must begin with a letter");
-    setSubmitting(true);
-    return API.put("StuddieBuddie", `/subjects/${subjectName}`, {
-      body: JSON.stringify({
-        username: username,
-        pathName: category.pathName,
-        categoryDesc: categoryDesc.trim()
-      }),
-      headers: {
-        Authorization: `Bearer ${(await Auth.currentSession())
-          .getIdToken()
-          .getJwtToken()}`
-      }
-    })
-      .then(response => {
-        console.log("response");
-        console.log(response);
-
-        getSubject().then(() => setSubmitting(false));
-      })
-      .catch(error => {
-        console.error(error.response);
       });
   }
 }
