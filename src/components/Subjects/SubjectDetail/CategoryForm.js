@@ -58,12 +58,8 @@ export default function CategoryForm(props) {
       apiMethod = "put";
       // Appends pathName for updates
       // NOTE: Must supply pathName, not name, when updating category
-      console.log("category");
-      console.log(category);
       resourcePath += `/${categoryName}`; //
     }
-    console.log("resourcePath");
-    console.log(resourcePath);
     // Validates form inputs
     if (!startWithLetter(categoryName) || !startWithLetter(categoryDesc))
       return alert("Name and Description must begin with a letter");
@@ -85,7 +81,6 @@ export default function CategoryForm(props) {
       response: true
     })
       .then(response => {
-        console.log(response);
         getSubject();
       })
       .catch(error => {

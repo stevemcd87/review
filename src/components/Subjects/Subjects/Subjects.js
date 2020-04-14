@@ -16,7 +16,8 @@ function Subjects(props) {
     getSubjects().then(res => {
       // if (isSubsribed) {
       //   setSubjects(res);
-        setIsLoading(false);
+      console.log(document.querySelector(".subjects").children.length);
+      setIsLoading(false);
       // }
     });
     return () => (isSubsribed = false);
@@ -66,8 +67,8 @@ function Subjects(props) {
 
   async function getSubjects() {
     return await API.get("StuddieBuddie", "/subjects")
-      .then(res =>{
-        setSubjects(res)
+      .then(res => {
+        setSubjects(res);
       })
       .catch(error => {
         alert("Unable to get Subjects");

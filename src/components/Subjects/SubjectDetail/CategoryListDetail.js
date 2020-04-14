@@ -32,51 +32,51 @@ export default function CategoryListDetail(props) {
   return (
     <div className="component item">
       <div className="category model item-content">
-          {isCreator && (
-            <div className="category-edit-buttons edit-buttons">
-              <button
-                type="button"
-                onClick={() => setDisplayUpdateForm(!displayUpdateForm)}
+        {isCreator && (
+          <div className="category-edit-buttons edit-buttons">
+            <button
+              type="button"
+              onClick={() => setDisplayUpdateForm(!displayUpdateForm)}
+            >
+              <FontAwesomeIcon
+                icon={faEdit}
+                size="2x"
+                color="grey"
+                title="Edit Subject"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                window.confirm("Are you sure you'd like to delete?")
+                  ? deleteCategory()
+                  : false
+              }
+            >
+              <FontAwesomeIcon
+                icon={faTrash}
+                size="2x"
+                color="grey"
+                title="Delete Subject"
+              />
+            </button>
+          </div>
+        )}
+        {!displayUpdateForm && (
+          <>
+            <h3>
+              <Link
+                to={`/${category.username}/${subjectName}/${category.urlName}`}
               >
-                <FontAwesomeIcon
-                  icon={faEdit}
-                  size="2x"
-                  color="grey"
-                  title="Edit Subject"
-                />
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  window.confirm("Are you sure you'd like to delete?")
-                    ? deleteCategory()
-                    : false
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  size="2x"
-                  color="grey"
-                  title="Delete Subject"
-                />
-              </button>
-            </div>
-          )}
-          {!displayUpdateForm && (
-            <>
-              <h3>
-                <Link
-                  to={`/${category.username}/${subjectName}/${category.urlName}`}
-                >
-                  {category.name}
-                </Link>
-              </h3>
-              <h4>{category.desc}</h4>
-            </>
-          )}
-          {isCreator && displayUpdateForm && (
-            <CategoryForm {...{ category, getSubject }} />
-          )}
+                {category.name}
+              </Link>
+            </h3>
+            <h4>{category.desc}</h4>
+          </>
+        )}
+        {isCreator && displayUpdateForm && (
+          <CategoryForm {...{ category, getSubject }} />
+        )}
       </div>
     </div>
   );
@@ -86,24 +86,26 @@ export default function CategoryListDetail(props) {
   // }
 
   async function deleteCategory() {
-    console.log("deleteCategory");
-    return await API.del("StuddieBuddie", `/users/${username}/subjects/${subjectName}/categories/${category.name}`, {
-      body: JSON.stringify({
-        pathName: category.pathName
-      }),
-      headers: {
-        Authorization: `Bearer ${(await Auth.currentSession())
-          .getIdToken()
-          .getJwtToken()}`
-      },
-      response: true
-    })
+    return await API.del(
+      "StuddieBuddie",
+      `/users/${username}/subjects/${subjectName}/categories/${category.name}`,
+      {
+        body: JSON.stringify({
+          pathName: category.pathName
+        }),
+        headers: {
+          Authorization: `Bearer ${(await Auth.currentSession())
+            .getIdToken()
+            .getJwtToken()}`
+        },
+        response: true
+      }
+    )
       .then(response => {
-        console.log("response");
-        console.log(response);
         getSubject();
       })
       .catch(error => {
+        alert(error);
         console.error(error.response);
       });
   }

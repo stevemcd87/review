@@ -59,9 +59,6 @@ function App() {
   useEffect(() => {
     getRepoIssues();
   }, []);
-  useEffect(()=>{
-    console.log(authState);
-  },[authState])
 
   // <button id="bug-icon" type="button" onClick={()=>setDisplayBugComponent(!displayBugComponent)}>
   //   <FontAwesomeIcon icon={faBug} color="red" size="2x" />
@@ -100,6 +97,7 @@ function App() {
         splitByLabels(data);
       })
       .catch(err => {
+        alert(err)
         console.log(err);
       });
   }

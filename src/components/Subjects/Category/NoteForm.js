@@ -182,8 +182,6 @@ function NoteForm(props) {
   }
 
   function postNote(n) {
-    console.log("n");
-    console.log(n);
     API.post("StuddieBuddie", `/subjects/${subjectName}/${categoryName}`, {
       body: JSON.stringify(n)
     })

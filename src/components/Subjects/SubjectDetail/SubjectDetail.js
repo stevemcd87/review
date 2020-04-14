@@ -24,19 +24,19 @@ function SubjectDetail() {
     // let isSubsribed = true;
     getSubject().then(res => {
       // if (isSubsribed) {
-        // setSubject(res[0]);
-        // let c = res.slice(1).map(v => {
-        //   let urlName = v.pathName.split("#")[1].split("_")[1];
-        //   return {
-        //     name: urlName.replace(/-/g, " "),
-        //     desc: v.categoryDesc,
-        //     pathName: v.pathName,
-        //     urlName: urlName,
-        //     username: v.username
-        //   };
-        // });
-        // setCategories(c);
-        setIsLoading(false);
+      // setSubject(res[0]);
+      // let c = res.slice(1).map(v => {
+      //   let urlName = v.pathName.split("#")[1].split("_")[1];
+      //   return {
+      //     name: urlName.replace(/-/g, " "),
+      //     desc: v.categoryDesc,
+      //     pathName: v.pathName,
+      //     urlName: urlName,
+      //     username: v.username
+      //   };
+      // });
+      // setCategories(c);
+      setIsLoading(false);
       // }
     });
     // return () => (isSubsribed = false);
@@ -84,29 +84,28 @@ function SubjectDetail() {
   );
 
   async function getSubject() {
-    console.log("GET subject");
     return await API.get(
       "StuddieBuddie",
       `/users/${username}/subjects/${subjectName}`
     )
-    .then(res =>{
-      setSubject(res[0]);
-      let c = res.slice(1).map(v => {
-        let urlName = v.pathName.split("#")[1].split("_")[1];
-        return {
-          name: urlName.replace(/-/g, " "),
-          desc: v.categoryDesc,
-          pathName: v.pathName,
-          urlName: urlName,
-          username: v.username
-        };
+      .then(res => {
+        setSubject(res[0]);
+        let c = res.slice(1).map(v => {
+          let urlName = v.pathName.split("#")[1].split("_")[1];
+          return {
+            name: urlName.replace(/-/g, " "),
+            desc: v.categoryDesc,
+            pathName: v.pathName,
+            urlName: urlName,
+            username: v.username
+          };
+        });
+        setCategories(c);
+      })
+      .catch(error => {
+        alert(error);
+        console.log(error);
       });
-      setCategories(c);
-    })
-    .catch(error => {
-      console.log("er");
-      console.log(error);
-    });
   }
 }
 
