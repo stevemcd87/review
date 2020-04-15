@@ -44,6 +44,7 @@ function App() {
 
   useEffect(() => {
     setUser(Auth.user);
+    // Checks authState whether or not to hide the greeting
     let hd =
       authState === "signedIn" ||
       authState === "signUp" ||
@@ -53,26 +54,23 @@ function App() {
       authState === "forgotPassword"
         ? false
         : true;
+    // if hd is true Hides all Authenticator components(SignIn,SignOut, etc...)
     setHideDefault(hd);
   }, [authState]);
 
-  useEffect(() => {
-    getRepoIssues();
-  }, []);
-
-  // <button id="bug-icon" type="button" onClick={()=>setDisplayBugComponent(!displayBugComponent)}>
-  //   <FontAwesomeIcon icon={faBug} color="red" size="2x" />
-  // </button>
-  // {displayBugComponent && <Bug />}
+  // useEffect(() => {
+  //   getRepoIssues();
+  // }, []);
 
   return (
     <div className="App">
-      {(authState === "signIn" || authState === "signUp") && (
-        <header>
-          <button onClick={() => setHideDefault(!hideDefault)}>
-            {hideDefault ? "Sign In" : "Don't Sign In"}
-          </button>
-        </header>
+      {!user && (
+        <button
+          className="hide-cog-button"
+          onClick={() => setHideDefault(!hideDefault)}
+        >
+          {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
+        </button>
       )}
       <Authenticator
         onStateChange={as => setAuthState(as)}
@@ -97,7 +95,7 @@ function App() {
         splitByLabels(data);
       })
       .catch(err => {
-        alert(err)
+        alert(err);
         console.log(err);
       });
   }
@@ -109,8 +107,6 @@ function App() {
         if (!finishedData[label.name]) finishedData[label.name] = [];
         finishedData[label.name].push([issue.title]);
       });
-
-      // v.labels.filter()
     });
     setBugs(finishedData);
   }

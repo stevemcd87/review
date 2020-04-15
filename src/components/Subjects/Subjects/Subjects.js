@@ -16,7 +16,7 @@ function Subjects(props) {
     getSubjects().then(res => {
       // if (isSubsribed) {
       //   setSubjects(res);
-      console.log(document.querySelector(".subjects").children.length);
+      // console.log(document.querySelector(".create-button").innerText);
       setIsLoading(false);
       // }
     });
@@ -32,6 +32,8 @@ function Subjects(props) {
   }, [subjects]);
   return (
     <div className="component">
+      {/*<h1>Subjects</h1> is part of test*/}
+      <h1>Subjects</h1>
       {user && (
         <button
           type="button"
@@ -57,7 +59,7 @@ function Subjects(props) {
               key={s.pathName}
               value={{ subject: s, getSubjects }}
             >
-              <Subject />
+              <Subject key={s.pathName} />
             </SubjectContext.Provider>
           );
         })}
