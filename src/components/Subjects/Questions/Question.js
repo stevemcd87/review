@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import QuestionForm from "./QuestionForm";
 import { useParams } from "react-router-dom";
-import ApiContext from "../../../../contexts/ApiContext";
-import CategoryContext from "../../../../contexts/CategoryContext";
+import ApiContext from "../../../contexts/ApiContext";
+import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -22,11 +22,18 @@ export default function Question(props) {
     { categoryQuestions, getCategoryQuestions } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
 
+
+  // To display Question Image
+  useEffect(() => {
+    if (question.image) getImage();
+  }, []);
+
+  // Hides form when form is submitted
   useEffect(() => {
     setDisplayForm(false);
   }, [categoryQuestions]);
 
-  // checks if answer is correct or not
+  // Checks if answer is correct or not
   useEffect(() => {
     let isCorrect = selectedAnswer === question.answer ? true : false;
     if (isCorrect) incrementAnsweredCorrectly()
@@ -38,15 +45,11 @@ export default function Question(props) {
         // if user was incorrect
         if (!isCorrect && v.value === selectedAnswer)
           v.classList.add("incorrect");
+        //shows correct answer if user chose incorrectly
         if (!isCorrect && v.value === question.answer)
           v.classList.add("correct-option");
       });
   }, [selectedAnswer]);
-
-  // for Question Image
-  useEffect(() => {
-    if (question.image) getImage();
-  }, []);
 
   return (
     <div className="question-component">
@@ -107,12 +110,6 @@ export default function Question(props) {
       )}
     </div>
   );
-
-  function checkAnswer(e) {
-    e.persist();
-    console.log(e);
-    console.log(e.target.value);
-  }
 
   function getImage() {
     Storage.get(question.image.replace("public/", ""))

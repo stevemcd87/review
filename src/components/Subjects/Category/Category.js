@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import Notes from "./Notes";
+import Notes from "../Notes/Notes";
 import CategoryContext from "../../../contexts/CategoryContext";
 import ApiContext from "../../../contexts/ApiContext";
-import Questions from "./Questions/Questions";
+import Questions from "../Questions/Questions";
 import "./Category.css";
 import Loading from "../Loading"
 
@@ -16,7 +16,7 @@ import {
 } from "react-router-dom";
 
 export default function Category() {
-  let { path } = useRouteMatch(),
+  let { path, url } = useRouteMatch(),
     { username, subjectName, categoryName } = useParams(),
     [categoryNotes, setCategoryNotes] = useState([]),
     [categoryQuestions, setCategoryQuestions] = useState([]),
@@ -27,14 +27,7 @@ export default function Category() {
     // getCategoryQuestions();
   }, []);
 
-  // <ul className="category-nav">
-  //   <li>
-  //     <Link to={`${url}/notes`}>Review Notes</Link>
-  //   </li>
-  //   <li>
-  //     <Link to={`${url}/test`}>Test</Link>
-  //   </li>
-  // </ul>
+
 
   return (
     <div className="component">
@@ -42,6 +35,14 @@ export default function Category() {
         <Link to={`/${username}/${subjectName}/`}>Back</Link>
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
+      <ul className="category-nav">
+         <li>
+           <Link to={`${url}/notes`}>Review Notes</Link>
+         </li>
+         <li>
+           <Link to={`${url}/test`}>Test</Link>
+         </li>
+      </ul>
 
       {isLoading && <Loading />}
 

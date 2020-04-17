@@ -1,3 +1,26 @@
+.form-content {
+  width: 95%;
+  max-width: 500px;
+text-align: center;
+}
+.question-types {
+  display: flex;
+  justify-content: space-around;
+}
+
+.question-type {
+  align-items: center;
+}
+
+
+.answer-option-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+.answer-option {
+  text-align: center;
+}
+
 /* .question-form {
   position: relative;
   margin: auto;

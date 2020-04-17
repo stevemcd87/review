@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import NoteForm from "./NoteForm";
-import './Notes.css'
+import NoteTable from "../Notes/NoteTable/NoteTable";
 import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
 import useCreator from "../customHooks/useCreator";
+import Markdown from "react-textarea-markdown";
 function Note(props) {
   let { note, active, nextAutoPlayIndex } = props,
     { API, Storage, user } = useContext(ApiContext),
@@ -18,6 +19,7 @@ function Note(props) {
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
 
+  // for Note Image
   useEffect(() => {
     if (note.image) getImage();
   }, []);
@@ -25,8 +27,10 @@ function Note(props) {
   useEffect(() => {
     setDisplayForm(false);
     if (note.image) getImage();
+    // .then(() => setImageLoading(false))
   }, [categoryNotes]);
 
+  // for active prop
   useEffect(() => {
     if (active) {
       playAudio();
@@ -43,6 +47,8 @@ function Note(props) {
   }
 
   function playAudio() {
+    console.log(user);
+    // if (!user) return alert("Must sign in to listen to audio notes")
     if (note && note.audioNote) {
       Storage.get(`${note.audioNote}`)
         .then(res => {
@@ -120,9 +126,14 @@ function Note(props) {
                 </button>
               </div>
             )}
+            {note.noteTable && <NoteTable tableData={note.noteTable}/>}
 
             {note.image && <img src={imageSrc} />}
-            {note.mainNote && <h5>{note.mainNote}</h5>}
+            <Markdown
+              textarea={false}
+              source={note.mainNote}
+              customWidth={[98, 98]}
+            />
             <div className="subnotes">
               {note.subnotes &&
                 note.subnotes.map((n, i) => (
@@ -137,6 +148,12 @@ function Note(props) {
       </div>
     </div>
   );
+
+  // {note.mainNote && <h5>{note.mainNote}</h5>}
+
+  // function checkForUsername() {
+  //   return user && user.username === username ? true : false;
+  // }
 
   function deleteNote(n) {
     console.log("deleteNote");

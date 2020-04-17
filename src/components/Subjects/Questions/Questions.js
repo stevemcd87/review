@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import CategoryContext from "../../../../contexts/CategoryContext";
+import CategoryContext from "../../../contexts/CategoryContext";
 import Question from "./Question";
 import QuestionForm from "./QuestionForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

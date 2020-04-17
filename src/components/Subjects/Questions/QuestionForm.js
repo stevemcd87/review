@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 import "./Styles/QuestionForm.css";
-import ApiContext from "../../../../contexts/ApiContext";
-import CategoryContext from "../../../../contexts/CategoryContext";
+import ApiContext from "../../../contexts/ApiContext";
+import CategoryContext from "../../../contexts/CategoryContext";
 import MultipleChoice from "./MultipleChoice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -29,14 +29,14 @@ export default function QuestionForm(props) {
     { getCategoryQuestions } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
 
-  // get image for updates
+  // get image for Question Updates
   useEffect(() => {
     if (questionObject && questionObject.image) getImage();
   }, []);
 
   // set question type to trueFalse(default)
   useEffect(() => {
-    setQuestionType('trueFalse')
+    setQuestionType("trueFalse");
   }, []);
 
   useEffect(() => {
@@ -77,76 +77,73 @@ export default function QuestionForm(props) {
   }
 
   return (
-    <div className="question-form">
-      {!questionObject && (
-        <div>
-          <label>
-            True/ False
-            <input
-              type="radio"
-              name="questionType"
-              value="trueFalse"
-              onClick={e => setQuestionType(e.target.value)}
-              checked={questionType === "trueFalse"? true:false}
-            />
-          </label>
-          <label>
-            Multiple Choice
-            <input
-              type="radio"
-              name="questionType"
-              value="multipleChoice"
-              onClick={e => setQuestionType(e.target.value)}
-              checked={questionType === "multipleChoice"? true:false}
-            />
-          </label>
-        </div>
-      )}
-
-      <div className="image-div">
-        <input
-          className="image-input"
-          type="file"
-          onChange={e => setImageFile(e.target.files["0"])}
-          ref={imageInput}
-        />
-        {imageSrc && <img src={imageSrc} />}
-      </div>
-      <div className="question-div">
-        <textarea
-          className="question-textarea"
-          type="text"
-          defaultValue={question}
-          onChange={e => setQuestion(e.target.value)}
-          placeholder="Question"
-        />
-      </div>
-
-      <div className="answer-options-inputs">
-        <div className="answer-options-div" ref={answerOptionsRef}>
-          {/*answerOptions.map(questionInputComponent => questionInputComponent)*/}
-          {newAO.map((ao, ind,arr) => {
-            return (
-              <AnswerOptionsInput
-                key={ao + ind}
-                answerOption={ao}
-                {...{ setAnswer, answer, removeAnswerOptionInput }}
-                answerOptionsCount={arr.length}
+    <div className="question-form form-component">
+      <div className="form-content">
+        {!questionObject && (
+          <div className="question-types">
+            <label className="question-type">
+              True/ False
+              <input
+                type="radio"
+                name="questionType"
+                value="trueFalse"
+                onChange={e => setQuestionType(e.target.value)}
+                checked={questionType === "trueFalse" ? true : false}
               />
-            );
-          })}
+            </label>
+            <label className="question-type">
+              Multiple Choice
+              <input
+                type="radio"
+                name="questionType"
+                value="multipleChoice"
+                onChange={e => setQuestionType(e.target.value)}
+                checked={questionType === "multipleChoice" ? true : false}
+              />
+            </label>
+          </div>
+        )}
+
+        <div className="image-input">
+          <input
+            className=""
+            type="file"
+            onChange={e => setImageFile(e.target.files["0"])}
+            ref={imageInput}
+          />
+          {imageSrc && <img src={imageSrc} />}
         </div>
-        <button
-          type="button"
-          onClick={() => setNewAO(...newAO, "")}
-        >
-          Add Answer Option
+        <div className="question-div">
+          <textarea
+            className="question-textarea"
+            type="text"
+            defaultValue={question}
+            onChange={e => setQuestion(e.target.value)}
+            placeholder="Question"
+          />
+        </div>
+        <div className="answer-options-inputs">
+          <div className="answer-options-div" ref={answerOptionsRef}>
+            {/*answerOptions.map(questionInputComponent => questionInputComponent)*/}
+            {newAO.map((ao, ind, arr) => {
+              return (
+                <AnswerOptionsInput
+                  key={ao + ind}
+                  answerOption={ao}
+                  {...{ setAnswer, answer, removeAnswerOptionInput, ind }}
+                  answerOptionsCount={arr.length}
+                />
+              );
+            })}
+          </div>
+          <button type="button" onClick={() => setNewAO([...newAO, ""])}>
+            Add Answer Option
+          </button>
+        </div>
+        <button type="button" onClick={prepQuestion}>
+          {!questionObject ? "Post Question" : "Update Question"}
         </button>
       </div>
-
-      <button type="button" onClick={prepQuestion}>
-        {!questionObject ? "Post Question" : "Update Question"}
-      </button>
     </div>
   );
 
@@ -180,9 +177,6 @@ export default function QuestionForm(props) {
       answer: answer && answer.trim()
     };
     // adds pathName to questionVAlues if there is one
-    console.log("imageUpdated");
-    console.log(imageUpdated);
-
     if (questionObject) questionValues.pathName = questionObject.pathName;
     if (questionObject && questionObject.image && !imageUpdated)
       questionValues.image = questionObject.image;
@@ -194,9 +188,9 @@ export default function QuestionForm(props) {
         questionValues.answerOptions.push(questionElement.value.trim());
       }
     );
-    !questionObject
-      ? postQuestion(questionValues)
-      : updateQuestion(questionValues);
+    // !questionObject
+    //   ? postQuestion(questionValues)
+    //   : updateQuestion(questionValues);
   }
 
   function postQuestion(n) {
@@ -279,8 +273,10 @@ export default function QuestionForm(props) {
   }
 
   function removeAnswerOptionInput(ind) {
+    console.log(ind);
     let ao = newAO.slice();
     ao.splice(ind, 1);
+    console.log(ao);
     setNewAO(ao);
   }
 } // End of component
@@ -297,7 +293,6 @@ function AnswerOptionsInput(props) {
     answerOptionDiv = useRef();
 
   useEffect(() => {
-    console.log(ind);
     if (answer === answerOption)
       answerOptionDiv.current.classList.add("correct-answer");
     else answerOptionDiv.current.classList.remove("correct-answer");
@@ -305,19 +300,29 @@ function AnswerOptionsInput(props) {
 
   return (
     <div className="answer-option-div" ref={answerOptionDiv}>
-      <button className="select-answer" onClick={() => setAnswer(answerOption)}>
-        <FontAwesomeIcon icon={faCheck} />
-      </button>
-      <textarea className="answer-option" defaultValue={answerOption} />
-      <button
-        onClick={
-          answerOptionsCount > 2
-            ? () => removeAnswerOptionInput(ind)
-            : () => alert("Must Have at least 2 answer options")
-        }
-      >
-        <FontAwesomeIcon icon={faTrash} />
-      </button>
+      <div className="answer-option-buttons">
+        <button
+          className="select-answer"
+          onClick={() => setAnswer(answerOption)}
+        >
+          <FontAwesomeIcon icon={faCheck} />
+        </button>
+        <button
+          onClick={
+            answerOptionsCount > 2
+              ? () => removeAnswerOptionInput(ind)
+              : () => alert("Must Have at least 2 answer options")
+          }
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
+      </div>
+
+      <textarea
+        className="answer-option"
+        defaultValue={answerOption}
+        placeholder="Answer Option"
+      />
     </div>
   );
 }

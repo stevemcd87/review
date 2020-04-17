@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import AudioNote from "./AudioNote";
+import NoteTable from "../Notes/NoteTable/NoteTable";
 import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Markdown from "react-textarea-markdown";
 function NoteForm(props) {
   let { subjectName, categoryName, username, setDisplayForm } = useParams(),
     { note } = props,
     imageInput = useRef(null),
+    mainNoteDiv = useRef(null),
     [imageSrc, setImageSrc] = useState(),
     [imageFile, setImageFile] = useState(),
     [imageUpdated, setImageUpdated] = useState(false),
+    [noteTable, setNoteTable] = useState(note ? note.noteTable : {}),
     [mainNote, setMainNote] = useState(note ? note.mainNote : ""),
     [audioBlob, setAudioBlob] = useState(),
     [audioNoteUpdated, setAudioNoteUpdated] = useState(false),
@@ -20,6 +24,16 @@ function NoteForm(props) {
     noteArray = useRef(null),
     { getCategoryNotes } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
+
+  useEffect(() => {}, [imageFile]);
+
+  useEffect(() => {
+    let textarea = mainNoteDiv.current.getElementsByClassName(
+        "markdown-textarea"
+      )[0],
+      scrollHeight = textarea.scrollHeight;
+    if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
+  }, [mainNote]);
 
   // for SubNotes if updating note
   useEffect(() => {
@@ -42,11 +56,9 @@ function NoteForm(props) {
 
   function getImage() {
     Storage.get(note.image.replace("public/", ""))
-      .then(res => {
-        setImageSrc(res);
-      })
+      .then(setImageSrc)
       .catch(err => {
-        alert(err)
+        alert(err);
         console.log(err);
       });
   }
@@ -58,28 +70,29 @@ function NoteForm(props) {
           {...{ note, audioBlob, setAudioBlob, setAudioNoteUpdated }}
         />
         <div className="image-input">
-          <p className=" image-label form-label">Image</p>
-          <input
-            type="file"
-            onChange={e => setImageFile(e.target.files["0"])}
-            ref={imageInput}
-          />
+          <label className=" image-label form-label">
+            Image
+            <input
+              type="file"
+              onChange={e => setImageFile(e.target.files["0"])}
+              ref={imageInput}
+            />
+          </label>
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <textarea
-          className="note-mainNote form-textarea"
-          defaultValue={mainNote}
-          onChange={e => setMainNote(e.target.value)}
-          placeholder="Title of Note or Note"
+        <NoteTable
+          setTableData={setNoteTable}
+          tableData={note && note.noteTable ? note.noteTable : null}
         />
-        <div className="sub-note-array" ref={noteArray}>
-          {subnotes.map((sn, ind) => (
-            <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
-          ))}
+        <div className="main-note" ref={mainNoteDiv}>
+          <Markdown
+            textarea={true}
+            callback={setMainNote}
+            source={mainNote}
+            customWidth={[90, 90]}
+          />
         </div>
-        <button type="button" onClick={addSubnote} className="add-subnote">
-          <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
-        </button>
+
         <button type="button" onClick={prepNote} disabled={submitting}>
           {!submitting ? "Submit" : "Submitting"}
         </button>
@@ -87,13 +100,30 @@ function NoteForm(props) {
     </div>
   );
 
+  //
+
+  //====== OLD VERSION ========
+  // <textarea
+  //   className="note-mainNote form-textarea"
+  //   defaultValue={mainNote}
+  //   onChange={e => setMainNote(e.target.value)}
+  //   placeholder="Title of Note or Note"
+  // />
+  // <div className="sub-note-array" ref={noteArray}>
+  //   {subnotes.map((sn, ind) => (
+  //     <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
+  //   ))}
+  // </div>
+  // <button type="button" onClick={addSubnote} className="add-subnote">
+  //   <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
+  // </button>
+
   function prepNote() {
     setSubmitting(true);
-    console.log("prepNote");
     let noteValues = {
       username: user.username,
       mainNote: mainNote ? mainNote.trim() : false,
-      subnotes: [],
+      noteTable: noteTable,
       audioNote: audioBlob ? true : false,
       image: imageFile ? true : false
     };
@@ -105,11 +135,11 @@ function NoteForm(props) {
     // for subNotes
     // console.log("noteValues");
     // console.log(noteValues);
-    [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
-      noteElement => {
-        noteValues.subnotes.push(noteElement.value);
-      }
-    );
+    // [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
+    //   noteElement => {
+    //     noteValues.subnotes.push(noteElement.value);
+    //   }
+    // );
     // console.log(note);
     !note ? postNote(noteValues) : updateNote(noteValues);
   }
@@ -154,8 +184,6 @@ function NoteForm(props) {
   }
 
   function postNote(n) {
-    console.log("n");
-    console.log(n);
     API.post("StuddieBuddie", `/subjects/${subjectName}/${categoryName}`, {
       body: JSON.stringify(n)
     })

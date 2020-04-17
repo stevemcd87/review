@@ -108,9 +108,12 @@ button {
   padding: 8px;
 }
 
+textarea {
+  resize: vertical !important;
+}
+
 textarea[disabled] {
   cursor: not-allowed;
-  resize: vertical;
 }
 
 .loader {
