@@ -46,10 +46,36 @@ export default function QuestionForm(props) {
   useEffect(() => {
     switch (questionType) {
       case "trueFalse":
-        setNewAO(["True", "False"]);
+        setNewAO([
+          {
+            id: Date.now() + "-" + "0",
+            inputValue: "True"
+          },
+          {
+            id: Date.now() + "-" + "1",
+            inputValue: "False"
+          }
+        ]);
         break;
       case "multipleChoice":
-        setNewAO(["", "", "", ""]);
+        setNewAO([
+          {
+            id: Date.now() + "-" + "0",
+            inputValue: ""
+          },
+          {
+            id: Date.now() + "-" + "1",
+            inputValue: ""
+          },
+          {
+            id: Date.now() + "-" + "2",
+            inputValue: ""
+          },
+          {
+            id: Date.now() + "-" + "3",
+            inputValue: ""
+          }
+        ]);
         break;
     }
   }, [questionType]);
@@ -127,16 +153,20 @@ export default function QuestionForm(props) {
             {/*answerOptions.map(questionInputComponent => questionInputComponent)*/}
             {newAO.map((ao, ind, arr) => {
               return (
-                <AnswerOptionsInput
-                  key={ao + ind}
+                <AnswerOption
+                  key={ao.id}
                   answerOption={ao}
-                  {...{ setAnswer, answer, removeAnswerOptionInput, ind }}
-                  answerOptionsCount={arr.length}
+                  {...{ setAnswer, answer, removeAnswerOption, ind }}
                 />
               );
             })}
           </div>
-          <button type="button" onClick={() => setNewAO([...newAO, ""])}>
+          <button
+            type="button"
+            onClick={() =>
+              setNewAO([...newAO, { id: `${Date.now()}-${newAO.length}` }])
+            }
+          >
             Add Answer Option
           </button>
         </div>
@@ -272,27 +302,21 @@ export default function QuestionForm(props) {
       });
   }
 
-  function removeAnswerOptionInput(ind) {
-    console.log(ind);
-    let ao = newAO.slice();
-    ao.splice(ind, 1);
+  function removeAnswerOption(id) {
+    let ao = newAO.slice(),
+      indexToRemove = ao.findIndex(v => v.id === id);
+    ao.splice(indexToRemove, 1);
     console.log(ao);
     setNewAO(ao);
   }
 } // End of component
 
-function AnswerOptionsInput(props) {
-  let {
-      answerOption,
-      setAnswer,
-      answer,
-      removeAnswerOptionInput,
-      ind,
-      answerOptionsCount
-    } = props,
+function AnswerOption(props) {
+  let { answerOption, setAnswer, answer, removeAnswerOption } = props,
     answerOptionDiv = useRef();
 
   useEffect(() => {
+    console.log(answerOption);
     if (answer === answerOption)
       answerOptionDiv.current.classList.add("correct-answer");
     else answerOptionDiv.current.classList.remove("correct-answer");
@@ -307,20 +331,14 @@ function AnswerOptionsInput(props) {
         >
           <FontAwesomeIcon icon={faCheck} />
         </button>
-        <button
-          onClick={
-            answerOptionsCount > 2
-              ? () => removeAnswerOptionInput(ind)
-              : () => alert("Must Have at least 2 answer options")
-          }
-        >
+        <button onClick={() => removeAnswerOption(answerOption.id)}>
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </div>
 
       <textarea
         className="answer-option"
-        defaultValue={answerOption}
+        defaultValue={answerOption.inputValue}
         placeholder="Answer Option"
       />
     </div>
