@@ -6,7 +6,7 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import MultipleChoice from "./MultipleChoice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function QuestionForm(props) {
   let { subjectName, categoryName } = useParams(),
@@ -150,27 +150,31 @@ export default function QuestionForm(props) {
         </div>
         <div className="answer-options-inputs">
           <div className="answer-options-div" ref={answerOptionsRef}>
-            {/*answerOptions.map(questionInputComponent => questionInputComponent)*/}
             {newAO.map((ao, ind, arr) => {
               return (
                 <AnswerOption
                   key={ao.id}
                   answerOption={ao}
-                  {...{ setAnswer, answer, removeAnswerOption, ind }}
+                  {...{
+                    setAnswer,
+                    answer,
+                    removeAnswerOption,
+                    updateAnswerOption
+                  }}
                 />
               );
             })}
           </div>
           <button
             type="button"
-            onClick={() =>
-              setNewAO([...newAO, { id: `${Date.now()}-${newAO.length}` }])
-            }
+            onClick={addAnswerOption}
+            title="Add an answer option"
           >
-            Add Answer Option
+            <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
-        <button type="button" onClick={prepQuestion}>
+
+        <button type="button" onClick={prepQuestion} className="create-button">
           {!questionObject ? "Post Question" : "Update Question"}
         </button>
       </div>
@@ -200,11 +204,11 @@ export default function QuestionForm(props) {
   function prepQuestion() {
     console.log("prepQuestion");
     let questionValues = {
-      username: user.user.username,
+      username: user.username,
       question: question && question.trim(),
-      answerOptions: [],
+      answerOptions: newAO.map(v => v.inputValue),
       image: imageFile ? true : false,
-      answer: answer && answer.trim()
+      answer: newAO.find(v => v.id === answer.id).inputValue
     };
     // adds pathName to questionVAlues if there is one
     if (questionObject) questionValues.pathName = questionObject.pathName;
@@ -213,11 +217,11 @@ export default function QuestionForm(props) {
     console.log("questionValues");
     console.log(questionValues);
     // pushes all answerOptions into the questionValues.answerOptions
-    [...answerOptionsRef.current.querySelectorAll(".answer-option")].forEach(
-      questionElement => {
-        questionValues.answerOptions.push(questionElement.value.trim());
-      }
-    );
+    // [...answerOptionsRef.current.querySelectorAll(".answer-option")].forEach(
+    //   questionElement => {
+    //     questionValues.answerOptions.push(questionElement.value.trim());
+    //   }
+    // );
     // !questionObject
     //   ? postQuestion(questionValues)
     //   : updateQuestion(questionValues);
@@ -303,43 +307,68 @@ export default function QuestionForm(props) {
   }
 
   function removeAnswerOption(id) {
+    if (newAO.length <= 2)
+      return alert("Question requires at least 2 answer options");
     let ao = newAO.slice(),
       indexToRemove = ao.findIndex(v => v.id === id);
     ao.splice(indexToRemove, 1);
-    console.log(ao);
+    setNewAO(ao);
+  }
+
+  function addAnswerOption() {
+    setNewAO([
+      ...newAO,
+      { id: `${Date.now()}-${newAO.length}`, inputValue: "" }
+    ]);
+  }
+  function updateAnswerOption(id, val) {
+    let ao = newAO.slice(),
+      indexToUpdate = ao.findIndex(v => v.id === id);
+    ao[indexToUpdate].inputValue = val.trim();
     setNewAO(ao);
   }
 } // End of component
 
 function AnswerOption(props) {
-  let { answerOption, setAnswer, answer, removeAnswerOption } = props,
+  let {
+      answerOption,
+      setAnswer,
+      answer,
+      removeAnswerOption,
+      updateAnswerOption
+    } = props,
+    [isAnswer, setIsAnswer] = useState(answer === answerOption ? true : false),
     answerOptionDiv = useRef();
 
   useEffect(() => {
-    console.log(answerOption);
-    if (answer === answerOption)
-      answerOptionDiv.current.classList.add("correct-answer");
-    else answerOptionDiv.current.classList.remove("correct-answer");
-  }, []);
+    answer === answerOption ? setIsAnswer(true) : setIsAnswer(false);
+  }, [answerOption, answer]);
 
   return (
-    <div className="answer-option-div" ref={answerOptionDiv}>
-      <div className="answer-option-buttons">
+    <div
+      className={`answer-option-div ${isAnswer ? "correct-answer" : ""}`}
+      ref={answerOptionDiv}
+    >
+      <div className="edit-buttons">
         <button
           className="select-answer"
           onClick={() => setAnswer(answerOption)}
+          title="Mark as correct answer"
         >
-          <FontAwesomeIcon icon={faCheck} />
+          <FontAwesomeIcon icon={faCheck} color={isAnswer ? "green" : "grey"} />
         </button>
-        <button onClick={() => removeAnswerOption(answerOption.id)}>
-          <FontAwesomeIcon icon={faTrash} />
+        <button
+          title="Delete answer option"
+          onClick={() => removeAnswerOption(answerOption.id)}
+        >
+          <FontAwesomeIcon icon={faTrash} color="grey" />
         </button>
       </div>
-
       <textarea
         className="answer-option"
         defaultValue={answerOption.inputValue}
         placeholder="Answer Option"
+        onChange={e => updateAnswerOption(answerOption.id, e.target.value)}
       />
     </div>
   );
