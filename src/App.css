@@ -79,6 +79,9 @@ button {
   cursor: pointer;
   margin: .5em;
 }
+button:focus {
+  outline: none;
+}
 
 /* textarea {
   width: 90%;

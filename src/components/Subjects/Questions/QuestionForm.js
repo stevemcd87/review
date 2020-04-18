@@ -10,7 +10,7 @@ import { faCheck, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function QuestionForm(props) {
   let { subjectName, categoryName } = useParams(),
-    { questionObject } = props,
+    { questionObject, questionNotes } = props,
     [questionType, setQuestionType] = useState(),
     imageInput = useRef(null),
     [imageSrc, setImageSrc] = useState(),
@@ -25,7 +25,6 @@ export default function QuestionForm(props) {
     [answer, setAnswer] = useState(
       questionObject ? questionObject.answer : null
     ),
-    answerOptionsRef = useRef(null),
     { getCategoryQuestions } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
 
@@ -93,8 +92,6 @@ export default function QuestionForm(props) {
     console.log("get Image question");
     Storage.get(questionObject.image.replace("public/", ""))
       .then(res => {
-        console.log("image res");
-        console.log(res);
         setImageSrc(res);
       })
       .catch(err => {
@@ -104,7 +101,7 @@ export default function QuestionForm(props) {
 
   return (
     <div className="question-form form-component">
-      <div className="form-content">
+      <form className="form-content">
         {!questionObject && (
           <div className="question-types">
             <label className="question-type">
@@ -149,7 +146,7 @@ export default function QuestionForm(props) {
           />
         </div>
         <div className="answer-options-inputs">
-          <div className="answer-options-div" ref={answerOptionsRef}>
+          <div className="answer-options-div">
             {newAO.map((ao, ind, arr) => {
               return (
                 <AnswerOption
@@ -173,11 +170,17 @@ export default function QuestionForm(props) {
             <FontAwesomeIcon icon={faPlus} />
           </button>
         </div>
-
-        <button type="button" onClick={prepQuestion} className="create-button">
-          {!questionObject ? "Post Question" : "Update Question"}
+        <strong className="bind-notes">
+          * Click
+          <span className="icon">
+            <FontAwesomeIcon icon={faPlus} color="black" />
+          </span>
+          on all notes you'd like to bind.
+        </strong>
+        <button type="button" onClick={prepQuestion}>
+          Submit
         </button>
-      </div>
+      </form>
     </div>
   );
 
@@ -194,11 +197,9 @@ export default function QuestionForm(props) {
   }
 
   function answerOptionsValid() {
-    return [...answerOptionsRef.current.querySelectorAll(".question")].every(
-      questionElement => {
-        return questionElement.value.trim().length > 0;
-      }
-    );
+    return newAO.every(questionElement => {
+      return questionElement.inputValue.trim().length > 0;
+    });
   }
 
   function prepQuestion() {
@@ -208,20 +209,15 @@ export default function QuestionForm(props) {
       question: question && question.trim(),
       answerOptions: newAO.map(v => v.inputValue),
       image: imageFile ? true : false,
-      answer: newAO.find(v => v.id === answer.id).inputValue
+      answer: newAO.find(v => v.id === answer.id).inputValue,
+      questionNotes: questionNotes
     };
-    // adds pathName to questionVAlues if there is one
+    // adds pathName to questionValues if there is one
     if (questionObject) questionValues.pathName = questionObject.pathName;
     if (questionObject && questionObject.image && !imageUpdated)
       questionValues.image = questionObject.image;
     console.log("questionValues");
     console.log(questionValues);
-    // pushes all answerOptions into the questionValues.answerOptions
-    // [...answerOptionsRef.current.querySelectorAll(".answer-option")].forEach(
-    //   questionElement => {
-    //     questionValues.answerOptions.push(questionElement.value.trim());
-    //   }
-    // );
     // !questionObject
     //   ? postQuestion(questionValues)
     //   : updateQuestion(questionValues);
@@ -337,27 +333,30 @@ function AnswerOption(props) {
       removeAnswerOption,
       updateAnswerOption
     } = props,
-    [isAnswer, setIsAnswer] = useState(answer === answerOption ? true : false),
-    answerOptionDiv = useRef();
+    [isAnswer, setIsAnswer] = useState(false),
+    [klassName, setKlassName] = useState("");
 
   useEffect(() => {
     answer === answerOption ? setIsAnswer(true) : setIsAnswer(false);
   }, [answerOption, answer]);
 
+  useEffect(() => {
+    setKlassName(isAnswer ? "correct-answer" : "");
+  }, [isAnswer]);
+
   return (
-    <div
-      className={`answer-option-div ${isAnswer ? "correct-answer" : ""}`}
-      ref={answerOptionDiv}
-    >
+    <div className={`answer-option-div ${klassName}`}>
       <div className="edit-buttons">
         <button
-          className="select-answer"
+          type="button"
+          className={`select-answer ${klassName}`}
           onClick={() => setAnswer(answerOption)}
           title="Mark as correct answer"
         >
           <FontAwesomeIcon icon={faCheck} color={isAnswer ? "green" : "grey"} />
         </button>
         <button
+          type="button"
           title="Delete answer option"
           onClick={() => removeAnswerOption(answerOption.id)}
         >

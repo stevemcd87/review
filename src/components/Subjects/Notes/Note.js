@@ -5,16 +5,29 @@ import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlay,
+  faTrash,
+  faEdit,
+  faPlus,
+  faMinus
+} from "@fortawesome/free-solid-svg-icons";
 import Loading from "../Loading";
 import useCreator from "../customHooks/useCreator";
 import Markdown from "react-textarea-markdown";
 function Note(props) {
-  let { note, active, nextAutoPlayIndex } = props,
+  let {
+      note,
+      isActive,
+      nextAutoPlayIndex,
+      updateQuestionNote,
+      displayQuestionForm
+    } = props,
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
     noteDiv = useRef(),
     [imageSrc, setImageSrc] = useState(),
+    [klassName, setKlassName] = useState(),
     [displayForm, setDisplayForm] = useState(false),
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
@@ -30,15 +43,15 @@ function Note(props) {
     // .then(() => setImageLoading(false))
   }, [categoryNotes]);
 
-  // for active prop
+  // for isActive prop
   useEffect(() => {
-    if (active) {
-      playAudio();
-      noteDiv.current.classList.add("active");
-    } else {
-      noteDiv.current.classList.remove("active");
-    }
-  }, [active]);
+    // if (isActive) {
+    //   playAudio();
+    //   noteDiv.current.classList.add("isActive");
+    // } else {
+    //   noteDiv.current.classList.remove("isActive");
+    // }
+  }, [isActive]);
 
   function getImage() {
     Storage.get(note.image)
@@ -47,7 +60,6 @@ function Note(props) {
   }
 
   function playAudio() {
-    console.log(user);
     // if (!user) return alert("Must sign in to listen to audio notes")
     if (note && note.audioNote) {
       Storage.get(`${note.audioNote}`)
@@ -55,7 +67,7 @@ function Note(props) {
           let a = new Audio(res);
           a.play();
           a.addEventListener("ended", function() {
-            if (active) {
+            if (isActive) {
               setTimeout(() => {
                 nextAutoPlayIndex();
               }, 1500);
@@ -68,7 +80,7 @@ function Note(props) {
           console.log(err);
         });
     } else {
-      if (active) {
+      if (isActive) {
         setTimeout(() => {
           nextAutoPlayIndex();
         }, 1500);
@@ -94,6 +106,16 @@ function Note(props) {
                 color="grey"
               />
             </button>
+            {displayQuestionForm && (
+              <button
+                type="button"
+                title="Bind note to question"
+                className="add-qn-button"
+                onClick={()=>updateQuestionNote(note, isActive)}
+              >
+                <FontAwesomeIcon icon={isActive ? faMinus : faPlus} size="3x" />
+              </button>
+            )}
             <button
               className="delete-button "
               onClick={() =>
@@ -126,34 +148,18 @@ function Note(props) {
                 </button>
               </div>
             )}
-            {note.noteTable && <NoteTable tableData={note.noteTable}/>}
-
+            {note.noteTable && <NoteTable tableData={note.noteTable} />}
             {note.image && <img src={imageSrc} />}
             <Markdown
               textarea={false}
               source={note.mainNote}
               customWidth={[98, 98]}
             />
-            <div className="subnotes">
-              {note.subnotes &&
-                note.subnotes.map((n, i) => (
-                  <p className="subnote" key={n + i}>
-                    <span className="subnote-dash">-</span>
-                    {n}
-                  </p>
-                ))}
-            </div>
           </div>
         )}
       </div>
     </div>
   );
-
-  // {note.mainNote && <h5>{note.mainNote}</h5>}
-
-  // function checkForUsername() {
-  //   return user && user.username === username ? true : false;
-  // }
 
   function deleteNote(n) {
     console.log("deleteNote");

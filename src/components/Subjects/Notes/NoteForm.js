@@ -100,24 +100,6 @@ function NoteForm(props) {
     </div>
   );
 
-  //
-
-  //====== OLD VERSION ========
-  // <textarea
-  //   className="note-mainNote form-textarea"
-  //   defaultValue={mainNote}
-  //   onChange={e => setMainNote(e.target.value)}
-  //   placeholder="Title of Note or Note"
-  // />
-  // <div className="sub-note-array" ref={noteArray}>
-  //   {subnotes.map((sn, ind) => (
-  //     <Subnote key={sn + ind} subnote={sn} {...{ removeSubnote, ind }} />
-  //   ))}
-  // </div>
-  // <button type="button" onClick={addSubnote} className="add-subnote">
-  //   <FontAwesomeIcon icon={faPlus} title="Add Subnote" />
-  // </button>
-
   function prepNote() {
     setSubmitting(true);
     let noteValues = {
