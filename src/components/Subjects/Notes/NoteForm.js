@@ -19,7 +19,6 @@ function NoteForm(props) {
     [mainNote, setMainNote] = useState(note ? note.mainNote : ""),
     [audioBlob, setAudioBlob] = useState(),
     [audioNoteUpdated, setAudioNoteUpdated] = useState(false),
-    [subnotes, setSubnotes] = useState([]),
     [submitting, setSubmitting] = useState(false),
     noteArray = useRef(null),
     { getCategoryNotes } = useContext(CategoryContext),
@@ -34,13 +33,6 @@ function NoteForm(props) {
       scrollHeight = textarea.scrollHeight;
     if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
   }, [mainNote]);
-
-  // for SubNotes if updating note
-  useEffect(() => {
-    if (note && note.subnotes) {
-      setSubnotes(note.subnotes);
-    }
-  }, []);
 
   useEffect(() => {
     if (imageFile) {
@@ -114,15 +106,6 @@ function NoteForm(props) {
       noteValues.audioNote = note.audioNote;
 
     if (note && note.image && !imageUpdated) noteValues.image = note.image;
-    // for subNotes
-    // console.log("noteValues");
-    // console.log(noteValues);
-    // [...noteArray.current.querySelectorAll(".subnote-input")].forEach(
-    //   noteElement => {
-    //     noteValues.subnotes.push(noteElement.value);
-    //   }
-    // );
-    // console.log(note);
     !note ? postNote(noteValues) : updateNote(noteValues);
   }
 
@@ -152,7 +135,7 @@ function NoteForm(props) {
               getCategoryNotes().then(() => setSubmitting(false));
             })
             .catch(err => {
-              console.log("err");
+              alert(err);
               console.log(err);
             });
         }
@@ -205,41 +188,6 @@ function NoteForm(props) {
         console.log(error);
       });
   }
-
-  function addSubnote() {
-    let sn = subnotes.slice();
-    sn.push("");
-    setSubnotes(sn);
-  }
-
-  function removeSubnote(ind) {
-    let sn = subnotes.slice();
-    sn.splice(ind, 1);
-    setSubnotes(sn);
-  }
 } // End of component
-function Subnote(props) {
-  let { subnote, ind, removeSubnote } = props;
-  return (
-    <div className="subnote">
-      <span className="subnote-dash">-</span>
-      <textarea
-        className="subnote-input"
-        placeholder="Subnote"
-        defaultValue={subnote ? subnote : ""}
-      />
-      <button
-        type="button"
-        className="remove-subnote"
-        onClick={() => removeSubnote(ind)}
-      >
-        <FontAwesomeIcon icon={faTrash} color="grey" title="Remove Subnote" />
-      </button>
-    </div>
-  );
-}
-// function displayNotes(subnotesArray, setSubnotes) {
-//   setSubnotes(subnotesArray.map((n, i) => <Subnote key={i} note={n} />));
-// }
 
 export default NoteForm;

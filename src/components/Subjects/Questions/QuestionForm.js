@@ -15,6 +15,7 @@ export default function QuestionForm(props) {
     imageInput = useRef(null),
     [imageSrc, setImageSrc] = useState(),
     [imageFile, setImageFile] = useState(),
+    [isSubmitting, setIsSubmitting] = useState(false),
     [imageUpdated, setImageUpdated] = useState(false),
     [question, setQuestion] = useState(
       questionObject ? questionObject.question : ""
@@ -25,8 +26,8 @@ export default function QuestionForm(props) {
     [answer, setAnswer] = useState(
       questionObject ? questionObject.answer : null
     ),
-    { getCategoryQuestions } = useContext(CategoryContext),
-    { API, Storage, user } = useContext(ApiContext);
+    { getCategoryNotes } = useContext(CategoryContext),
+    { API, Auth, Storage, user } = useContext(ApiContext);
 
   // get image for Question Updates
   useEffect(() => {
@@ -37,10 +38,6 @@ export default function QuestionForm(props) {
   useEffect(() => {
     setQuestionType("trueFalse");
   }, []);
-
-  useEffect(() => {
-    console.log(newAO);
-  }, [newAO]);
 
   useEffect(() => {
     switch (questionType) {
@@ -89,12 +86,12 @@ export default function QuestionForm(props) {
   }, [imageFile]);
 
   function getImage() {
-    console.log("get Image question");
     Storage.get(questionObject.image.replace("public/", ""))
       .then(res => {
         setImageSrc(res);
       })
       .catch(err => {
+        alert(err);
         console.log(err);
       });
   }
@@ -218,9 +215,35 @@ export default function QuestionForm(props) {
       questionValues.image = questionObject.image;
     console.log("questionValues");
     console.log(questionValues);
-    // !questionObject
-    //   ? postQuestion(questionValues)
-    //   : updateQuestion(questionValues);
+    submitForm(questionValues);
+  }
+
+  async function submitForm(qv) {
+    let apiMethod = !questionObject ? "post" : "put",
+      // path for backend api
+      resourcePath = `/users/${user.username}/subjects/${subjectName}/categories/${categoryName}/questions`;
+    // Validates form inputs // TODO:
+    // Confirms user is signed in
+    if (!user || !user.username) return alert("Must Sign In");
+    // Disables submit button
+    setIsSubmitting(true);
+    return await API[apiMethod]("StuddieBuddie", resourcePath, {
+      body: JSON.stringify(qv),
+      headers: {
+        Authorization: `Bearer ${(await Auth.currentSession())
+          .getIdToken()
+          .getJwtToken()}`
+      },
+      response: true
+    })
+      .then(response => {
+        getCategoryNotes().then(() => setIsSubmitting(false));
+      })
+      .catch(error => {
+        setIsSubmitting(false);
+        alert(error.response);
+        console.log(error.response);
+      });
   }
 
   function postQuestion(n) {
@@ -285,7 +308,7 @@ export default function QuestionForm(props) {
               console.log("storage PUT  complete RES");
               console.log(res);
               setTimeout(function() {
-                getCategoryQuestions();
+                // getCategoryQuestions();
               }, 1500);
             })
             .catch(err => {
@@ -294,7 +317,7 @@ export default function QuestionForm(props) {
             });
         }
         if (!imageFile) {
-          getCategoryQuestions();
+          // getCategoryQuestions();
         }
       })
       .catch(error => {

@@ -4,7 +4,7 @@ import CategoryContext from "../../../contexts/CategoryContext";
 import ApiContext from "../../../contexts/ApiContext";
 import Questions from "../Questions/Questions";
 import "./Category.css";
-import Loading from "../Loading"
+import Loading from "../Loading";
 
 import {
   // BrowserRouter as Router,
@@ -23,11 +23,14 @@ export default function Category() {
     [isLoading, setIsLoading] = useState(true),
     { API } = useContext(ApiContext);
   useEffect(() => {
-    getCategoryNotes().then(()=>setIsLoading(false));
+    getCategoryNotes().then(() => setIsLoading(false));
     // getCategoryQuestions();
   }, []);
 
-
+  useEffect(() => {
+    console.log(categoryNotes);
+    console.log(categoryQuestions);
+  }, [categoryNotes, categoryQuestions]);
 
   return (
     <div className="component">
@@ -36,12 +39,12 @@ export default function Category() {
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
       <ul className="category-nav">
-         <li>
-           <Link to={`${url}/notes`}>Review Notes</Link>
-         </li>
-         <li>
-           <Link to={`${url}/test`}>Test</Link>
-         </li>
+        <li>
+          <Link to={`${url}/notes`}>Review Notes</Link>
+        </li>
+        <li>
+          <Link to={`${url}/test`}>Test</Link>
+        </li>
       </ul>
 
       {isLoading && <Loading />}
@@ -59,7 +62,7 @@ export default function Category() {
         </Route>
         <Route path={`${path}/test`}>
           <CategoryContext.Provider
-            value={{ categoryQuestions, getCategoryQuestions }}
+            value={{ categoryQuestions, getCategoryNotes }}
           >
             <Questions />
           </CategoryContext.Provider>
@@ -78,28 +81,11 @@ export default function Category() {
         }
       }
     )
-      .then(setCategoryNotes)
+      .then(res => {
+        setCategoryNotes(res.filter(v => !v.pathName.includes("question")));
+        setCategoryQuestions(res.filter(v => v.pathName.includes("question")));
+      })
       .catch(alert);
   }
 
-  function getCategoryQuestions() {
-    console.log("GET getCategoryQuestions");
-    API.get(
-      "StuddieBuddie",
-      `/subjects/${subjectName}/${categoryName}/questions`,
-      {
-        queryStringParameters: {
-          username: username
-        }
-      }
-    )
-      .then(response => {
-        console.log("GET Category question response");
-        console.log(response);
-        setCategoryQuestions(response);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
 } // end of component
