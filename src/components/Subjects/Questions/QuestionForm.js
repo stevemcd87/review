@@ -5,13 +5,14 @@ import { useParams } from "react-router-dom";
 import "./Styles/QuestionForm.css";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
+import NoteContext from "../../../contexts/NoteContext";
 import MultipleChoice from "./MultipleChoice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function QuestionForm(props) {
   let { subjectName, categoryName } = useParams(),
-    { questionObject, questionNotes } = props,
+    { questionObject } = props,
     [questionType, setQuestionType] = useState(),
     imageInput = useRef(null),
     [imageSrc, setImageSrc] = useState(),
@@ -28,6 +29,7 @@ export default function QuestionForm(props) {
       questionObject ? questionObject.answer : null
     ),
     { getCategoryNotes } = useContext(CategoryContext),
+    { questionNotes } = useContext(NoteContext),
     { API, Auth, Storage, user } = useContext(ApiContext);
 
   // get image for Question Updates
@@ -245,85 +247,6 @@ export default function QuestionForm(props) {
       .catch(error => {
         setIsSubmitting(false);
         alert(error.response);
-        console.log(error.response);
-      });
-  }
-
-  function postQuestion(n) {
-    API.post(
-      "StuddieBuddie",
-      `/subjects/${subjectName}/${categoryName}/questions`,
-      {
-        body: JSON.stringify(n)
-      }
-    )
-      .then(response => {
-        console.log("update question response");
-        console.log(response);
-
-        if (imageFile) {
-          Storage.put(
-            `${subjectName}/${categoryName}/QuestionImage/${user.user.username}/${response.pathName}`,
-            imageFile
-          )
-            .then(res => {
-              console.log("storage PUT  complete RES");
-              console.log(res);
-              setTimeout(function() {
-                // getCategoryQuestions();
-              }, 1500);
-            })
-            .catch(err => {
-              console.log("err");
-              console.log(err);
-            });
-        }
-
-        if (!imageFile) {
-          // getCategoryQuestions();
-        }
-      })
-      .catch(error => {
-        console.log("ERROR");
-        console.log(error);
-      });
-  }
-
-  function updateQuestion(q) {
-    console.log("updateQuestion");
-    API.put(
-      "StuddieBuddie",
-      `/subjects/${subjectName}/${categoryName}/questions/`,
-      {
-        body: JSON.stringify(q)
-      }
-    )
-      .then(response => {
-        console.log("update note response");
-        console.log(response);
-        if (imageFile && imageUpdated) {
-          console.log("image");
-          Storage.put(
-            `${subjectName}/${categoryName}/QuestionImage/${user.user.username}/${q.pathName}`,
-            imageFile
-          )
-            .then(res => {
-              console.log("storage PUT  complete RES");
-              console.log(res);
-              setTimeout(function() {
-                // getCategoryQuestions();
-              }, 1500);
-            })
-            .catch(err => {
-              console.log("err");
-              console.log(err);
-            });
-        }
-        if (!imageFile) {
-          // getCategoryQuestions();
-        }
-      })
-      .catch(error => {
         console.log(error.response);
       });
   }

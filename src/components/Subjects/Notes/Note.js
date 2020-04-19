@@ -100,7 +100,7 @@ function Note(props) {
                 color="grey"
               />
             </button>
-            {parentDisplayForm === "question" && (
+            {parentDisplayForm.includes("question") && (
               <button
                 type="button"
                 title="Bind note to question"

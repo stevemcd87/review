@@ -14,15 +14,12 @@ export default function AnswerOption(props) {
     [klassName, setKlassName] = useState("");
 
   useEffect(() => {
-    console.log(answer);
-    console.log(answerOption);
     (answer && answer.id) === (answerOption && answerOption.id)
       ? setIsAnswer(true)
       : setIsAnswer(false);
   }, [answerOption, answer]);
 
   useEffect(() => {
-    console.log(isAnswer);
     setKlassName(isAnswer ? "correct-answer" : "");
   }, [isAnswer]);
 
