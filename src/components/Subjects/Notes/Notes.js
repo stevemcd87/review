@@ -98,9 +98,9 @@ function Notes(props) {
           return (
             <Note
               key={note.pathName}
-              parentDisplayForm={formDisplayed}
               {...{
                 note,
+                formDisplayed,
                 updateQuestionNote,
                 nextAutoPlayIndex,
                 questionNotes

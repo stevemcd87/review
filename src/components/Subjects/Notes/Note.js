@@ -20,7 +20,7 @@ function Note(props) {
       note,
       nextAutoPlayIndex,
       updateQuestionNote,
-      parentDisplayForm,
+      formDisplayed,
       questionNotes
     } = props,
     { API, Storage, user } = useContext(ApiContext),
@@ -100,7 +100,7 @@ function Note(props) {
                 color="grey"
               />
             </button>
-            {parentDisplayForm.includes("question") && (
+            {formDisplayed.includes("question") && (
               <button
                 type="button"
                 title="Bind note to question"
@@ -174,11 +174,10 @@ function Note(props) {
       }
     )
       .then(response => {
-        console.log("delete note response");
-        console.log(response);
         getCategoryNotes();
       })
       .catch(error => {
+        alert(error)
         console.log(error.response);
       });
   }
