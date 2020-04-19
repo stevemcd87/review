@@ -28,6 +28,7 @@ export default function AnswerOption(props) {
 
   return (
     <div className={`answer-option-div ${klassName}`}>
+      {!setAnswer && <p>{answerOption.inputValue}</p>}
       {setAnswer && (
         <>
           <div className="edit-buttons">
@@ -58,7 +59,6 @@ export default function AnswerOption(props) {
           />
         </>
       )}
-      {!setAnswer && <p>{answerOption.inputValue}</p>}
     </div>
   );
 }

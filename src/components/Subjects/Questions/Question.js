@@ -11,8 +11,8 @@ export default function Question(props) {
   let { questionObject } = props,
     { subjectName, categoryName, username } = useParams(),
     [displayForm, setDisplayForm] = useState(false),
-    { API, Storage, user } = useContext(ApiContext),
-    { getCategoryQuestions } = useContext(CategoryContext),
+    { API, Storage, Auth, user } = useContext(ApiContext),
+    { getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
   useEffect(() => {
     console.log(questionObject);
@@ -30,7 +30,7 @@ export default function Question(props) {
           {!displayForm && (
             <div>
               <div className="edit-buttons">
-                <span
+                <button
                   className="edit-question-button"
                   onClick={() => setDisplayForm(!displayForm)}
                 >
@@ -40,8 +40,8 @@ export default function Question(props) {
                     title="Edit Question"
                     color="grey"
                   />
-                </span>
-                <span
+                </button>
+                <button
                   className="delete-question-button"
                   onClick={() => deleteQuestion(questionObject)}
                 >
@@ -51,7 +51,7 @@ export default function Question(props) {
                     title="Delete Question"
                     color="grey"
                   />
-                </span>
+                </button>
               </div>
               <h3>{questionObject.question}</h3>
               <div className="answer-options-div">
@@ -71,25 +71,31 @@ export default function Question(props) {
       )}
     </div>
   );
-  function deleteQuestion(q) {
-    console.log("deleteQuestion");
-    API.del(
-      "StuddieBuddie",
-      `/subjects/${subjectName}/${categoryName}/questions/`,
-      {
-        body: JSON.stringify({
-          username: user.user.username,
-          pathName: q.pathName
+  async function deleteQuestion(q) {
+    let isConfirmed = window.confirm(
+      "Are you sure you'd like to delete this question?"
+    );
+    if (isConfirmed) {
+      return API.del(
+        "StuddieBuddie",
+        `/users/${user.username}/subjects/${subjectName}/categories/${categoryName}/questions/`,
+        {
+          body: JSON.stringify({
+            pathName: q.pathName
+          }),
+          headers: {
+            Authorization: `Bearer ${(await Auth.currentSession())
+              .getIdToken()
+              .getJwtToken()}`
+          }
+        }
+      )
+        .then(response => {
+          getCategoryNotes();
         })
-      }
-    )
-      .then(response => {
-        console.log("delete note response");
-        console.log(response);
-        getCategoryQuestions();
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
+        .catch(error => {
+          console.log(error.response);
+        });
+    }
   }
 }

@@ -65,7 +65,7 @@ function Notes(props) {
       {isCreator && displayQuestionForm && (
         <QuestionForm {...{ questionNotes }} />
       )}
-      {isCreator && <Questions questions={categoryQuestions} />}
+      {isCreator && <Questions questions={categoryQuestions} {...{}} />}
       <div className="container">
         {categoryNotes.map((note, ind) => {
           return (
