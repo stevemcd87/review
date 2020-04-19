@@ -15,8 +15,9 @@ function Notes(props) {
     [autoPlay, setAutoPlay] = useState(false),
     [autoPlayIndex, setAutoPlayIndex] = useState(),
     [questionNotes, setQuestionNotes] = useState([]),
-    [displayNoteForm, setDisplayNoteForm] = useState(false),
-    [displayQuestionForm, setDisplayQuestionForm] = useState(false),
+    // Options for displayForm ar 'note' , 'question' or question.pathName
+    [displayForm, setDisplayForm] = useState(),
+    [isUpdatingQuestion, setIsUpdatingQuestion] = useState(),
     { categoryNotes, categoryQuestions } = useContext(CategoryContext),
     { user } = useContext(ApiContext),
     isCreator = useCreator(user, username);
@@ -25,21 +26,13 @@ function Notes(props) {
     setAutoPlayIndex(autoPlay ? 0 : null);
   }, [autoPlay]);
 
-  // Hides the Question Form if user clicks for the Note form
-  useEffect(() => {
-    if (displayNoteForm && displayQuestionForm) setDisplayQuestionForm(false);
-  }, [displayNoteForm]);
-
-  // Hides the Note Form if user clicks for the question form
-  useEffect(() => {
-    if (displayQuestionForm && displayNoteForm) setDisplayNoteForm(false);
-  }, [displayQuestionForm]);
-
   // Hides all forms when any note have been updated
   useEffect(() => {
-    setDisplayNoteForm(false);
-    setDisplayQuestionForm(false);
+    setQuestionNotes([]);
+    setDisplayForm(null);
   }, [categoryNotes]);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="notes-component component">
@@ -48,43 +41,51 @@ function Notes(props) {
           <button
             className="create-button"
             type="button"
-            onClick={() => setDisplayNoteForm(!displayNoteForm)}
+            onClick={() =>
+              setDisplayForm(displayForm !== "note" ? "note" : null)
+            }
           >
-            {!displayNoteForm ? "Create Note" : "Hide Note Form"}
+            {displayForm !== "note" ? "Create Note" : "Hide Note Form"}
           </button>
           <button
             className="create-button"
             type="button"
-            onClick={() => setDisplayQuestionForm(!displayQuestionForm)}
+            onClick={() =>
+              setDisplayForm(displayForm !== "question" ? "question" : null)
+            }
           >
-            {!displayQuestionForm ? "Create Question" : "Hide Question Form"}
+            {displayForm !== "question"
+              ? "Create Question"
+              : "Hide Question Form"}
           </button>
         </div>
       )}
-      {isCreator && displayNoteForm && <NoteForm />}
-      {isCreator && displayQuestionForm && (
+      {isCreator && displayForm === "note" && <NoteForm />}
+      {isCreator && displayForm === "question" && (
         <QuestionForm {...{ questionNotes }} />
       )}
-      {isCreator && <Questions questions={categoryQuestions} {...{}} />}
+      {isCreator && (
+        <Questions
+          questions={categoryQuestions}
+          {...{ setIsUpdatingQuestion }}
+        />
+      )}
       <div className="container">
         {categoryNotes.map((note, ind) => {
           return (
             <Note
               key={note.pathName}
+              parentDisplayForm={displayForm}
               {...{
                 note,
                 updateQuestionNote,
-                displayQuestionForm,
-                nextAutoPlayIndex
+                nextAutoPlayIndex,
+                questionNotes
               }}
-              isActive={
-                autoPlayIndex === ind || isInQuestionNote(note) ? true : false
-              }
             />
           );
         })}
       </div>
-
     </div>
   );
 
@@ -94,12 +95,6 @@ function Notes(props) {
     } else {
       setAutoPlayIndex(null);
     }
-  }
-
-  function isInQuestionNote(n) {
-    return questionNotes.findIndex(v => v.pathName === n.pathName) >= 0
-      ? true
-      : false;
   }
 
   function updateQuestionNote(n, isNoteActive) {

@@ -18,19 +18,23 @@ import Markdown from "react-textarea-markdown";
 function Note(props) {
   let {
       note,
-      isActive,
       nextAutoPlayIndex,
       updateQuestionNote,
-      displayQuestionForm
+      parentDisplayForm,
+      questionNotes
     } = props,
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
-    noteDiv = useRef(),
     [imageSrc, setImageSrc] = useState(),
-    [klassName, setKlassName] = useState(),
+    [klassName, setKlassName] = useState(""),
+    [isActive, setIsActive] = useState(false),
     [displayForm, setDisplayForm] = useState(false),
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
+
+  useEffect(() => {
+    setIsActive(isInQuestionNote());
+  }, [questionNotes]);
 
   // for Note Image
   useEffect(() => {
@@ -42,16 +46,6 @@ function Note(props) {
     if (note.image) getImage();
     // .then(() => setImageLoading(false))
   }, [categoryNotes]);
-
-  // for isActive prop
-  useEffect(() => {
-    // if (isActive) {
-    //   playAudio();
-    //   noteDiv.current.classList.add("isActive");
-    // } else {
-    //   noteDiv.current.classList.remove("isActive");
-    // }
-  }, [isActive]);
 
   function getImage() {
     Storage.get(note.image)
@@ -91,7 +85,7 @@ function Note(props) {
   }
 
   return (
-    <div className=" item" ref={noteDiv}>
+    <div className="item">
       <div className="item-content">
         {isCreator && (
           <div className="edit-buttons">
@@ -106,12 +100,12 @@ function Note(props) {
                 color="grey"
               />
             </button>
-            {displayQuestionForm && (
+            {parentDisplayForm === "question" && (
               <button
                 type="button"
                 title="Bind note to question"
                 className="add-qn-button"
-                onClick={()=>updateQuestionNote(note, isActive)}
+                onClick={() => updateQuestionNote(note, isActive)}
               >
                 <FontAwesomeIcon icon={isActive ? faMinus : faPlus} size="3x" />
               </button>
@@ -160,6 +154,12 @@ function Note(props) {
       </div>
     </div>
   );
+
+  function isInQuestionNote() {
+    return questionNotes.findIndex(v => v.pathName === note.pathName) >= 0
+      ? true
+      : false;
+  }
 
   function deleteNote(n) {
     console.log("deleteNote");
