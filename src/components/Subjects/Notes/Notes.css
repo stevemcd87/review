@@ -32,41 +32,6 @@ img {
   margin: auto;
 }
 
-/* ========== SUBNOTE ========== */
-.subnote {
-  display: flex;
-  align-items: center;
-  position: relative;
-  text-align: left;
-  padding: 8px;
-}
-
-.subnote-dash {
-  margin-right: 16px;
-}
-
-.note-form-component textarea.subnote-input {
-  font-size: 13px;
-  text-align: left;
-  margin-right: 25px;
-}
-
-.note-form-component button.add-subnote {
-  margin-left: 10px;
-  width: 40px;
-  border-radius: 50%;
-}
-
-.remove-subnote {
-  background-color: inherit;
-  border-bottom: grey 1px solid;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-  width: 25px;
-}
-
 div.markdown-show {
   color: white;
   max-width: 700px;
@@ -78,7 +43,6 @@ div.markdown-show {
   padding: 8px;
   min-height: 50px;
 }
-
 
 .markdown-div ul {
   margin: 10px 25px;
@@ -151,7 +115,6 @@ h4.markdown-h::before {
   border-left: 5px solid rgba(184, 255, 184, 0.1);
 }
 
-
 .markdown-textarea-div {
   display: block;
   margin: 0 auto;
@@ -165,31 +128,30 @@ h4.markdown-h::before {
   width: 100% !important;
 }
 
-.markdown-pre::-webkit-scrollbar{
-    height: 5px;
+.markdown-pre::-webkit-scrollbar {
+  height: 5px;
 }
 
-.markdown-pre::-webkit-scrollbar-track{
-    border: 1px solid black;
-    background: rgb(41,41,41);
-    border-radius: 10px;
-
+.markdown-pre::-webkit-scrollbar-track {
+  border: 1px solid black;
+  background: rgb(41, 41, 41);
+  border-radius: 10px;
 }
-.markdown-pre::-webkit-scrollbar-thumb{
-    border-radius:10px;
-    height: 30px;
-    width: 8px;
-    border: 1px solid black;
-    background: rgb(111,111,111);
-    -webkit-box-shadow: 0 1px 1px rgb(0,0,0);
-    background: -webkit-linear-gradient(rgb(200,200,200), rgb(150,150,150));
+.markdown-pre::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  height: 30px;
+  width: 8px;
+  border: 1px solid black;
+  background: rgb(111, 111, 111);
+  -webkit-box-shadow: 0 1px 1px rgb(0, 0, 0);
+  background: -webkit-linear-gradient(rgb(200, 200, 200), rgb(150, 150, 150));
 }
 
 .markdown-pre::-webkit-scrollbar-track-piece {
-    height: 30px;
+  height: 30px;
 }
 
-button.add-qn-button{
+button.add-qn-button {
   border: 0 !important;
   border-radius: 20px;
   background-color: rgba(114, 170, 114, 0.5) !important;

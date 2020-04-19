@@ -1,128 +1,76 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import QuestionForm from "./QuestionForm";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import QuestionForm from "./QuestionForm";
 import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTrash,
-  faEdit,
-  faCheck,
-  faTimes
-} from "@fortawesome/free-solid-svg-icons";
-
+import useCreator from "../customHooks/useCreator";
+import AnswerOption from "./AnswerOption";
 export default function Question(props) {
-  let { question, nextQuestion, incrementAnsweredCorrectly , last} = props,
-    { subjectName, categoryName } = useParams(),
-    answerOptionsDiv = useRef(),
-    [imageSrc, setImageSrc] = useState(),
+  let { questionObject } = props,
+    { subjectName, categoryName, username } = useParams(),
     [displayForm, setDisplayForm] = useState(false),
-    [selectedAnswer, setSelectedAnswer] = useState(),
-    // [answeredCorrect, setSelectedAnsweredCorrect] = useState(),
-    { categoryQuestions, getCategoryQuestions } = useContext(CategoryContext),
-    { API, Storage, user } = useContext(ApiContext);
-
-
-  // To display Question Image
+    { API, Storage, user } = useContext(ApiContext),
+    { getCategoryQuestions } = useContext(CategoryContext),
+    isCreator = useCreator(user, username);
   useEffect(() => {
-    if (question.image) getImage();
+    console.log(questionObject);
   }, []);
-
-  // Hides form when form is submitted
-  useEffect(() => {
-    setDisplayForm(false);
-  }, [categoryQuestions]);
-
-  // Checks if answer is correct or not
-  useEffect(() => {
-    let isCorrect = selectedAnswer === question.answer ? true : false;
-    if (isCorrect) incrementAnsweredCorrectly()
-    if (selectedAnswer)
-      [...answerOptionsDiv.current.children].forEach(v => {
-        v.disabled = true;
-        // if user was correct
-        if (isCorrect && v.value === selectedAnswer) v.classList.add("correct");
-        // if user was incorrect
-        if (!isCorrect && v.value === selectedAnswer)
-          v.classList.add("incorrect");
-        //shows correct answer if user chose incorrectly
-        if (!isCorrect && v.value === question.answer)
-          v.classList.add("correct-option");
-      });
-  }, [selectedAnswer]);
-
   return (
-    <div className="question-component">
-      <button onClick={()=>nextQuestion('prev')}>Prev</button>
-      <button onClick={()=>nextQuestion('next')}>{!last ? "Next" : "Test Results"}</button>
-      {displayForm && <QuestionForm questionObject={question} />}
-      {!displayForm && (
-        <div className="question-content">
-          <div className="question-request-buttons">
-            <span
-              className="edit-question-button"
-              onClick={() => setDisplayForm(!displayForm)}
-            >
-              <FontAwesomeIcon icon={faEdit} size="2x" title="Edit Question" />
-            </span>
-            <span
-              className="delete-question-button"
-              onClick={() => deleteQuestion(question)}
-            >
-              <FontAwesomeIcon
-                icon={faTrash}
-                size="2x"
-                title="Delete Question"
-              />
-            </span>
-          </div>
-
-          <div className="question-detail">
-            {selectedAnswer && (
-              <AnswerStatus
-                answeredCorrect={
-                  selectedAnswer === question.answer ? true : false
-                }
-              />
-            )}
-            {question.image && <img src={imageSrc} />}
-            <p>{question.question}</p>
-            <div className="answer-options" ref={answerOptionsDiv}>
-              {question.answerOptions.map((v, i) => (
-                <button
-                  key={question.pathName + v + i}
-                  className="answer-option"
-                  value={v}
-                  onClick={e => setSelectedAnswer(e.target.value)}
+    <div className="question-component item">
+      {isCreator && (
+        <div className="item-content">
+          {displayForm && (
+            <QuestionForm
+              {...{ questionObject }}
+              questionNotes={questionObject.questionNotes}
+            />
+          )}
+          {!displayForm && (
+            <div>
+              <div className="edit-buttons">
+                <span
+                  className="edit-question-button"
+                  onClick={() => setDisplayForm(!displayForm)}
                 >
-                  {v}
-                </button>
-              ))}
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    size="2x"
+                    title="Edit Question"
+                    color="grey"
+                  />
+                </span>
+                <span
+                  className="delete-question-button"
+                  onClick={() => deleteQuestion(questionObject)}
+                >
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    size="2x"
+                    title="Delete Question"
+                    color="grey"
+                  />
+                </span>
+              </div>
+              <h3>{questionObject.question}</h3>
+              <div className="answer-options-div">
+                {questionObject.answerOptions.map(ao => {
+                  return (
+                    <AnswerOption
+                      key={ao.id}
+                      answerOption={ao}
+                      answer={questionObject.answer}
+                    />
+                  );
+                })}
+              </div>
             </div>
-            <span
-              className="edit-question desktop"
-              onClick={() => setDisplayForm(!displayForm)}
-            >
-              Edit Question
-            </span>
-          </div>
+          )}
         </div>
       )}
     </div>
   );
-
-  function getImage() {
-    Storage.get(question.image.replace("public/", ""))
-      .then(res => {
-        console.log("image res");
-        console.log(res);
-        setImageSrc(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   function deleteQuestion(q) {
     console.log("deleteQuestion");
     API.del(
@@ -145,28 +93,3 @@ export default function Question(props) {
       });
   }
 }
-
-function AnswerStatus(props) {
-  let { answeredCorrect } = props;
-  return (
-    <div className="answer-status-component">
-      {answeredCorrect ? (
-        <FontAwesomeIcon
-          icon={faCheck}
-          size="3x"
-          title="Correct"
-          color="green"
-        />
-      ) : (
-        <FontAwesomeIcon
-          icon={faTimes}
-          size="4x"
-          title="Incorrect"
-          color="red"
-        />
-      )}
-    </div>
-  );
-}
-
-function answerOptions() {}

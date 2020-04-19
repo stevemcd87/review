@@ -51,12 +51,16 @@ export default function Category() {
 
       <Switch>
         <Route exact path={path}>
-          <CategoryContext.Provider value={{ categoryNotes, getCategoryNotes }}>
+          <CategoryContext.Provider
+            value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+          >
             <Notes />
           </CategoryContext.Provider>
         </Route>
         <Route path={`${path}/notes`}>
-          <CategoryContext.Provider value={{ categoryNotes, getCategoryNotes }}>
+          <CategoryContext.Provider
+            value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+          >
             <Notes />
           </CategoryContext.Provider>
         </Route>
@@ -64,7 +68,7 @@ export default function Category() {
           <CategoryContext.Provider
             value={{ categoryQuestions, getCategoryNotes }}
           >
-            <Questions />
+            {/*<Test />*/}
           </CategoryContext.Provider>
         </Route>
       </Switch>
@@ -87,5 +91,4 @@ export default function Category() {
       })
       .catch(alert);
   }
-
 } // end of component

@@ -3,6 +3,7 @@ import CategoryContext from "../../../contexts/CategoryContext";
 import Note from "./Note";
 import NoteForm from "./NoteForm";
 import QuestionForm from "../Questions/QuestionForm";
+import Questions from "../Questions/Questions";
 import { useParams } from "react-router-dom";
 import ApiContext from "../../../contexts/ApiContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +17,7 @@ function Notes(props) {
     [questionNotes, setQuestionNotes] = useState([]),
     [displayNoteForm, setDisplayNoteForm] = useState(false),
     [displayQuestionForm, setDisplayQuestionForm] = useState(false),
-    { categoryNotes } = useContext(CategoryContext),
+    { categoryNotes, categoryQuestions } = useContext(CategoryContext),
     { user } = useContext(ApiContext),
     isCreator = useCreator(user, username);
 
@@ -24,14 +25,17 @@ function Notes(props) {
     setAutoPlayIndex(autoPlay ? 0 : null);
   }, [autoPlay]);
 
+  // Hides the Question Form if user clicks for the Note form
   useEffect(() => {
     if (displayNoteForm && displayQuestionForm) setDisplayQuestionForm(false);
   }, [displayNoteForm]);
 
+  // Hides the Note Form if user clicks for the question form
   useEffect(() => {
     if (displayQuestionForm && displayNoteForm) setDisplayNoteForm(false);
   }, [displayQuestionForm]);
 
+  // Hides all forms when any note have been updated
   useEffect(() => {
     setDisplayNoteForm(false);
     setDisplayQuestionForm(false);
@@ -58,8 +62,10 @@ function Notes(props) {
         </div>
       )}
       {isCreator && displayNoteForm && <NoteForm />}
-      {isCreator && displayQuestionForm && <QuestionForm {...{questionNotes}}/>}
-
+      {isCreator && displayQuestionForm && (
+        <QuestionForm {...{ questionNotes }} />
+      )}
+      {isCreator && <Questions questions={categoryQuestions} />}
       <div className="container">
         {categoryNotes.map((note, ind) => {
           return (
@@ -78,6 +84,7 @@ function Notes(props) {
           );
         })}
       </div>
+
     </div>
   );
 

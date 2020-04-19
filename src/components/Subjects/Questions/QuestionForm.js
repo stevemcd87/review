@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 
+import AnswerOption from "./AnswerOption";
 import { useParams } from "react-router-dom";
 import "./Styles/QuestionForm.css";
 import ApiContext from "../../../contexts/ApiContext";
@@ -36,43 +37,45 @@ export default function QuestionForm(props) {
 
   // set question type to trueFalse(default)
   useEffect(() => {
-    setQuestionType("trueFalse");
+    if (!questionObject) setQuestionType("trueFalse");
   }, []);
 
   useEffect(() => {
-    switch (questionType) {
-      case "trueFalse":
-        setNewAO([
-          {
-            id: Date.now() + "-" + "0",
-            inputValue: "True"
-          },
-          {
-            id: Date.now() + "-" + "1",
-            inputValue: "False"
-          }
-        ]);
-        break;
-      case "multipleChoice":
-        setNewAO([
-          {
-            id: Date.now() + "-" + "0",
-            inputValue: ""
-          },
-          {
-            id: Date.now() + "-" + "1",
-            inputValue: ""
-          },
-          {
-            id: Date.now() + "-" + "2",
-            inputValue: ""
-          },
-          {
-            id: Date.now() + "-" + "3",
-            inputValue: ""
-          }
-        ]);
-        break;
+    if (!questionObject) {
+      switch (questionType) {
+        case "trueFalse":
+          setNewAO([
+            {
+              id: Date.now() + "-" + "0",
+              inputValue: "True"
+            },
+            {
+              id: Date.now() + "-" + "1",
+              inputValue: "False"
+            }
+          ]);
+          break;
+        case "multipleChoice":
+          setNewAO([
+            {
+              id: Date.now() + "-" + "0",
+              inputValue: ""
+            },
+            {
+              id: Date.now() + "-" + "1",
+              inputValue: ""
+            },
+            {
+              id: Date.now() + "-" + "2",
+              inputValue: ""
+            },
+            {
+              id: Date.now() + "-" + "3",
+              inputValue: ""
+            }
+          ]);
+          break;
+      }
     }
   }, [questionType]);
 
@@ -144,7 +147,7 @@ export default function QuestionForm(props) {
         </div>
         <div className="answer-options-inputs">
           <div className="answer-options-div">
-            {newAO.map((ao, ind, arr) => {
+            {newAO.map(ao => {
               return (
                 <AnswerOption
                   key={ao.id}
@@ -204,9 +207,9 @@ export default function QuestionForm(props) {
     let questionValues = {
       username: user.username,
       question: question && question.trim(),
-      answerOptions: newAO.map(v => v.inputValue),
+      answerOptions: newAO,
       image: imageFile ? true : false,
-      answer: newAO.find(v => v.id === answer.id).inputValue,
+      answer: newAO.find(v => v.id === answer.id),
       questionNotes: questionNotes
     };
     // adds pathName to questionValues if there is one
@@ -347,51 +350,3 @@ export default function QuestionForm(props) {
     setNewAO(ao);
   }
 } // End of component
-
-function AnswerOption(props) {
-  let {
-      answerOption,
-      setAnswer,
-      answer,
-      removeAnswerOption,
-      updateAnswerOption
-    } = props,
-    [isAnswer, setIsAnswer] = useState(false),
-    [klassName, setKlassName] = useState("");
-
-  useEffect(() => {
-    answer === answerOption ? setIsAnswer(true) : setIsAnswer(false);
-  }, [answerOption, answer]);
-
-  useEffect(() => {
-    setKlassName(isAnswer ? "correct-answer" : "");
-  }, [isAnswer]);
-
-  return (
-    <div className={`answer-option-div ${klassName}`}>
-      <div className="edit-buttons">
-        <button
-          type="button"
-          className={`select-answer ${klassName}`}
-          onClick={() => setAnswer(answerOption)}
-          title="Mark as correct answer"
-        >
-          <FontAwesomeIcon icon={faCheck} color={isAnswer ? "green" : "grey"} />
-        </button>
-        <button
-          type="button"
-          title="Delete answer option"
-          onClick={() => removeAnswerOption(answerOption.id)}
-        >
-          <FontAwesomeIcon icon={faTrash} color="grey" />
-        </button>
-      </div>
-      <textarea
-        className="answer-option"
-        defaultValue={answerOption.inputValue}
-        placeholder="Answer Option"
-        onChange={e => updateAnswerOption(answerOption.id, e.target.value)}
-      />
-    </div>
-  );
-}
