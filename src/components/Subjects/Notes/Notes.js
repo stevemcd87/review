@@ -26,13 +26,21 @@ function Notes(props) {
     [isUpdatingQuestion, setIsUpdatingQuestion] = useState(),
     { categoryNotes, categoryQuestions } = useContext(CategoryContext),
     { user } = useContext(ApiContext),
-    isCreator = useCreator(user, username);
+    isCreator = useCreator(user, username),
+    { passedNotesFromTest } = props,
+    [displayedNotes, setDisplayedNotes] = useState([]);
 
+  // When Question Notes are passed via props for test
+  useEffect(() => {
+    let n = passedNotesFromTest ? passedNotesFromTest : categoryNotes;
+     setDisplayedNotes(n);
+  }, []);
+  // For future enhancement
   useEffect(() => {
     setAutoPlayIndex(autoPlay ? 0 : null);
   }, [autoPlay]);
 
-  // When notes/ questions are updated
+  // When notes questions are updated
   useEffect(() => {
     // Clear question notes
     setQuestionNotes([]);
@@ -56,45 +64,43 @@ function Notes(props) {
     }
   }, [formDisplayed]);
 
-  // useEffect(() => {
-  //   console.log(questionNotes);
-  // }, [questionNotes]);
-
   return (
     <div className="notes-component component">
-      {isCreator && (
-        <div>
-          <button
-            className="create-button"
-            type="button"
-            onClick={() => setFormDisplayed(updateDisplayedForm("note"))}
+      {isCreator && !passedNotesFromTest && (
+        <>
+          <div>
+            <button
+              className="create-button"
+              type="button"
+              onClick={() => setFormDisplayed(updateDisplayedForm("note"))}
+            >
+              {formDisplayed !== "note" ? "Create Note" : "Hide Note Form"}
+            </button>
+            <button
+              className="create-button"
+              type="button"
+              onClick={() => setFormDisplayed(updateDisplayedForm("question"))}
+            >
+              {formDisplayed !== "question"
+                ? "Create Question"
+                : "Hide Question Form"}
+            </button>
+          </div>
+          {formDisplayed === "note" && <NoteForm />}
+          {formDisplayed === "question" && (
+            <NoteContext.Provider value={{ questionNotes }}>
+              <QuestionForm />
+            </NoteContext.Provider>
+          )}
+          <NoteContext.Provider
+            value={{ questionNotes, formDisplayed, setFormDisplayed }}
           >
-            {formDisplayed !== "note" ? "Create Note" : "Hide Note Form"}
-          </button>
-          <button
-            className="create-button"
-            type="button"
-            onClick={() => setFormDisplayed(updateDisplayedForm("question"))}
-          >
-            {formDisplayed !== "question"
-              ? "Create Question"
-              : "Hide Question Form"}
-          </button>
-        </div>
-      )}
-      {isCreator && formDisplayed === "note" && <NoteForm />}
-      {isCreator && formDisplayed === "question" && (
-        <NoteContext.Provider value={{ questionNotes }}>
-          <QuestionForm />
-        </NoteContext.Provider>
-      )}
-      {isCreator && (
-        <NoteContext.Provider value={{ questionNotes, formDisplayed, setFormDisplayed }}>
-          <Questions />
-        </NoteContext.Provider>
+            <Questions />
+          </NoteContext.Provider>
+        </>
       )}
       <div className="container">
-        {categoryNotes.map((note, ind) => {
+        {displayedNotes.map((note, ind) => {
           return (
             <Note
               key={note.pathName}

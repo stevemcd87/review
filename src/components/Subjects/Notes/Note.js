@@ -21,7 +21,8 @@ function Note(props) {
       nextAutoPlayIndex,
       updateQuestionNote,
       formDisplayed,
-      questionNotes
+      questionNotes,
+      forTest
     } = props,
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
