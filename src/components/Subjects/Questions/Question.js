@@ -13,7 +13,7 @@ import CategoryContext from "../../../contexts/CategoryContext";
 import useCreator from "../customHooks/useCreator";
 
 export default function Question(props) {
-  let { questionObject } = props,
+  let { questionObject, updateScore } = props,
     { subjectName, categoryName, username } = useParams(),
     [isFormDisplayed, setIsFormDisplayed] = useState(false),
     { API, Auth, user } = useContext(ApiContext),

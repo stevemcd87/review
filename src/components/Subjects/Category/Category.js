@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
+
+// Components
+import Test from "../Questions/Test/Test"
+import Loading from "../Loading";
 import Notes from "../Notes/Notes";
+import Questions from "../Questions/Questions";
+// Contexts
 import CategoryContext from "../../../contexts/CategoryContext";
 import ApiContext from "../../../contexts/ApiContext";
-import Questions from "../Questions/Questions";
+// Styles
 import "./Category.css";
-import Loading from "../Loading";
+
 
 import {
   // BrowserRouter as Router,
@@ -66,9 +72,9 @@ export default function Category() {
         </Route>
         <Route path={`${path}/test`}>
           <CategoryContext.Provider
-            value={{ categoryQuestions, getCategoryNotes }}
+            value={{ categoryQuestions }}
           >
-            {/*<Test />*/}
+            <Test />
           </CategoryContext.Provider>
         </Route>
       </Switch>

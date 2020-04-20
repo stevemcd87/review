@@ -33,6 +33,7 @@ textarea.answer-option {
   text-align: center;
 }
 
+
 div.correct-answer {
   border: 2px solid green;
 }
@@ -40,6 +41,8 @@ div.correct-answer {
 button.correct-answer {
   border-bottom: 2px solid green !important;
 }
+
+
 
 strong.bind-notes {
   line-height: 25px;

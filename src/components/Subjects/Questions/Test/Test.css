@@ -1,0 +1,15 @@
+button {
+    background-color: rgba(114, 170, 114, 0.5);
+    color:white;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+button.incorrect-answer {
+  border: 2px solid red !important;
+}
+
+button.correct-answer {
+
+  border: 2px solid green ;
+}

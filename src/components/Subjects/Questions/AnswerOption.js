@@ -11,6 +11,7 @@ export default function AnswerOption(props) {
       updateAnswerOption
     } = props,
     [isAnswer, setIsAnswer] = useState(false),
+    [userAnswer, setUserAnswer] = useState(),
     [klassName, setKlassName] = useState("");
 
   useEffect(() => {
@@ -20,8 +21,10 @@ export default function AnswerOption(props) {
   }, [answerOption, answer]);
 
   useEffect(() => {
+    // Shows answer if not in test
     setKlassName(isAnswer ? "correct-answer" : "");
   }, [isAnswer]);
+
 
   return (
     <div className={`answer-option-div ${klassName}`}>
