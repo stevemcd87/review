@@ -13,11 +13,16 @@ export default function TestQuestion(props) {
     console.log(questionObject);
   }, [questionObject]);
 
+  useEffect(() => {
+    // Updates Test Score when user answers question
+    if (userAnswer) {
+      let result = isCorrect() ? "correct" : "incorrect";
+      updateScore(result);
+    }
+  }, [userAnswer]);
+
   return (
     <>
-      {userAnswer && !isCorrect() && (
-        <Notes passedNotesFromTest={questionObject.questionNotes} />
-      )}
       <div className="test-question-component item">
         <div className="item-content">
           {questionObject && (
@@ -44,8 +49,12 @@ export default function TestQuestion(props) {
               </div>
             </div>
           )}
+          {userAnswer && <button type="button">Next Question</button>}
         </div>
       </div>
+      {userAnswer && !isCorrect() && (
+        <Notes passedNotesFromTest={questionObject.questionNotes} />
+      )}
     </>
   );
   function isCorrect() {

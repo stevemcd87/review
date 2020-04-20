@@ -18,9 +18,10 @@ export default function Test(props) {
   }, [categoryQuestions]);
 
   useEffect(() => {
+    console.log(score);
     // console.log(score);
-    // if (questionIndex === categoryQuestions.length - 1) setShowScore(true);
-    // else setQuestionIndex(questionIndex + 1);
+    if (questionIndex === categoryQuestions.length - 1) setShowScore(true);
+    else if (categoryQuestions.length !== 0) setQuestionIndex(questionIndex + 1);
   }, [score]);
 
   return (
