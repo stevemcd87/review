@@ -1,15 +1,14 @@
-button {
-    background-color: rgba(114, 170, 114, 0.5);
-    color:white;
-    padding: 16px;
-    border-radius: 10px;
+.answer-option-div button {
+  background-color: rgba(114, 170, 114, 0.5);
+  color: white;
+  padding: 16px;
+  border-radius: 10px;
 }
 
 button.incorrect-answer {
-  border: 2px solid red !important;
+  border: 3px solid red ;
 }
 
 button.correct-answer {
-
-  border: 2px solid green ;
+  border: 3px solid green;
 }

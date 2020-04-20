@@ -3,13 +3,8 @@ import TestAnswerOption from "./TestAnswerOption";
 // import { useParams } from "react-router-dom";
 // import ApiContext from "../../../contexts/ApiContext";
 // import CategoryContext from "../../../contexts/CategoryContext";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faTrash,
-//   faEdit,
-//   faCheck,
-//   faTimes
-// } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function TestQuestion(props) {
   let { questionObject, updateScore } = props,
@@ -22,6 +17,13 @@ export default function TestQuestion(props) {
       <div className="item-content">
         {questionObject && (
           <div>
+            {userAnswer && (
+                <FontAwesomeIcon
+                  icon={isCorrect() ? faCheck : faTimes}
+                  size="3x"
+                  color={isCorrect() ? "green" : "red"}
+                />
+            )}
             <h3>{questionObject.question}</h3>
             <div className="answer-options-div">
               {questionObject.answerOptions.map(ao => {
@@ -40,4 +42,9 @@ export default function TestQuestion(props) {
       </div>
     </div>
   );
+  function isCorrect() {
+    return userAnswer && userAnswer.id === questionObject.answer.id
+      ? true
+      : false;
+  }
 }

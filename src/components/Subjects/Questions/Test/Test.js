@@ -24,7 +24,7 @@ export default function Test(props) {
   }, [score]);
 
   return (
-    <div className="test-component">
+    <div className="test-component container">
       <TestQuestion questionObject={currentQuestion} {...{ updateScore }} />
     </div>
   );
