@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export default function TestQuestion(props) {
-  let { questionObject, updateScore } = props,
+  let { questionObject, updateScore, nextQuestion } = props,
     [userAnswer, setUserAnswer] = useState(),
     [isUserCorrect, setIsUserCorrect] = useState(false);
   useEffect(() => {
@@ -47,9 +47,13 @@ export default function TestQuestion(props) {
                   );
                 })}
               </div>
+              {userAnswer && (
+                <button type="button" onClick={nextQuestion}>
+                  Next Question
+                </button>
+              )}
             </div>
           )}
-          {userAnswer && <button type="button">Next Question</button>}
         </div>
       </div>
       {userAnswer && !isCorrect() && (

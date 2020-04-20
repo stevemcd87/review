@@ -10,6 +10,7 @@ export default function Test(props) {
     [questionIndex, setQuestionIndex] = useState(0),
     [score, setScore] = useState({ correct: 0, incorrect: 0 }),
     [showScore, setShowScore] = useState(false),
+    [showButton, setShowButton] = useState(false),
     [currentQuestion, setCurrentQuestion] = useState();
   useEffect(() => {
     console.log("categoryQuestions");
@@ -17,24 +18,46 @@ export default function Test(props) {
     setCurrentQuestion(categoryQuestions[questionIndex]);
   }, [categoryQuestions]);
 
+  // useEffect(() => {
+  //   console.log(score);
+  //   // if Test is Finished
+  //   if (questionIndex === categoryQuestions.length - 1) setShowScore(true);
+  //   else if (categoryQuestions.length !== 0)setQuestionIndex(questionIndex + 1);
+  // }, [score]);
+
   useEffect(() => {
-    console.log(score);
-    // console.log(score);
-    if (questionIndex === categoryQuestions.length - 1) setShowScore(true);
-    else if (categoryQuestions.length !== 0) setQuestionIndex(questionIndex + 1);
-  }, [score]);
+    let answeredQuestions = Object.values(score).reduce((t, v) => (t += v), 0);
+    // setShowButton(questionIndex + 1 === answeredQuestions ? true : false);
+    setCurrentQuestion(categoryQuestions[questionIndex]);
+  }, [questionIndex]);
 
   return (
     <div className="test-component container">
-      <TestQuestion questionObject={currentQuestion} {...{ updateScore }} />
+      {!showScore && (
+        <TestQuestion
+          key={currentQuestion && currentQuestion.pathName}
+          questionObject={currentQuestion}
+          {...{ updateScore, nextQuestion }}
+        />
+      )}
+      {showScore && <p>Show score</p>}
     </div>
   );
 
   function updateScore(result) {
+    // result will be either "correct" or "incorrect"
     let clone = { ...score };
     clone[result] += 1;
-    console.log("clone");
-    console.log(clone);
     setScore(clone);
   }
+
+  function nextQuestion() {
+    if (questionIndex !== categoryQuestions.length - 1)
+      setQuestionIndex(questionIndex + 1);
+    else setShowScore(true);
+  }
+
+  // {showButton && <button type="button">Next Question</button>}
+
+  function showButtonFunc() {}
 }
