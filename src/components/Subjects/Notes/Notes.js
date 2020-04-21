@@ -34,7 +34,7 @@ function Notes(props) {
   useEffect(() => {
     let n = passedNotesFromTest ? passedNotesFromTest : categoryNotes;
      setDisplayedNotes(n);
-  }, []);
+  }, [passedNotesFromTest, categoryNotes]);
   // For future enhancement
   useEffect(() => {
     setAutoPlayIndex(autoPlay ? 0 : null);

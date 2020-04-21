@@ -48,7 +48,11 @@ export default function TestQuestion(props) {
                 })}
               </div>
               {userAnswer && (
-                <button type="button" onClick={nextQuestion}>
+                <button
+                  type="button"
+                  onClick={nextQuestion}
+                  className="next-question create-button"
+                >
                   Next Question
                 </button>
               )}

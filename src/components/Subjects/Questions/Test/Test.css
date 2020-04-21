@@ -1,4 +1,4 @@
-.answer-option-div button {
+.answer-option-div button, .score button {
   background-color: rgba(114, 170, 114, 0.5);
   color: white;
   padding: 16px;

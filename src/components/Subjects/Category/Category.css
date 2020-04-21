@@ -1,1 +1,11 @@
+.category-nav {
+  display: flex;
+  justify-content: space-around;
+  padding-left: 0;
+}
 
+
+
+.category-nav li {
+  list-style: none;
+}

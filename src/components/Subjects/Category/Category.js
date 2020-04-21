@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
 // Components
-import Test from "../Questions/Test/Test"
+import Test from "../Questions/Test/Test";
 import Loading from "../Loading";
 import Notes from "../Notes/Notes";
 import Questions from "../Questions/Questions";
@@ -10,7 +10,6 @@ import CategoryContext from "../../../contexts/CategoryContext";
 import ApiContext from "../../../contexts/ApiContext";
 // Styles
 import "./Category.css";
-
 
 import {
   // BrowserRouter as Router,
@@ -26,6 +25,7 @@ export default function Category() {
     { username, subjectName, categoryName } = useParams(),
     [categoryNotes, setCategoryNotes] = useState([]),
     [categoryQuestions, setCategoryQuestions] = useState([]),
+    [testKey, setTestKey] = useState(0),
     [isLoading, setIsLoading] = useState(true),
     { API } = useContext(ApiContext);
   useEffect(() => {
@@ -44,14 +44,18 @@ export default function Category() {
         <Link to={`/${username}/${subjectName}/`}>Back</Link>
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
-      <ul className="category-nav">
-        <li>
-          <Link to={`${url}/notes`}>Review Notes</Link>
-        </li>
-        <li>
-          <Link to={`${url}/test`}>Test</Link>
-        </li>
-      </ul>
+      {categoryQuestions.length > 0 && (
+        <nav className="item">
+          <ul className="category-nav item-content">
+            <li>
+              <Link to={`${url}/notes`}>Review Notes</Link>
+            </li>
+            <li>
+              <Link to={`${url}/test`}>Test</Link>
+            </li>
+          </ul>
+        </nav>
+      )}
 
       {isLoading && <Loading />}
 
@@ -71,15 +75,17 @@ export default function Category() {
           </CategoryContext.Provider>
         </Route>
         <Route path={`${path}/test`}>
-          <CategoryContext.Provider
-            value={{ categoryQuestions }}
-          >
-            <Test />
+          <CategoryContext.Provider value={{ categoryQuestions }}>
+            <Test key={testKey} {...{ retakeTest }} />
           </CategoryContext.Provider>
         </Route>
       </Switch>
     </div>
   );
+
+  function retakeTest() {
+    setTestKey(testKey + 1);
+  }
 
   async function getCategoryNotes() {
     return await API.get(

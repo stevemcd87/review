@@ -5,10 +5,15 @@ import TestQuestion from "./TestQuestion";
 import "../Styles/Questions.css";
 
 export default function Test(props) {
-  let [answeredCorrectly, setAnsweredCorrectly] = useState(0),
+  let { retakeTest } = props,
+    [answeredCorrectly, setAnsweredCorrectly] = useState(0),
     { categoryQuestions } = useContext(CategoryContext),
     [questionIndex, setQuestionIndex] = useState(0),
-    [score, setScore] = useState({ correct: 0, incorrect: 0 }),
+    [score, setScore] = useState({
+      correct: 0,
+      incorrect: 0,
+      answeredQuestions: 0
+    }),
     [showScore, setShowScore] = useState(false),
     [showButton, setShowButton] = useState(false),
     [currentQuestion, setCurrentQuestion] = useState();
@@ -26,8 +31,7 @@ export default function Test(props) {
   // }, [score]);
 
   useEffect(() => {
-    let answeredQuestions = Object.values(score).reduce((t, v) => (t += v), 0);
-    // setShowButton(questionIndex + 1 === answeredQuestions ? true : false);
+    setShowButton(questionIndex + 1 === score.answeredQuestions ? true : false);
     setCurrentQuestion(categoryQuestions[questionIndex]);
   }, [questionIndex]);
 
@@ -40,14 +44,30 @@ export default function Test(props) {
           {...{ updateScore, nextQuestion }}
         />
       )}
-      {showScore && <p>Show score</p>}
+      {showScore && (
+        <div className="item score">
+          <h3>{getScore()}</h3>
+          <button type="button" onClick={retakeTest}>
+            Retake Test
+          </button>
+        </div>
+      )}
     </div>
   );
+
+  function getScore() {
+    return `Answered ${score.correct} out of ${
+      score.answeredQuestions
+    } correctly - ${Math.round(
+      (score.correct / score.answeredQuestions) * 100
+    )}%`;
+  }
 
   function updateScore(result) {
     // result will be either "correct" or "incorrect"
     let clone = { ...score };
     clone[result] += 1;
+    clone.answeredQuestions += 1;
     setScore(clone);
   }
 
