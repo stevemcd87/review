@@ -1,7 +1,13 @@
 .category-nav {
+  margin: 0 auto;
+}
+
+.category-nav ul{
   display: flex;
   justify-content: space-around;
-  padding-left: 0;
+  padding: 16px;
+  margin: 0 auto;
+
 }
 
 

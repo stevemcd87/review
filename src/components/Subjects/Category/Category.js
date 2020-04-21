@@ -45,8 +45,8 @@ export default function Category() {
       </button>
       <h2>{categoryName.replace(/-/g, " ")}</h2>
       {categoryQuestions.length > 0 && (
-        <nav className="item">
-          <ul className="category-nav item-content">
+        <nav className="item category-nav">
+          <ul className=" item-content">
             <li>
               <Link to={`${url}/notes`}>Review Notes</Link>
             </li>
