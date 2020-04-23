@@ -24,28 +24,31 @@ function Subjects(props) {
   useEffect(() => {
     setDisplayForm(false);
   }, [subjects]);
+
+  if (isLoading) return <Loading />;
   return (
     <div className="component">
       {/*<h1>Subjects</h1> is part of test*/}
       <h1>Subjects</h1>
       {user && (
-        <button
-          type="button"
-          className="display-button create-button"
-          onClick={() => setDisplayForm(!displayForm)}
-          aria-label={displayFormText}
-          aria-pressed={displayForm}
-        >
-          {displayFormText}
-        </button>
+        <>
+          <button
+            type="button"
+            className="display-button create-button"
+            onClick={() => setDisplayForm(!displayForm)}
+            aria-label={displayFormText}
+            aria-pressed={displayForm}
+          >
+            {displayFormText}
+          </button>
+          {displayForm && (
+            <SubjectContext.Provider value={{ getSubjects }}>
+              <SubjectForm />
+            </SubjectContext.Provider>
+          )}
+        </>
       )}
 
-      {isLoading && <Loading />}
-      {user && displayForm && (
-        <SubjectContext.Provider value={{ getSubjects }}>
-          <SubjectForm />
-        </SubjectContext.Provider>
-      )}
       <div className="subjects model container">
         {subjects.map(s => {
           return (
@@ -62,13 +65,13 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
-    // return await API.get("StuddieBuddie", "/subjects")
-    //   .then(res => {
-    //     setSubjects(res);
-    //   })
-    //   .catch(error => {
-    //     alert("Unable to get Subjects");
-    //   });
+    return await API.get("StuddieBuddie", "/subjects")
+      .then(res => {
+        setSubjects(res);
+      })
+      .catch(error => {
+        alert("Unable to get Subjects");
+      });
   }
 }
 
