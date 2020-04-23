@@ -55,7 +55,7 @@ function Notes(props) {
       // Find Question being updated
       let q = categoryQuestions.find(v => v.pathName === formDisplayed);
       // Set questionNotes to be question's notes
-      setQuestionNotes(q.questionNotes);
+      setQuestionNotes(q && q.questionNotes ? q.questionNotes : [] );
     }
     // if there are no forms being displayed
     if (formDisplayed === "") {

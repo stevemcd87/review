@@ -33,8 +33,9 @@ function Note(props) {
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
     isCreator = useCreator(user, username);
 
-  // Is Active is
+  // Note is active if it is question note
   useEffect(() => {
+    console.log(questionNotes);
     setIsActive(isInQuestionNote());
   }, [questionNotes]);
 
@@ -158,8 +159,7 @@ function Note(props) {
   );
 
   function isInQuestionNote() {
-    return questionNotes &&
-      questionNotes.findIndex(v => v.pathName === note.pathName) >= 0
+    return questionNotes.findIndex(v => v.pathName === note.pathName) >= 0
       ? true
       : false;
   }
