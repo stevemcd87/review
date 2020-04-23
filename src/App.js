@@ -43,7 +43,7 @@ function App() {
     };
 
   useEffect(() => {
-    console.log(auth);
+    console.log(Auth);
     setUser(Auth.user);
     // Checks authState whether or not to hide the greeting
     let hd =
