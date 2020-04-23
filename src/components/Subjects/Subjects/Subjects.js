@@ -12,15 +12,9 @@ function Subjects(props) {
     [displayFormText, setDisplayFormText] = useState("Create Subject");
 
   useEffect(() => {
-    let isSubsribed = true;
     getSubjects().then(res => {
-      // if (isSubsribed) {
-      //   setSubjects(res);
-      // console.log(document.querySelector(".create-button").innerText);
       setIsLoading(false);
-      // }
     });
-    return () => (isSubsribed = false);
   }, []);
 
   useEffect(() => {
@@ -68,13 +62,13 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
-    return await API.get("StuddieBuddie", "/subjects")
-      .then(res => {
-        setSubjects(res);
-      })
-      .catch(error => {
-        alert("Unable to get Subjects");
-      });
+    // return await API.get("StuddieBuddie", "/subjects")
+    //   .then(res => {
+    //     setSubjects(res);
+    //   })
+    //   .catch(error => {
+    //     alert("Unable to get Subjects");
+    //   });
   }
 }
 
