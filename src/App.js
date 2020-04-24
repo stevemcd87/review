@@ -11,7 +11,7 @@ import { Authenticator } from "aws-amplify-react";
 Amplify.configure(AmpConfig);
 Storage.configure({ level: "public" });
 function App() {
-  let [user, setUser] = useState(),
+  let [user, setUser] = useState(Auth.user),
     [authState, setAuthState] = useState(),
     [hideDefault, setHideDefault] = useState(true),
     [displayBugComponent, setDisplayBugComponent] = useState(false),
@@ -46,17 +46,16 @@ function App() {
     setUser(Auth.user);
     // Checks authState whether or not to hide the greeting
     let hd =
-        authState === "signedIn" ||
-        authState === "signUp" ||
-        authState === "confirmSignUp" ||
-        authState === "signedUp" ||
-        authState === "signIn" ||
-        authState === "forgotPassword"
-          ? false
-          : true,
-      buttonText = hd ? "Show Sign In Form" : "Hide Sign In Form";
+      authState === "signedIn" ||
+      authState === "signUp" ||
+      authState === "confirmSignUp" ||
+      authState === "signedUp" ||
+      authState === "signIn" ||
+      authState === "forgotPassword"
+        ? false
+        : true;
     // if hd is true Hides all Authenticator components(SignIn,SignOut, etc...)
-    setHideDefault({ isFormHidden: hd, text: buttonText });
+    setHideDefault(hd);
   }, [authState]);
 
   // useEffect(() => {
@@ -70,12 +69,12 @@ function App() {
           className="hide-cog-button"
           onClick={() => setHideDefault(!hideDefault)}
         >
-          {hideDefault.text}
+          {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
         </button>
       )}
       <Authenticator
         onStateChange={as => setAuthState(as)}
-        hideDefault={hideDefault.isFormHidden}
+        hideDefault={hideDefault}
         theme={myTheme}
       >
         <ApiContext.Provider value={{ API, Storage, user, Auth }}>
