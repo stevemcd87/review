@@ -13,7 +13,7 @@ function Subject(props) {
     isCreator = useCreator(user, subject.username);
 
   useEffect(() => {
-    setDisplayUpdateForm(false);
+    if (displayUpdateForm) setDisplayUpdateForm(false);
   }, [subject]);
 
   return (
