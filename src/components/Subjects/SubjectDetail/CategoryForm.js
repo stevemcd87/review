@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import ApiContext from "../../../contexts/ApiContext";
 import { useParams } from "react-router-dom";
 
 export default function CategoryForm(props) {
-  let { subject, getSubject, category } = props,
+  let {  getSubject, category } = props,
     { API, Auth, user } = useContext(ApiContext),
-    { subjectName, username } = useParams(),
+    { subjectName } = useParams(),
     nameValue = category ? category.name : "",
     descValue = category ? category.desc : "",
     [categoryName, setCategoryName] = useState(nameValue),

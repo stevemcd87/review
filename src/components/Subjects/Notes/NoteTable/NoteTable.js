@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import "./NoteTable.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,19 +9,16 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
     [dataRows, setDataRows] = useState([]),
     updatable = setTableData ? true : false;
   useEffect(() => {
-
     if (tableData) {
       setColumnHeaders(tableData.columnHeaders);
       setDataRows(tableData.dataRows);
     }
-  }, []);
+  }, [tableData]);
   useEffect(() => {
-    console.log(columnHeaders);
     if (setTableData){
-      console.log(columnHeaders);
       setTableData({ columnHeaders: columnHeaders, dataRows: dataRows });
     }
-  }, [columnHeaders, dataRows]);
+  }, [columnHeaders, dataRows, setTableData]);
 
   useEffect(() => {
     console.log(tableData);
@@ -155,18 +152,7 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
   }
 
   function removeColumn(idToRemove) {
-    console.log("remove column");
-    let updatedCH = columnHeaders.filter(v => v.id !== idToRemove),
-      dataRowsClone = dataRows.slice();
-    // idRemoved = updatedCH.splice(indexToRemove, 1)[0].id;
-    console.log("idToRemove");
-    console.log(idToRemove);
-    // console.log(updatedCH.splice(indexToRemove, 1));
-    // if (indexToRemove !== columnHeaders.length - 1) {
-    //   let updated = updateIds(updatedCH, dataRowsClone);
-    //   updatedCH = updated.newCH;
-    //   dataRowsClone = updated.newDR;
-    // }
+    let updatedCH = columnHeaders.filter(v => v.id !== idToRemove);
     setColumnHeaders(updatedCH);
     updateDataRows(columnHeaders, idToRemove);
   }

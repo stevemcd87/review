@@ -1,6 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import React, { useState, useEffect, useContext, useRef } from "react";
+
+import React, { useState, useEffect } from "react";
 import './Test.css'
 export default function AnswerOption(props) {
   let { answerOption, answer, userAnswer, setUserAnswer } = props,
@@ -9,7 +8,7 @@ export default function AnswerOption(props) {
   useEffect(() => {
     if (userAnswer && answerOption.id === answer.id)
       setKlassName("correct-answer");
-  }, [userAnswer]);
+  }, [userAnswer, answerOption, answer]);
 
   return (
     <div className={`answer-option-div`}>

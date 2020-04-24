@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
-export default function useCreator(user, creator){
-  let [isCreator, setIsCreator] = useState(checkUser())
+export default function useCreator(user, creator) {
+  let [isCreator, setIsCreator] = useState(checkUser());
 
-  useEffect(()=>{
-    setIsCreator(checkUser())
-    return ()=> setIsCreator(null)
-  },[user])
+  useEffect(() => {
+    setIsCreator(checkUser());
+    return () => setIsCreator(null);
+  }, [user]);
 
-  return isCreator
+  return isCreator;
 
   function checkUser() {
     return user && user.username === creator ? true : false;

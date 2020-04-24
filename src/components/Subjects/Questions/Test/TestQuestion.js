@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-// Components
-import Notes from "../../Notes/Notes";
-import TestAnswerOption from "./TestAnswerOption";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 
+// Components
+import Notes from "../../Notes/Notes";
+import TestAnswerOption from "./TestAnswerOption";
+
 export default function TestQuestion(props) {
   let { questionObject, updateScore, nextQuestion } = props,
-    [userAnswer, setUserAnswer] = useState(),
-    [isUserCorrect, setIsUserCorrect] = useState(false);
+    [userAnswer, setUserAnswer] = useState();
   useEffect(() => {
     console.log(questionObject);
   }, [questionObject]);

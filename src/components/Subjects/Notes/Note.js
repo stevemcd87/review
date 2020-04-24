@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import NoteForm from "./NoteForm";
-import NoteTable from "../Notes/NoteTable/NoteTable";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import ApiContext from "../../../contexts/ApiContext";
-import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -12,22 +8,27 @@ import {
   faPlus,
   faMinus
 } from "@fortawesome/free-solid-svg-icons";
-import Loading from "../Loading";
-import useCreator from "../customHooks/useCreator";
 import Markdown from "react-textarea-markdown";
+//Components
+import NoteForm from "./NoteForm";
+import NoteTable from "../Notes/NoteTable/NoteTable";
+//Contexts
+import ApiContext from "../../../contexts/ApiContext";
+import CategoryContext from "../../../contexts/CategoryContext";
+// cutom Hooks
+import useCreator from "../customHooks/useCreator";
+
 function Note(props) {
   let {
       note,
       nextAutoPlayIndex,
       updateQuestionNote,
       formDisplayed,
-      questionNotes,
-      forTest
+      questionNotes
     } = props,
     { API, Storage, user } = useContext(ApiContext),
     { subjectName, categoryName, username } = useParams(),
     [imageSrc, setImageSrc] = useState(),
-    [klassName, setKlassName] = useState(""),
     [isActive, setIsActive] = useState(false),
     [displayForm, setDisplayForm] = useState(false),
     { categoryNotes, getCategoryNotes } = useContext(CategoryContext),
@@ -35,7 +36,6 @@ function Note(props) {
 
   // Note is active if it is question note
   useEffect(() => {
-    console.log(questionNotes);
     setIsActive(isInQuestionNote());
   }, [questionNotes]);
 
@@ -146,7 +146,7 @@ function Note(props) {
               </div>
             )}
             {note.noteTable && <NoteTable tableData={note.noteTable} />}
-            {note.image && <img src={imageSrc} />}
+            {note.image && <img alt="Note's Image" src={imageSrc} />}
             <Markdown
               textarea={false}
               source={note.mainNote}

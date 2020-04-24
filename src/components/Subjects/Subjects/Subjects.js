@@ -22,7 +22,7 @@ function Subjects(props) {
   }, [displayForm]);
 
   useEffect(() => {
-    setDisplayForm(false);
+    if (displayForm) setDisplayForm(false);
   }, [subjects]);
 
   if (isLoading) return <Loading />;
@@ -65,6 +65,7 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
+    console.log("gettting subjects");
     return await API.get("StuddieBuddie", "/subjects")
       .then(res => {
         setSubjects(res);

@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import React, { useState, useEffect, useContext, useRef } from "react";
+import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function AnswerOption(props) {
   let {
@@ -11,7 +12,6 @@ export default function AnswerOption(props) {
       updateAnswerOption
     } = props,
     [isAnswer, setIsAnswer] = useState(false),
-    [userAnswer, setUserAnswer] = useState(),
     [klassName, setKlassName] = useState("");
 
   useEffect(() => {

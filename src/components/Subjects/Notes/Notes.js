@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 //Components
 import Note from "./Note";
 import NoteForm from "./NoteForm";
@@ -23,7 +21,7 @@ function Notes(props) {
     // Options for formDisplayed ar 'note' , 'question' or question.pathName
     [formDisplayed, setFormDisplayed] = useState(""),
     // [formDisplayed, setFormDisplayed] = useState(""),
-    [isUpdatingQuestion, setIsUpdatingQuestion] = useState(),
+    // [isUpdatingQuestion, setIsUpdatingQuestion] = useState(),
     { categoryNotes, categoryQuestions } = useContext(CategoryContext),
     { user } = useContext(ApiContext),
     isCreator = useCreator(user, username),
