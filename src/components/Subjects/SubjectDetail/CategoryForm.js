@@ -18,6 +18,7 @@ export default function CategoryForm(props) {
           <span>Category Name</span>
           <textarea
             type="text"
+            className="form-textarea"
             onChange={e => setCategoryName(e.target.value)}
             defaultValue={categoryName}
             placeholder="Category Name"
@@ -27,6 +28,7 @@ export default function CategoryForm(props) {
         <label>
           <span>Category Description</span>
           <textarea
+            className="form-textarea"
             onChange={e => setCategoryDesc(e.target.value)}
             defaultValue={categoryDesc}
             placeholder="Category Description"

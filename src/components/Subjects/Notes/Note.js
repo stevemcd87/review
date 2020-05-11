@@ -8,7 +8,7 @@ import {
   faPlus,
   faMinus
 } from "@fortawesome/free-solid-svg-icons";
-import Markdown from "react-textarea-markdown";
+import {MarkdownTextarea} from "markdown-textarea-react";
 //Components
 import NoteForm from "./NoteForm";
 import NoteTable from "../Notes/NoteTable/NoteTable";
@@ -17,7 +17,7 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 // cutom Hooks
 import useCreator from "../customHooks/useCreator";
-
+import "./MarkdownTextarea.css"
 function Note(props) {
   let {
       note,
@@ -147,10 +147,9 @@ function Note(props) {
             )}
             {note.noteTable && <NoteTable tableData={note.noteTable} />}
             {note.image && <img alt="Note's Image" src={imageSrc} />}
-            <Markdown
-              textarea={false}
+            <MarkdownTextarea
+              displayTextarea={false}
               source={note.mainNote}
-              customWidth={[98, 98]}
             />
           </div>
         )}

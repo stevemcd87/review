@@ -6,7 +6,8 @@ import ApiContext from "../../../contexts/ApiContext";
 import CategoryContext from "../../../contexts/CategoryContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
-import Markdown from "react-textarea-markdown";
+import {MarkdownTextarea} from "markdown-textarea-react";
+import './MarkdownTextarea.css'
 function NoteForm(props) {
   let { subjectName, categoryName, username, setDisplayForm } = useParams(),
     { note } = props,
@@ -23,16 +24,6 @@ function NoteForm(props) {
     noteArray = useRef(null),
     { getCategoryNotes } = useContext(CategoryContext),
     { API, Storage, user } = useContext(ApiContext);
-
-  useEffect(() => {}, [imageFile]);
-
-  useEffect(() => {
-    let textarea = mainNoteDiv.current.getElementsByClassName(
-        "markdown-textarea"
-      )[0],
-      scrollHeight = textarea.scrollHeight;
-    if (scrollHeight > 100) textarea.style.height = `${scrollHeight}px`;
-  }, [mainNote]);
 
   useEffect(() => {
     if (imageFile) {
@@ -76,14 +67,13 @@ function NoteForm(props) {
           setTableData={setNoteTable}
           tableData={note && note.noteTable ? note.noteTable : null}
         />
-        <div className="main-note" ref={mainNoteDiv}>
-          <Markdown
+
+          <MarkdownTextarea
             textarea={true}
             callback={setMainNote}
             source={mainNote}
-            customWidth={[90, 90]}
           />
-        </div>
+
 
         <button type="button" onClick={prepNote} disabled={submitting}>
           {!submitting ? "Submit" : "Submitting"}
@@ -96,7 +86,7 @@ function NoteForm(props) {
     setSubmitting(true);
     let noteValues = {
       username: user.username,
-      mainNote: mainNote ? mainNote.trim() : false,
+      mainNote: mainNote || false,
       noteTable: noteTable,
       audioNote: audioBlob ? true : false,
       image: imageFile ? true : false

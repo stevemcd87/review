@@ -1,0 +1,63 @@
+.mtr-textarea, .mtr-preview{
+  width: 95%;
+  color: white;
+  max-width: 700px;
+  margin-top: 10px;
+  background-color: inherit;
+}
+.mtr-textarea {
+  font-size: 16px;
+}
+
+.mtr-h1,
+.mtr-h2,
+.mtr-h3 {
+  margin: 0 auto;
+  text-align: center;
+  border-bottom: 2px solid white;
+  width: 80%;
+  padding-bottom: 8px;
+}
+
+.mtr-h1 {
+  font-size: 25px;
+}
+
+.mtr-h2 {
+  font-size: 21px;
+}
+
+h4.mtr-h4 {
+  font-weight: 500;
+  font-size: 21px;
+  margin: 0;
+  text-align: left;
+  padding: 25px 0 8px 0;
+}
+
+h4.mtr-h4::before {
+  content: "- ";
+}
+
+.mtr-h6 {
+  text-align: right;
+  margin: 0 0px 25px 0;
+}
+
+.mtr-h6 a {
+  background-color: rgba(114, 170, 114, 0.2);
+  padding: 0 10px 10px 10px;
+}
+
+.mtr-h6 a::before {
+  content: "- ";
+}
+
+.mtr-blockquote {
+  padding: 8px 10px 14px;
+  word-break: normal;
+  color: white;
+  background-color: rgba(114, 170, 114, 0.2);
+  margin: 8px 0 0 8px;
+  border-left: 5px solid rgba(184, 255, 184, 0.1);
+}

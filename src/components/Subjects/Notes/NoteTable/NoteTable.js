@@ -15,14 +15,10 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
     }
   }, [tableData]);
   useEffect(() => {
-    if (setTableData){
+    if (setTableData) {
       setTableData({ columnHeaders: columnHeaders, dataRows: dataRows });
     }
   }, [columnHeaders, dataRows, setTableData]);
-
-  useEffect(() => {
-    console.log(tableData);
-  }, [tableData]);
 
   return (
     <div className="note-table-component">
@@ -106,8 +102,6 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
     </div>
   );
 
-
-
   function addColumn() {
     let clone = columnHeaders.slice(),
       id = clone.length === 0 ? 0 + "" : +clone[clone.length - 1].id + 1 + "";
@@ -120,27 +114,17 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
   }
 
   function updateDataRows(ch, chIdToRemove) {
-    console.log("updateDataRows");
-    console.log("chIdToRemove");
-    console.log(chIdToRemove);
     let dataRowsClone = dataRows.slice(),
       updated = chIdToRemove ? removeDataColumn() : addDataColumn();
-    console.log("ch");
-    console.log(ch);
-    console.log(updated);
     setDataRows(updated);
 
     function removeDataColumn() {
-      console.log("removeDataColumn");
-      console.log(dataRowsClone);
       return dataRowsClone.map(dr => {
-        console.log(dr);
         let u = dr.filter(d => !d.id.endsWith(chIdToRemove));
         return u;
       });
     }
     function addDataColumn() {
-      console.log("add Data column");
       return dataRowsClone.filter((v, i) => {
         v.push({
           inputValue: "",
@@ -187,16 +171,12 @@ export default function NoteTable({ setTableData, tableData, tableCaption }) {
   }
 
   function updateDataRowInput(id, inputValue) {
-    console.log("updateDataRowInput");
     let clone = dataRows.slice(),
       input;
     clone.find(val => {
       input = val.find(v => v.id === id);
       return input;
     });
-    // indexes = id.split("-"),
-    // row = +indexes[0],
-    // column = +indexes[1];
     input.inputValue = inputValue;
     setDataRows(clone);
   }
@@ -240,6 +220,6 @@ function Preview({ val }) {
     <p className="preview">
       {preview}
       <sup>{sup}</sup>
-  </p>
+    </p>
   );
 }
