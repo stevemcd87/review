@@ -65,7 +65,6 @@ function Subjects(props) {
   );
 
   async function getSubjects() {
-    console.log("gettting subjects");
     return await API.get("StuddieBuddie", "/subjects")
       .then(res => {
         setSubjects(res);
