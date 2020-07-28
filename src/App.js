@@ -64,25 +64,26 @@ function App() {
 
   return (
     <div className="App">
-      {!user && (
-        <button
-          className="hide-cog-button"
-          onClick={() => setHideDefault(!hideDefault)}
-        >
-          {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
-        </button>
-      )}
-      <Authenticator
-        onStateChange={as => setAuthState(as)}
-        hideDefault={hideDefault}
-        theme={myTheme}
-      >
-        <ApiContext.Provider value={{ API, Storage, user, Auth }}>
-          <SubjectMain />
-        </ApiContext.Provider>
-      </Authenticator>
+      <h1>hey</h1>
     </div>
   );
+  // {!user && (
+  //   <button
+  //     className="hide-cog-button"
+  //     onClick={() => setHideDefault(!hideDefault)}
+  //   >
+  //     {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
+  //   </button>
+  // )}
+  // <Authenticator
+  //   onStateChange={as => setAuthState(as)}
+  //   hideDefault={hideDefault}
+  //   theme={myTheme}
+  // >
+  //   <ApiContext.Provider value={{ API, Storage, user, Auth }}>
+  //     <SubjectMain />
+  //   </ApiContext.Provider>
+  // </Authenticator>
   async function getRepoIssues() {
     const repoURL = "https://api.github.com/users/stevemcd87/repos",
       issuesURL = "https://api.github.com/repos/stevemcd87/review/issues",
