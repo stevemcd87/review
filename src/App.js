@@ -64,17 +64,17 @@ function App() {
 
   return (
     <div className="App">
-      <h1>hey</h1>
+      {!user && (
+        <button
+          className="hide-cog-button"
+          onClick={() => setHideDefault(!hideDefault)}
+        >
+          {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
+        </button>
+      )}
     </div>
   );
-  // {!user && (
-  //   <button
-  //     className="hide-cog-button"
-  //     onClick={() => setHideDefault(!hideDefault)}
-  //   >
-  //     {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
-  //   </button>
-  // )}
+
   // <Authenticator
   //   onStateChange={as => setAuthState(as)}
   //   hideDefault={hideDefault}
