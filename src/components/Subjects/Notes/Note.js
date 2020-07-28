@@ -130,7 +130,7 @@ function Note(props) {
             </button>
           </div>
         )}
-        {isCreator && displayForm && <NoteForm {...{ note }} />}
+
         {!displayForm && (
           <div className="note">
             {note.audioNote && (
@@ -156,6 +156,9 @@ function Note(props) {
       </div>
     </div>
   );
+
+  // LINE 133
+  // {isCreator && displayForm && <NoteForm {...{ note }} />}
 
   function isInQuestionNote() {
     return questionNotes.findIndex(v => v.pathName === note.pathName) >= 0
