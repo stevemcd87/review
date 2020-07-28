@@ -59,11 +59,14 @@ export default function Category() {
 
       {isLoading && <Loading />}
       <Switch>
-
+        <Route exact path={path}>
+          <h1>hey</h1>
+        </Route>
+        <Route path={`${path}/notes`}>
+          <h1>hey</h1>
+        </Route>
         <Route path={`${path}/test`}>
-          <CategoryContext.Provider value={{ categoryQuestions }}>
-            <Test key={testKey} {...{ retakeTest }} />
-          </CategoryContext.Provider>
+          <h1>hey</h1>
         </Route>
       </Switch>
 
@@ -81,6 +84,11 @@ export default function Category() {
   //     value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
   //   >
   //     <Notes />
+  //   </CategoryContext.Provider>
+  // </Route>
+  // <Route path={`${path}/test`}>
+  //   <CategoryContext.Provider value={{ categoryQuestions }}>
+  //     <Test key={testKey} {...{ retakeTest }} />
   //   </CategoryContext.Provider>
   // </Route>
 
