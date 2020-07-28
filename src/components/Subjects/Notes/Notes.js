@@ -84,8 +84,19 @@ function Notes(props) {
                 : "Hide Question Form"}
             </button>
           </div>
+          {formDisplayed === "note" && <NoteForm />}
         </>
       )}
+      {formDisplayed === "question" && (
+        <NoteContext.Provider value={{ questionNotes }}>
+          <QuestionForm />
+        </NoteContext.Provider>
+      )}
+      <NoteContext.Provider
+        value={{ questionNotes, formDisplayed, setFormDisplayed }}
+      >
+        <Questions />
+      </NoteContext.Provider>
       <div className="container">
         {displayedNotes.map((note, ind) => {
           return (
