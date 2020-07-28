@@ -77,6 +77,7 @@ function App() {
         hideDefault={hideDefault}
         theme={myTheme}
       >
+      </Authenticator>
     </div>
   );
 
@@ -84,7 +85,7 @@ function App() {
   //   <ApiContext.Provider value={{ API, Storage, user, Auth }}>
   //     <SubjectMain />
   //   </ApiContext.Provider>
-  // </Authenticator>
+  //
   async function getRepoIssues() {
     const repoURL = "https://api.github.com/users/stevemcd87/repos",
       issuesURL = "https://api.github.com/repos/stevemcd87/review/issues",
