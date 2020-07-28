@@ -72,14 +72,15 @@ function App() {
           {hideDefault ? "Show Sign In Form" : "Hide Sign In Form"}
         </button>
       )}
+      <Authenticator
+        onStateChange={as => setAuthState(as)}
+        hideDefault={hideDefault}
+        theme={myTheme}
+      >
     </div>
   );
 
-  // <Authenticator
-  //   onStateChange={as => setAuthState(as)}
-  //   hideDefault={hideDefault}
-  //   theme={myTheme}
-  // >
+
   //   <ApiContext.Provider value={{ API, Storage, user, Auth }}>
   //     <SubjectMain />
   //   </ApiContext.Provider>
