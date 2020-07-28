@@ -64,35 +64,47 @@ function Notes(props) {
 
   return (
     <div className="notes-component component">
-      <h1>hey</h1>
-
+      {isCreator && !passedNotesFromTest && (
+        <>
+          <div>
+            <button
+              className="create-button"
+              type="button"
+              onClick={() => setFormDisplayed(updateDisplayedForm("note"))}
+            >
+              {formDisplayed !== "note" ? "Create Note" : "Hide Note Form"}
+            </button>
+            <button
+              className="create-button"
+              type="button"
+              onClick={() => setFormDisplayed(updateDisplayedForm("question"))}
+            >
+              {formDisplayed !== "question"
+                ? "Create Question"
+                : "Hide Question Form"}
+            </button>
+          </div>
+        </>
+      )}
+      <div className="container">
+        {displayedNotes.map((note, ind) => {
+          return (
+            <Note
+              key={note.pathName}
+              {...{
+                note,
+                formDisplayed,
+                updateQuestionNote,
+                nextAutoPlayIndex,
+                questionNotes
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
-  // LINE 67
-  // {isCreator && !passedNotesFromTest && (
-  //   <>
-  //     <div>
-  //       <button
-  //         className="create-button"
-  //         type="button"
-  //         onClick={() => setFormDisplayed(updateDisplayedForm("note"))}
-  //       >
-  //         {formDisplayed !== "note" ? "Create Note" : "Hide Note Form"}
-  //       </button>
-  //       <button
-  //         className="create-button"
-  //         type="button"
-  //         onClick={() => setFormDisplayed(updateDisplayedForm("question"))}
-  //       >
-  //         {formDisplayed !== "question"
-  //           ? "Create Question"
-  //           : "Hide Question Form"}
-  //       </button>
-  //     </div>
-  //     {formDisplayed === "note" && <NoteForm />}
-  //
-  //   </>
-  // )}
+
   // LINE 91
   // <div className="container">
   //   {displayedNotes.map((note, ind) => {
