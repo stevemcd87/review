@@ -60,7 +60,11 @@ export default function Category() {
       {isLoading && <Loading />}
       <Switch>
         <Route exact path={path}>
-          <h1>hey</h1>
+          <CategoryContext.Provider
+            value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+          >
+            <Notes />
+          </CategoryContext.Provider>
         </Route>
         <Route path={`${path}/notes`}>
           <h1>hey</h1>
@@ -69,15 +73,14 @@ export default function Category() {
           <h1>hey</h1>
         </Route>
       </Switch>
-
     </div>
   );
   // <Route exact path={path}>
-  //   <CategoryContext.Provider
-  //     value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
-  //   >
-  //     <Notes />
-  //   </CategoryContext.Provider>
+  // <CategoryContext.Provider
+  //   value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+  // >
+  //   <Notes />
+  // </CategoryContext.Provider>
   // </Route>
   // <Route path={`${path}/notes`}>
   //   <CategoryContext.Provider
@@ -91,8 +94,6 @@ export default function Category() {
   //     <Test key={testKey} {...{ retakeTest }} />
   //   </CategoryContext.Provider>
   // </Route>
-
-
 
   function retakeTest() {
     setTestKey(testKey + 1);

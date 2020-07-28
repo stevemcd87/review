@@ -85,16 +85,7 @@ function Notes(props) {
             </button>
           </div>
           {formDisplayed === "note" && <NoteForm />}
-          {formDisplayed === "question" && (
-            <NoteContext.Provider value={{ questionNotes }}>
-              <QuestionForm />
-            </NoteContext.Provider>
-          )}
-          <NoteContext.Provider
-            value={{ questionNotes, formDisplayed, setFormDisplayed }}
-          >
-            <Questions />
-          </NoteContext.Provider>
+
         </>
       )}
       <div className="container">
@@ -115,6 +106,17 @@ function Notes(props) {
       </div>
     </div>
   );
+  // LINE 88
+  // {formDisplayed === "question" && (
+  //   <NoteContext.Provider value={{ questionNotes }}>
+  //     <QuestionForm />
+  //   </NoteContext.Provider>
+  // )}
+  // <NoteContext.Provider
+  //   value={{ questionNotes, formDisplayed, setFormDisplayed }}
+  // >
+  //   <Questions />
+  // </NoteContext.Provider>
 
   function updateDisplayedForm(str) {
     return formDisplayed !== str ? str : "";
