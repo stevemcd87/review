@@ -145,7 +145,7 @@ function Note(props) {
                 </button>
               </div>
             )}
-            {note.noteTable && <NoteTable tableData={note.noteTable} />}
+
             {note.image && <img alt="Note's Image" src={imageSrc} />}
             <MarkdownTextarea
               displayTextarea={false}
@@ -156,6 +156,8 @@ function Note(props) {
       </div>
     </div>
   );
+  // LINE 148
+  // {note.noteTable && <NoteTable tableData={note.noteTable} />}
 
   // LINE 133
   // {isCreator && displayForm && <NoteForm {...{ note }} />}
