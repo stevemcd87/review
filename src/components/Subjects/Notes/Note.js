@@ -130,7 +130,7 @@ function Note(props) {
             </button>
           </div>
         )}
-
+        {isCreator && displayForm && <NoteForm {...{ note }} />}
         {!displayForm && (
           <div className="note">
             {note.audioNote && (

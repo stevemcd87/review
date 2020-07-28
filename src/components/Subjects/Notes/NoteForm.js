@@ -63,10 +63,7 @@ function NoteForm(props) {
           </label>
           {imageSrc && <img src={imageSrc} />}
         </div>
-        <NoteTable
-          setTableData={setNoteTable}
-          tableData={note && note.noteTable ? note.noteTable : null}
-        />
+
 
           <MarkdownTextarea
             textarea={true}
@@ -81,6 +78,11 @@ function NoteForm(props) {
       </form>
     </div>
   );
+  // LINE 66
+  // <NoteTable
+  //   setTableData={setNoteTable}
+  //   tableData={note && note.noteTable ? note.noteTable : null}
+  // />
 
   function prepNote() {
     setSubmitting(true);
