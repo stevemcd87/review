@@ -9,6 +9,9 @@ function SubjectMain() {
     <Router>
       <div>
         <Switch>
+          <Route path="/:username/:subjectName/:categoryName">
+            <Category />
+          </Route>
           <Route path="/:username/:subjectName/">
             <SubjectDetail />
           </Route>
@@ -22,9 +25,8 @@ function SubjectMain() {
   );
 }
 
-// <Route path="/:username/:subjectName/:categoryName">
-//   <Category />
-// </Route>
+
+
 
 
 // <Route exact path="/">
