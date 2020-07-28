@@ -10,7 +10,7 @@ function SubjectMain() {
       <div>
         <Switch>
           <Route exact path="/">
-            <h1>hey</h1>
+            <Subjects />
           </Route>
 
         </Switch>
