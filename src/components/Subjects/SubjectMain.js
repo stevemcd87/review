@@ -6,22 +6,25 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./SubjectMain.css";
 function SubjectMain() {
   return (
-    <Router>
-      <div>
-        <Switch>
-          <Route path="/:username/:subjectName/:categoryName">
-            <Category />
-          </Route>
-          <Route path="/:username/:subjectName">
-            <SubjectDetail />
-          </Route>
-          <Route exact path="/">
-            <Subjects />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+    <h1>hey</h1>
   );
 }
+
+// <Router>
+//   <div>
+//     <Switch>
+//       <Route path="/:username/:subjectName/:categoryName">
+//         <Category />
+//       </Route>
+//       <Route path="/:username/:subjectName">
+//         <SubjectDetail />
+//       </Route>
+//       <Route exact path="/">
+//         <Subjects />
+//       </Route>
+//     </Switch>
+//   </div>
+// </Router>
+
 
 export default SubjectMain;

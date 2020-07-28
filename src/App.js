@@ -77,14 +77,13 @@ function App() {
         hideDefault={hideDefault}
         theme={myTheme}
       >
+        <ApiContext.Provider value={{ API, Storage, user, Auth }}>
+          <SubjectMain />
+        </ApiContext.Provider>
       </Authenticator>
     </div>
   );
 
-
-  //   <ApiContext.Provider value={{ API, Storage, user, Auth }}>
-  //     <SubjectMain />
-  //   </ApiContext.Provider>
   //
   async function getRepoIssues() {
     const repoURL = "https://api.github.com/users/stevemcd87/repos",
