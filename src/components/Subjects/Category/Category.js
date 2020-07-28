@@ -59,31 +59,32 @@ export default function Category() {
 
       {isLoading && <Loading />}
       <Switch>
-        <Route exact path={path}>
-          <CategoryContext.Provider
-            value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
-          >
-            <Notes />
-          </CategoryContext.Provider>
-        </Route>
-        <Route path={`${path}/notes`}>
-          <CategoryContext.Provider
-            value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
-          >
-            <Notes />
-          </CategoryContext.Provider>
-        </Route>
 
+        <Route path={`${path}/test`}>
+          <CategoryContext.Provider value={{ categoryQuestions }}>
+            <Test key={testKey} {...{ retakeTest }} />
+          </CategoryContext.Provider>
+        </Route>
       </Switch>
 
     </div>
   );
-
-  // <Route path={`${path}/test`}>
-  //   <CategoryContext.Provider value={{ categoryQuestions }}>
-  //     <Test key={testKey} {...{ retakeTest }} />
+  // <Route exact path={path}>
+  //   <CategoryContext.Provider
+  //     value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+  //   >
+  //     <Notes />
   //   </CategoryContext.Provider>
   // </Route>
+  // <Route path={`${path}/notes`}>
+  //   <CategoryContext.Provider
+  //     value={{ categoryNotes, getCategoryNotes, categoryQuestions }}
+  //   >
+  //     <Notes />
+  //   </CategoryContext.Provider>
+  // </Route>
+
+
 
   function retakeTest() {
     setTestKey(testKey + 1);
