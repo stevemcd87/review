@@ -88,24 +88,26 @@ function Notes(props) {
 
         </>
       )}
-      <div className="container">
-        {displayedNotes.map((note, ind) => {
-          return (
-            <Note
-              key={note.pathName}
-              {...{
-                note,
-                formDisplayed,
-                updateQuestionNote,
-                nextAutoPlayIndex,
-                questionNotes
-              }}
-            />
-          );
-        })}
-      </div>
+
     </div>
   );
+  // LINE 91
+  // <div className="container">
+  //   {displayedNotes.map((note, ind) => {
+  //     return (
+  //       <Note
+  //         key={note.pathName}
+  //         {...{
+  //           note,
+  //           formDisplayed,
+  //           updateQuestionNote,
+  //           nextAutoPlayIndex,
+  //           questionNotes
+  //         }}
+  //       />
+  //     );
+  //   })}
+  // </div>
   // LINE 88
   // {formDisplayed === "question" && (
   //   <NoteContext.Provider value={{ questionNotes }}>
